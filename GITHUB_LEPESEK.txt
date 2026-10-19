@@ -44,3 +44,29 @@ A VR hangparancsai a WORK panelt is megnyitják, és a parancsot ugyanazon az es
 - Irányítás: „balra”, „jobbra”, „szünet”, „folytasd”, „játék vége”.
 - „teljes képernyő” vagy „nagyítás” teljes képernyőre vált és nagyít. Ha a Chrome a hangparancsot nem engedi, koppints egyszer az oldalra, majd mondd újra.
 - A pálya áttetsző, a kameraképet hagyja látszani. VR-t csak állva/ülve, biztonságos helyen próbáld ki.
+
+
+ÚJ (v37): KÉZVEZÉRLÉS, IRÁNYÍTÓ SZALAG, WORK HANGVEZÉRLÉS VR-BEN
+Fájlok: a csomag MINDEN fájlját töltsd fel újra (index.html, work.html, dex-work-bridge.js, wdea-hu-voice.js, sw.js …).
+
+KÉZMOZDULAT (gesztus mód)
+ • Mondd: „gesztus mód” (vagy „gesztusos”, „gömbös”, „kézvezérlés”). Kikapcsolás: „gesztus ki”.
+ • Be van kapcsolva: a WORK lapozik, ha a kezed a kamera előtt – fel: feljebb · le: lejjebb · jobbra: jobbra lapoz · balra: balra lapoz.
+ • Fejmozgásra, a kép általános remegésére és lassú, kis mozgásra nem lapoz. Játék közben és megnyitott játékmenüben nem lapoz.
+IRÁNYÍTÓ SZALAG
+ • „irányító szalag” / „irányítópult” / „parancsok” → áttetsző szalag alul, 4 lap, ~90 parancs magyarázattal.
+ • „szalag tovább” / „szalag előző” lapoz, „szalag el” elrejti. A végrehajtott parancs a szalagon felvillan.
+WORK HANGPARANCSOK (VR-ben)
+ • „nyisd meg a vásárlásokat / üzleteket”, „mutasd a termékeket”, „nyisd meg a kosarat / rendeléseket / üzeneteket”, főoldal, értesítések, profil, beállítások, segítség …
+ • „görgess lejjebb / feljebb”, „kicsit lejjebb”, „sokat lejjebb”, „lejjebb”, „csússz feljebb”, „görgess az aljára / a tetejére”, „lapozz jobbra / balra”.
+ • „nyisd fel a csetet / üzenetablakot”: ha a WORK látszik, a WORK üzenetei nyílnak; ha nem, a DEX saját csevegése. „csevegés” szóra mindig a DEX csevegése.
+ • WORK-ablak: „WORK nagyobb / kisebb”, „told a WORK-öt balra / jobbra / fel / le”, „WORK középre”, „WORK alaphelyzet”, „WORK el”.
+ÜTŐS BLOKKOK
+ • Az ütésfelismerés szigorúbb: csak a figura helyén, egymás utáni két mintán át tartó, a kép többi részénél jóval erősebb mozgás üt; fej- és kameramozgásra nem. Egy lendítés egy figurát üt.
+
+ÚJ JÁTÉK: DEX ŐRZŐJE
+ • VR-ben: „játékok”, majd „DEX őrzője” (vagy közvetlenül: „DEX őrzője”, „lebegő mag”).
+ • DEX lebeg előtted három sáv egyikében. Üstökösök és fénygömbök közelednek. Fénygömb: elkapod (+10 pont), üstökös: kitérsz vagy pajzzsal kivéded (3 életed van).
+ • Irányítás hanggal: „balra”, „jobbra”, „középre”, „pajzs”, „gyorsabban”, „lassabban”, „állj” (szünet), „folytasd”, „még egyszer”, „játék vége”.
+ • Irányítás kézzel (gesztus mód nélkül is, amíg a játék megy): legyintés balra/jobbra = DEX kitér, felfelé = pajzs. A pajzs ~1,6 mp-ig véd, utána kb. 3 mp-ig töltődik.
+ • Menü megnyitásakor a játék szünetel, a „vissza” folytatja. Legjobb pont a telefonon marad.
