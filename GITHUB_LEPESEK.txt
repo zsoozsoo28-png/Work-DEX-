@@ -31,3 +31,16 @@ Példák: „Nyisd meg a webshopot”; „tedd elém a vásárlásokat”; „me
 VR-ben mondd ki előbb: „WORK VR-be” vagy „tedd elém a WORK-öt”, majd a fenti oldalnevet. A DEX a WORK panelt a kért oldalra navigálja.
 A kifejezések magyar ékezet nélkül, toldalékolva és több hétköznapi szófordulattal is felismerhetők. Ez helyi kulcsszó- és szófordulat-szótár, nem új AI-modell.
 E-mail kampányküldés jelenleg nincs a WORK-ben. Az e-mail kampányt kérő mondat ezért egyértelműen jelzi, hogy a funkció hiányzik; nem nyitja meg tévesen a hirdetési kampány piszkozatot.
+
+
+HANGPARANCS-BŐVÍTÉS – GÖRGETÉS, KERESÉS ÉS MOZGATÁS
+Példák: „görgess lejjebb”, „görgess feljebb”, „menj jobbra”, „menj balra”; „hol találom a vásárlásokat?”, „keresd meg a termékeket”. Ezek a WORK-ben helyi keresést vagy görgetést indítanak.
+A DEX mozgatásához: „mozdítsd jobbra/balra/fel/le”, „told a robotot 20 pixellel jobbra”, „tedd a mikrofont előre/hátra”, „tedd a mikrofont a küldés gomb mögé”. Irány megadásakor távolság nélkül 30 pixeles lépést használ.
+A VR hangparancsai a WORK panelt is megnyitják, és a parancsot ugyanazon az eszközön továbbítják a WORK-nek. Frissítéskor minden fájlt tölts fel újra a tárhely gyökerébe, különösen a wdea-hu-voice.js és sw.js fájlokat.
+
+
+ÚJ: CSILLAGVASÚT játék
+- VR módban: „játékok”, majd mondd: „Csillagvasút”, vagy mondd: „játsszunk a Csillagvasúttal”.
+- Irányítás: „balra”, „jobbra”, „szünet”, „folytasd”, „játék vége”.
+- „teljes képernyő” vagy „nagyítás” teljes képernyőre vált és nagyít. Ha a Chrome a hangparancsot nem engedi, koppints egyszer az oldalra, majd mondd újra.
+- A pálya áttetsző, a kameraképet hagyja látszani. VR-t csak állva/ülve, biztonságos helyen próbáld ki.

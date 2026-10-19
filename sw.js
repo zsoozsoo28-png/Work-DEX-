@@ -1,4 +1,4 @@
-const V='dex51-pwa-37-hu-voice';
+const V='dex51-pwa-39-star-ride';
 const FILES=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./layer.js','./dex-work-bridge.js',
  './work.html','./wdea-hu-voice.js','./wdea-ai-command-bridge.css','./wdea-ai-command-bridge.js','./wdea-ai.css','./wdea-ai.js','./wdea-dex-link.js','./wdea-drive-voice-adapter.js','./wdea-robot-blue.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>Promise.all(FILES.map(f=>c.add(f).catch(()=>{})))).then(()=>self.skipWaiting()))});
