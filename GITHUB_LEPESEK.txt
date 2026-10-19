@@ -1,0 +1,25 @@
+DEX + WORK GITHUB PAGES-RE – MAPPA NÉLKÜL, TELEFONRÓL IS
+
+Itt MINDEN fájl egy szinten van (nincs almappa), ezért telefonról is egyszerre feltölthető.
+  DEX:  https://FELHASZNÁLÓNEVED.github.io/TÁRHELYNÉV/
+  WORK: https://FELHASZNÁLÓNEVED.github.io/TÁRHELYNÉV/work.html
+
+FIGYELEM: a DEX fájlja az index.html, a WORK fájlja a work.html. NE keverd össze! Ha az index.html helyére a WORK kerül, a főcímen a WORK nyílik meg.
+
+ELSŐ FELTÖLTÉS
+1. Csomagold ki a zipet a telefonon.
+2. GitHub → a tárhelyed → Add file → Upload files → jelöld ki a kicsomagolt mappa MINDEN fájlját → Commit changes.
+3. Settings → Pages → Deploy from a branch → main → / (root) → Save.
+
+HA MÁR FENT VAN A RÉGI (ahogy most nálad): töltsd fel újra ugyanígy az összes fájlt. A GitHub felülírja a régieket. Az index.html így újra a DEX lesz. A régi, fölösleges fájlokat (vr-check.js, dex-work-controller.js, OLVASD_EL.txt, README…) hagyhatod, nem zavarnak.
+
+TELEFONON
+4. Nyisd meg a főcímet Chrome-ban, internettel (ez a DEX). Utána egyszer a /work.html címet is.
+5. Menü → Hozzáadás a kezdőképernyőhöz. Kamera- és mikrofonengedély: igen.
+6. Repülő módban is próbáld ki.
+
+HA A VR-BEN 404 JELENIK MEG A WORK HELYETT: a work.html nincs feltöltve. Töltsd fel.
+
+KORLÁTOK: nincs szerver; a WORK itt demó, az adat csak a telefonon van. A tárhely nyilvános, jelszót ne tegyél bele.
+
+ÚJ: az admin (CONTROL / ADMIN) két új gombbal bővült: „WORK megjelenítése” (előnézet a DEX-en belül) és „Átlépés a WORK-be”.
