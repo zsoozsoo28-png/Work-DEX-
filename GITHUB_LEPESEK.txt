@@ -23,3 +23,11 @@ HA A VR-BEN 404 JELENIK MEG A WORK HELYETT: a work.html nincs feltöltve. Tölts
 KORLÁTOK: nincs szerver; a WORK itt demó, az adat csak a telefonon van. A tárhely nyilvános, jelszót ne tegyél bele.
 
 ÚJ: az admin (CONTROL / ADMIN) két új gombbal bővült: „WORK megjelenítése” (előnézet a DEX-en belül) és „Átlépés a WORK-be”.
+
+
+ÚJ: DEX / WORK magyar hangparancs-szótár (offline)
+A csomag tartalmazza a wdea-hu-voice.js fájlt. Frissítéskor ezt is töltsd fel a többi fájllal együtt a tárhely gyökerébe.
+Példák: „Nyisd meg a webshopot”; „tedd elém a vásárlásokat”; „menjünk a beállításokon belül a profilokra”; „nyisd meg a rendeléseimet / kosarat / pénztárt”; „mutasd a boltsablon-szerkesztőt”.
+VR-ben mondd ki előbb: „WORK VR-be” vagy „tedd elém a WORK-öt”, majd a fenti oldalnevet. A DEX a WORK panelt a kért oldalra navigálja.
+A kifejezések magyar ékezet nélkül, toldalékolva és több hétköznapi szófordulattal is felismerhetők. Ez helyi kulcsszó- és szófordulat-szótár, nem új AI-modell.
+E-mail kampányküldés jelenleg nincs a WORK-ben. Az e-mail kampányt kérő mondat ezért egyértelműen jelzi, hogy a funkció hiányzik; nem nyitja meg tévesen a hirdetési kampány piszkozatot.

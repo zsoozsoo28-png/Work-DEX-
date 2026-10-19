@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="hu">
 <head>
+  <script src="./wdea-hu-voice.js"></script>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#050914"><meta name="description" content="WDEA WORK – közösségi és kereskedelmi felfedezőplatform">
   <title>WDEA WORK</title><style>
@@ -1507,6 +1508,7 @@ body:has(.wdea-control-embedded) #wdea-dex-edge-tab{z-index:2147482600!important
   function localVoiceCommand(transcript){
     const text=String(transcript||'').trim(),low=text.toLocaleLowerCase(localeTag(db.prefs.locale||db.prefs.lang));
     if(/\b(?:jelsz[oó]|password|iban|cvv|banksz[aá]mla|bankkártya|bankkartya)\b/i.test(text)||/(?:\d[ -]*){13,19}/.test(text))return {blocked:true};
+    const shared=window.WDEA_HU_VOICE?.resolve(text);if(shared)return shared;
     const routes=[['points',['ponttárca','ponttarc','pontok','pontfeltöltés','pontfeltoltes','töltsd fel a pontokat','punkte-wallet','punkte aufladen','punkte','point wallet','points wallet','top up points','top-up points','point top-up','ricarica punti','portafoglio punti']],['home',['főoldal','home','start']],['explore',['felfedezés','felfedezes','explore','discover','entdecken','esplora']],['help',['segítség','segitseg','help','hilfe','aiuto']],['profile',['profil','profile','profilo']],['shopping',['bolt','üzlet','uzlet','shop','vásárlás','vasarlas']],['video',['videó','video']],['studio',['stúdió','studio','sablon','sablonszerkesztő','sablonszerkeszto']],['messages',['üzenetek','uzenetek','üzenet','uzenet','messages','nachrichten','messaggi']],['settings',['beállítások','beallitasok','settings','einstellungen']]];
     const search=low.match(/(?:keress|keresd|search|suche|cerca)\s+(.{2,})/i);
     if(search){activeQuery=search[1].trim();activeCategory='Összes';activeExploreType='all';return {route:'explore',search:true}}
@@ -1519,6 +1521,7 @@ body:has(.wdea-control-embedded) #wdea-dex-edge-tab{z-index:2147482600!important
   async function sendVoiceAI(transcript){
     const status=$('.voice-ai-status'),local=localVoiceCommand(transcript);
     if(local?.blocked){if(status)status.textContent=profileText('Érzékeny jelszó- vagy bankadatot nem dolgozok fel.','Passwort- oder Bankdaten verarbeite ich nicht.','I do not process password or bank details.','Non elaboro password o dati bancari.');return}
+    if(local?.unsupported==='emailCampaign'){const msg='Az e-mail kampányküldés még nincs beépítve. A WORK jelenlegi kampányoldala hirdetési piszkozatot készít, e-mailt nem küld.';if(status)status.textContent=msg;toast(msg,'warn');return}
     if(local?.route){if(local.route==='points'){pointDemo().tab='wallet';save()}go(local.route);if(local.walletTarget)setTimeout(()=>document.getElementById(local.walletTarget)?.scrollIntoView?.({behavior:db.prefs.reduceMotion?'instant':'smooth',block:'start'}),100);toast(local.search?profileText('Elindítottam a helyi keresést.','Die lokale Suche wurde gestartet.','Started a local search.','Ho avviato una ricerca locale.'):profileText('Megnyitottam a kért oldalt.','Die gewünschte Seite wurde geöffnet.','Opened the requested page.','Ho aperto la pagina richiesta.'),'ok');return}
     if(local?.clarify){if(status)status.textContent=profileText('Pontosítsd, melyik oldalt nyissam meg.','Welche Seite soll ich öffnen?','Which page should I open?','Quale pagina devo aprire?');return}
     if(!db.prefs.aiEndpoint){if(status)status.textContent=profileText('A helyi oldalparancsok működnek. A többi hangkéréshez AI-kapcsolat szükséges.','Lokale Seitenbefehle funktionieren. Für weitere Sprachanfragen ist eine AI-Verbindung nötig.','Local navigation commands work. Other voice requests need an AI connection.','I comandi di navigazione locali funzionano. Le altre richieste vocali richiedono una connessione AI.');return}

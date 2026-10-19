@@ -6,7 +6,13 @@
     ['points',['ponttárca','ponttarc','pontok','pénzügy','penzugy','egyenleg','coin','punkte','points','portafoglio punti','punti']],
     ['studio',['stúdió','studio','szerkesztő','szerkeszto','editor']],
     ['video',['videó','video','videók','videos']],
-    ['shopping',['webshop','bolt','üzlet','uzlet','vásárlás','vasarlas','termékek','termekek','shop','shopping','store','negozio']],
+    ['shopping',['webshop','web shop','bolt','üzlet','uzlet','vásárlás','vasarlas','termékek','termekek','shop','shopping','store','negozio']],
+    ['orders',['rendelés','rendeles','megrendelés','megrendeles','orders','rendeléseim','rendeleseim']],
+    ['cart',['kosár','kosar','cart','bevásárlókocsi','bevasarlokocsi']],
+    ['checkout',['pénztár','penztar','fizetés','fizetes','checkout']],
+    ['store',['bemutatóbolt','bemutatobolt','saját bolt','sajat bolt']],
+    ['business',['üzleti központ','uzleti kozpont','vállalkozás','vallalkozas']],
+    ['aiSettings',['AI beállítás','ai beallitas','hangbeállítás','hangbeallitas']],
     ['admin',['admin','vezérlőpult','vezerlopult','control','verwaltung']],
     ['messages',['üzenetek','uzenetek','üzenet','uzenet','messages','nachrichten','messaggi']],
     ['notifications',['értesítések','ertesitesek','notifications','benachrichtigungen','notifiche']],
@@ -23,6 +29,8 @@
   const negation=/(?:\bne\s+(?:nyisd|mutasd|menj|le[p]?j|ugorj|hozd)\b|\bne\s+open\b|\bdon['’]?t\s+(?:open|show|go)\b|\bdo\s+not\s+(?:open|show|go)\b|\bnicht\s+(?:offnen|zeigen|gehen)\b|\bnon\s+(?:aprire|mostrare|andare)\b)/i;
   let busy=false;
   function findRoute(input){
+    const shared=window.WDEA_HU_VOICE?.resolve(input);
+    if(shared?.route&&validRoutes.has(shared.route))return shared.route;
     let text=normalize(input).trim();
     if(!text||!openIntent.test(text))return null;
     // A spoken correction supersedes the earlier clause. Keep the destination
