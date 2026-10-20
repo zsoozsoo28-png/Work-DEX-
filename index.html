@@ -2713,7 +2713,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  var CS={on:false,page:0,fl:{}},CSP=[
   {t:'WORK oldalak',c:[['vásárlások','a WORK Vásárlás oldala','shopping'],['termékek','bemutatóbolt','store'],['kosár','kosár oldal','cart'],['rendelések','rendeléseid','orders'],['üzenetek','WORK üzenetek','messages'],['főoldal','kezdőlap','home'],['értesítések','értesítések','notifications'],['profil','profil oldal','profile'],['beállítások','beállítások','settings'],['segítség','súgó oldal','help']]},
   {t:'Görgetés és lapozás',c:[['görgess lejjebb','le','down'],['görgess feljebb','fel','up'],['kicsit lejjebb','kis lépés','down'],['sokat lejjebb','nagy lépés','down'],['lapozz jobbra','jobbra','right'],['lapozz balra','balra','left'],['az aljára','oldal vége','bottom'],['a tetejére','oldal teteje','top']]},
-  {t:'WORK-ablak',c:[['WORK nagyobb','nagyít','big'],['WORK kisebb','kisebbít','small'],['told a WORK-öt balra / jobbra / fel / le','mozgat','move'],['szélesítsd ki a WORK-öt','szélesebb','big'],['✋ csípd meg és húzd','kézzel mozgatás','move'],['✋✋ két kézzel csípj, tágítsd','kézzel nagyítás','big'],['WORK középre','középre','mid'],['WORK alaphelyzet','visszaállít','reset'],['WORK el','elrejt','hide']]},
+  {t:'WORK-ablak',c:[['WORK nagyobb','nagyít','big'],['WORK kisebb','kisebbít','small'],['told a WORK-öt balra / jobbra / fel / le','mozgat','move'],['szélesítsd ki a WORK-öt','szélesebb','big'],['✋ csípd meg és húzd','kézzel mozgatás','move'],['✋✋ két kézzel csípj, tágítsd','kézzel nagyítás','big'],['✋ rövid csipesz = katt','kattintás az ujjad alatt','tap'],['kéz a kép előtt ki / be','kézkivágás','hf'],['WORK középre','középre','mid'],['WORK alaphelyzet','visszaállít','reset'],['WORK el','elrejt','hide']]},
   {t:'DEX és játékok',c:[['játékok','játékmenü','games'],['mutasd a csevegéseket','DEX-csevegés','chat'],['csevegés vissza','csevegés el','chatoff'],['gesztus mód ki / be','kézvezérlés','ges'],['szalag tovább','következő lap','next'],['szalag el','szalag rejt','hide2'],['VR vége','kilépés','exit']]}];
  function csRender(){hud(function(x){var e=x.querySelector('.cs');if(!e)return;e.classList.toggle('on',CS.on);if(!CS.on){e.innerHTML='';return}
   var P=CSP[CS.page%CSP.length],h='<h6>IRÁNYÍTÓ SZALAG · '+P.t+' · '+(CS.page%CSP.length+1)+'/'+CSP.length+' · kéz: <em>'+(GES.on?('BE'+(HD.mode==='mp'?' · pontos':(HD.loading?' · töltődik':' · mozgás'))):'KI')+'</em></h6>';
@@ -2727,16 +2727,20 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function gesDo(dir){if(MG&&MG.state!=='over'){mgGesture(dir);return}csFlash(dir);var k={up:'@scroll up .6',down:'@scroll down .6',left:'@scroll left .7',right:'@scroll right .7'}[dir];wkPost(k)}
 
  /* ---- Kézzel fogás: csipesz = megfogja a WORK-ablakot és viszi; két kézzel csípve tágítva nagyít ---- */
- var GRIP={m:0,lock:0,lost:0};
+ var GRIP={m:0,lock:0,lost:0,moved:0,ts:0,tx:0,ty:0};
  function handsList(now){
   var o=window.__handsLm;if(typeof o==='function'){var L=o()||[];return L.map(function(l){return l.x!==undefined?l:dnHandFromLm(l)}).filter(Boolean)}
   var o1=window.__handLm;if(typeof o1==='function'){var l1=o1();return l1?[l1.x!==undefined?l1:dnHandFromLm(l1)].filter(Boolean):[]}
   if(HD.mode==='mp'&&HD.eng&&HD.resAll&&now-HD.resT<350)return HD.resAll.map(dnHandFromLm).filter(Boolean);return []}
  function gripGlow(on){hud(function(x){var w=x.querySelector('.wk');if(w)w.style.borderColor=on?'#ffe27a':'';if(w)w.style.boxShadow=on?'0 0 3vh #ffe27a99':''})}
- function gripEnd(now){if(GRIP.m){GRIP.m=0;wkBoxFit();wkSave();GRIP.lock=now+800;gripGlow(false)}}
+ function gripTap(fx,fy){if(fx<0||fx>1||fy<0||fy>1)return false;wkPost('@tap '+fx.toFixed(4)+' '+fy.toFixed(4));csFlash('tap');
+  hud(function(x){var r=document.createElement('i');r.style.cssText='position:absolute;left:'+((100-WKB.r-WKB.w)+fx*WKB.w)+'%;top:'+(WKB.t+fy*WKB.h)+'%;width:6vh;height:6vh;margin:-3vh 0 0 -3vh;border-radius:50%;border:.5vh solid #ffe27a;box-shadow:0 0 2vh #ffe27a;pointer-events:none;z-index:7;transition:transform .45s,opacity .45s;transform:scale(.3);opacity:1';x.appendChild(r);setTimeout(function(){r.style.transform='scale(1.5)';r.style.opacity='0'},20);setTimeout(function(){try{r.remove()}catch(e){}},520)});TAPN++;return true}
+ var TAPN=0;
+ function gripEnd(now){if(GRIP.m){var tap=GRIP.m===1&&!GRIP.moved&&workOn&&now-GRIP.ts<1100&&GRIP.rel;GRIP.m=0;GRIP.rel=0;wkBoxFit();wkSave();GRIP.lock=now+(tap?350:800);gripGlow(false);
+  if(tap){var fx=(GRIP.tx*100-(100-WKB.r-WKB.w))/WKB.w,fy=(GRIP.ty*100-WKB.t)/WKB.h;gripTap(fx,fy)}}}
  function gripTrack(now,HS){
   var pin=HS.filter(function(h){return h.pinchR<(GRIP.m?.5:.32)}).map(function(h){return {x:h.px/h.ew,y:h.py/h.eh,ew:h.ew,eh:h.eh}});
-  if(!pin.length){if(GRIP.m){if(!GRIP.lost)GRIP.lost=now;if(now-GRIP.lost>250){GRIP.lost=0;gripEnd(now)}}return GRIP.m||now<GRIP.lock}
+  if(!pin.length){if(GRIP.m){if(!GRIP.lost)GRIP.lost=now;if(now-GRIP.lost>(GRIP.m===1&&!GRIP.moved?150:250)){GRIP.lost=0;GRIP.rel=1;gripEnd(now)}}return GRIP.m||now<GRIP.lock}
   GRIP.lost=0;
   if(pin.length>=2){pin.sort(function(a,b){return a.x-b.x});var A=pin[0],B=pin[pin.length-1];
    var d=Math.sqrt(Math.pow((A.x-B.x)*A.ew,2)+Math.pow((A.y-B.y)*A.eh,2)),mx=(A.x+B.x)/2,my=(A.y+B.y)/2;
@@ -2746,10 +2750,36 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   var P=pin[0];
   if(GRIP.m===2){return true}  /* az egyik kéz elengedte: a másik elengedéséig nem történik semmi, nincs ugrás */
   if(GRIP.m!==1){var L=100-WKB.r-WKB.w,R=100-WKB.r,px=P.x*100,py=P.y*100;
-   if(workOn&&now>=GRIP.lock&&px>L-6&&px<R+6&&py>WKB.t-6&&py<WKB.t+WKB.h+6){GRIP.m=1;GRIP.px0=P.x;GRIP.py0=P.y;GRIP.r0=WKB.r;GRIP.t0=WKB.t;gripGlow(true);csFlash('move')}
+   if(workOn&&now>=GRIP.lock&&px>L-6&&px<R+6&&py>WKB.t-6&&py<WKB.t+WKB.h+6){GRIP.m=1;GRIP.px0=P.x;GRIP.py0=P.y;GRIP.r0=WKB.r;GRIP.t0=WKB.t;GRIP.moved=0;GRIP.ts=now;GRIP.tx=P.x;GRIP.ty=P.y;GRIP.rel=0;GRIP.ew=P.ew;GRIP.eh=P.eh;gripGlow(true)}
    return GRIP.m===1||now<GRIP.lock}
+  if(!GRIP.moved){if(Math.sqrt(Math.pow((P.x-GRIP.px0)*P.ew,2)+Math.pow((P.y-GRIP.py0)*P.eh,2))<.045*P.ew)return true;GRIP.moved=1;gripGlow(true);csFlash('move')}
   WKB.r=GRIP.r0-(P.x-GRIP.px0)*100;WKB.t=GRIP.t0+(P.y-GRIP.py0)*100;wkBoxFit();wkApply();return true}
 
+/* ---- Kéz a kép előtt: a kamerakép kéz-alakú kivágása a WORK-ablak FÖLÉ rajzolva (Tony Stark) ---- */
+ var HF={on:true,raf:0,last:0,cv:[],hs:[],n:0,t:0};
+ try{if(localStorage.getItem('dex_handfront')==='0')HF.on=false}catch(e){}
+ var BONES=[[0,1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16],[17,18,19,20]];
+ function hfDraw(){HF.raf=0;var now=Date.now(),HS=HF.hs;
+  if(!HF.on||!root||!HS.length||now-HF.t>450||!workOn){hud(function(x){var c=x&&x.querySelector('.hfront');if(c)c.style.display='none'});return}
+  eyes.forEach(function(e,i){var x=e.querySelector('.hud'),v=e.querySelector('video'),c=x.querySelector('.hfront');
+   var ew=e.clientWidth||1,eh=e.clientHeight||1;
+   if(!c){c=document.createElement('canvas');c.className='hfront';c.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:5;opacity:.93;filter:drop-shadow(0 0 1.2vh #8ce7ffcc)';x.appendChild(c)}
+   c.style.display='block';if(c.width!==ew||c.height!==eh){c.width=ew;c.height=eh}
+   var g=c.getContext('2d');g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,ew,eh);if(!v||!v.videoWidth)return;
+   g.globalCompositeOperation='source-over';g.fillStyle='#fff';g.strokeStyle='#fff';g.lineCap='round';g.lineJoin='round';
+   HS.forEach(function(h){var P=h.P;if(!P)return;var w=h.size*.27;g.lineWidth=w;
+    BONES.forEach(function(b,bi){g.lineWidth=bi===0?w*.95:w*(bi===2?1:.9);g.beginPath();g.moveTo(P[b[0]][0],P[b[0]][1]);for(var k=1;k<b.length;k++)g.lineTo(P[b[k]][0],P[b[k]][1]);g.stroke()});
+    g.beginPath();[0,1,5,9,13,17].forEach(function(k,j){j?g.lineTo(P[k][0],P[k][1]):g.moveTo(P[k][0],P[k][1])});g.closePath();g.fill();g.lineWidth=w*1.1;g.stroke()});
+   g.globalCompositeOperation='source-in';
+   var vw=v.videoWidth,vh=v.videoHeight,sc=Math.max(ew/vw,eh/vh);g.drawImage(v,(ew-vw*sc)/2,(eh-vh*sc)/2,vw*sc,vh*sc);
+   g.globalCompositeOperation='source-over';
+   HS.forEach(function(h){var P=h.P;if(!P)return;g.lineWidth=Math.max(1.5,h.size*.03);g.strokeStyle='#8ce7ffcc';
+    BONES.forEach(function(b){g.beginPath();g.moveTo(P[b[0]][0],P[b[0]][1]);for(var k=1;k<b.length;k++)g.lineTo(P[b[k]][0],P[b[k]][1]);g.stroke()});
+    [4,8,12,16,20].forEach(function(k){g.beginPath();g.arc(P[k][0],P[k][1],Math.max(2.5,h.size*.05),0,6.3);g.fillStyle=(k===8||k===4)&&h.pinchR<.5?'#ffe27a':'#8ce7ff';g.fill()})})});
+  HF.n++;HF.raf=requestAnimationFrame(hfDraw)}
+ function hudVis(){var c=root&&root.querySelectorAll('.hfront');return c?[].filter.call(c,function(q){return q.style.display==='block'}).length:0}
+ function hfFeed(HS){HF.hs=(HS||[]).filter(function(h){return h&&h.P});if(HF.hs.length){HF.t=Date.now();if(!HF.raf&&HF.on)HF.raf=requestAnimationFrame(hfDraw)}}
+ function hfSet(on){HF.on=!!on;try{localStorage.setItem('dex_handfront',on?'1':'0')}catch(e){}if(on){if(HF.hs.length&&!HF.raf)HF.raf=requestAnimationFrame(hfDraw)}else hud(function(x){var c=x&&x.querySelector('.hfront');if(c)c.style.display='none'});return on}
  /* Látható visszajelzés: pont a kezeden (cián = nyitott, sárga = csipesz). Ha a pont megjelenik, a rendszer lát. */
  function handDots(HS){
   hud(function(x){if(!x)return;var c=x.querySelector('.hdots');
@@ -2772,10 +2802,10 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   setTimeout(function(){try{window.DEX_UI&&window.DEX_UI.reply(handStatus())}catch(e){}},4500);
   return (HD.eng?'A kézkövetés be van kapcsolva.':'Elindítom a kézkövetést, töltöm a kézmodellt.')+' Ha a kezed látom, egy pont jelenik meg rajta: cián, ha nyitott, sárga, ha csipeszben van. Pár másodperc múlva elmondom, hogyan megy.'}
  function trackHand(now){
-  var mgOn=!!(MG&&MG.state==='play'&&!MG.paused);if((!mgOn&&(!GES.on||!workOn))||U||G||M||RIDE||DN||now<GES.lock){if(GRIP.m)gripEnd(now);if(GES.dots){GES.dots=0;handDots(null)}return}
+  var mgOn=!!(MG&&MG.state==='play'&&!MG.paused);if((!mgOn&&(!GES.on||!workOn))||U||G||M||RIDE||DN||now<GES.lock){if(GRIP.m)gripEnd(now);if(GES.dots){GES.dots=0;handDots(null);hfFeed([])}return}
   /* 1) pontos kézkövetés (MediaPipe, a kéz 21 pontja) – ez az elsődleges; közben a modell betöltődik */
   if(!mgOn&&(HD.mode==='mp'||typeof window.__handLm==='function'||typeof window.__handsLm==='function')){var hh=dnHand();
-   var HS=handsList(now);GES.dots=1;handDots(HS);var gr0=gripTrack(now,HS);if(gr0){GES.samples=[];return}
+   var HS=handsList(now);GES.dots=1;handDots(HS);hfFeed(HS);var gr0=gripTrack(now,HS);if(gr0){GES.samples=[];return}
    if(typeof window.__handsLm==='function'&&HS.length)hh=HS[0];
    if(!hh){if(GES.samples.length&&now-GES.samples[GES.samples.length-1].t>280)GES.samples=[];return}
    GES.hand=now;GES.samples.push({x:hh.x,y:hh.y,t:now,sz:hh.size});GES.samples=GES.samples.filter(function(p){return now-p.t<900});
@@ -2823,6 +2853,10 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
    return wkBoxDone('move',{l:'Balra',r:'Jobbra',u:'Feljebb',d:'Lejjebb'}[dir]+' toltam a WORK-ablakot.')}
   return null}
  function stripCmd(f){
+  /* kéz a kép előtt: be / ki */
+  if(/\b(kez\w*)\b/.test(f)&&/\b(kep elott|kep fole|elotte|elol|elore|eloterbe|elohuz\w*|kivag\w*|kiemel\w*|tony stark|jarvis)\b/.test(f)&&f.split(' ').length<=8&&!/\b(kezkovet\w*)\b/.test(f)){
+   if(/\b(ki|kikapcs\w*|vege|nem kell|el)\b/.test(f)&&!/\b(be|kapcsold be|inditsd)\b/.test(f)){hfSet(false);return 'Kikapcsoltam a kéz kiemelését.'}
+   hfSet(true);GES.on=true;if(!workOn)try{setWork(true)}catch(e){}try{dnLoadMP()}catch(e){}return 'Bekapcsoltam: a kezed kivágva a WORK-ablak előtt lebeg. Koppints a hüvelyk- és mutatóujjaddal (rövid csipesz) a WORK-ablak fölött, és rákattintok arra, ami az ujjad alatt van. Ha tartod és húzod, viszed az ablakot.'}
   /* kézkövetés: be / ki / újra / állapot */
   if(/\b(kezkovet\w*|kezfelismer\w*|kez ?teszt\w*|kezet figyel\w*|kezet kovess\w*|kovesd a kezem\w*)\b/.test(f)&&f.split(' ').length<=7){
    if(/\b(ki|kikapcs\w*|leall\w*|vege|nem kell)\b/.test(f)&&!/\b(be|inditsd|ujra)\b/.test(f)){GES.on=false;GES.samples=[];handDots(null);return 'Kikapcsoltam a kézkövetést.'}
@@ -2988,7 +3022,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   var size=d(P[0],P[9]);if(size<8)return null;
   var dx=P[8][0]-P[5][0],dy=P[8][1]-P[5][1],dl=Math.sqrt(dx*dx+dy*dy)||1;dx/=dl;dy/=dl;
   var pr=d(P[4],P[8])/size;
-  return {x:cx,y:cy,tx:P[8][0],ty:P[8][1],px:(P[4][0]+P[8][0])/2,py:(P[4][1]+P[8][1])/2,dx:dx,dy:dy,size:size,pinchR:pr,src:'mp',ew:ew,eh:eh}}
+  return {x:cx,y:cy,tx:P[8][0],ty:P[8][1],px:(P[4][0]+P[8][0])/2,py:(P[4][1]+P[8][1])/2,dx:dx,dy:dy,size:size,pinchR:pr,src:'mp',ew:ew,eh:eh,P:P}}
  function dnLoadMP(){if(window.__noMP||HD.eng||HD.loading||HD.err)return;HD.loading=true;var triedCdn=false;
   function boot(base){MPBASE=base;var s=document.createElement('script');s.src=base+'hands.js';s.crossOrigin='anonymous';
    s.onload=function(){try{var H=new window.Hands({locateFile:function(f){return MPBASE+f}});H.setOptions({maxNumHands:2,modelComplexity:0,minDetectionConfidence:.6,minTrackingConfidence:.5});HD.nh=2;
@@ -3207,7 +3241,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function netChip(){var off=navigator.onLine===false;of.style.display=off?'block':'none';return off}
  window.addEventListener('offline',function(){netChip();try{if(window.DEX_UI)window.DEX_UI.reply('Offline módban vagyok. A helyi parancsok, a jegyzetek, a VR és a szókereső működnek; az okos mód és a WORK a számítógépre vár.')}catch(e){}});
  window.addEventListener('online',function(){netChip()});netChip();
- Dx.__vr=1;window.DEX_VR={wkCmd:function(f){return wkBoxCmd(f)},handInfo:function(){return {mode:HD.mode,err:HD.err,loading:HD.loading,base:MPBASE,swipes:GES.seen,grip:GRIP.m,hands:(handsList(Date.now())||[]).map(function(h){return [Math.round(h.px/h.ew*100),Math.round(h.py/h.eh*100),+h.pinchR.toFixed(2)]})}},game:function(){return G},startGame:startGame,enter:function(g){return enter(!!g).then(function(t){if(window.DEX_UI)window.DEX_UI.reply(t);return t})},leave:leave,uStart:uStart,uCells:function(f){var ew=eyes[0]?eyes[0].clientWidth||1:1,eh=eyes[0]?eyes[0].clientHeight||1:1,H=(14+58*f.z)/100,W=H*.62*eh/ew,y1=1-f.b/100,y0=y1-H,a=e2v(f.x-W/2,y0),b=e2v(f.x+W/2,y1),o=[],x,y;if(!a||!b)return o;for(y=Math.max(0,Math.floor(Math.min(a[1],b[1])*36));y<Math.min(36,Math.ceil(Math.max(a[1],b[1])*36));y++)for(x=Math.max(0,Math.floor(Math.min(a[0],b[0])*64));x<Math.min(64,Math.ceil(Math.max(a[0],b[0])*64));x++)o.push(y*64+x);return o},uStop:uStop,ugame:function(){return U},uSpawn:uSpawn,uStep:uStep,uHit:uHit,holds:function(){return !!(M||(G&&G.paused)||(U&&U.paused))},quiet:function(t){var f=fold(t);return !!(U&&U.state==='play'&&!U.paused&&f.split(' ').length<=4&&/\b(uss|utes\w*|utom|ut|bumm|bum|bam|nyomd|nyomas|csap\w*|pofozd|kapd|rajta)\b/.test(f))},chat:chatSet,chatState:function(){return chatOn},menu:function(){return menuOpen()},menuState:function(){return M},addGame:function(id,name,start,say){GAMES.push({id:id,name:name,say:say||name,start:start})},active:function(){return !!(root&&root.classList.contains('on'))},work:setWork,mag:function(){return !!(MG&&MG.state!=='over')},mgState:function(){return MG},mgStep:mgStep,mgSpawn:mgSpawn,gesture:function(on){if(on===undefined)return GES.on;GES.on=!!on;GES.samples=[];csRender();return GES.on},gestureState:function(){return {on:GES.on,seen:GES.seen}},strip:function(on){return on===undefined?CS.on:csSet(on)},stripState:function(){return {on:CS.on,page:CS.page}},stripFlash:csFlash,wkBox:function(){return {r:WKB.r,t:WKB.t,w:WKB.w,h:WKB.h}},ride:function(){return !!RIDE},dino:function(){return !!DN},dnState:function(){return DN},dnStep:dnStep,dnFire:dnFire,dnSpawn:dnSpawn,dnHandFromLm:dnHandFromLm,workOn:function(){return !!workOn}};
+ Dx.__vr=1;window.DEX_VR={wkCmd:function(f){return wkBoxCmd(f)},handFront:function(){return {on:HF.on,frames:HF.n,vis:hudVis(),taps:TAPN}},handFrontSet:hfSet,handInfo:function(){return {mode:HD.mode,err:HD.err,loading:HD.loading,base:MPBASE,swipes:GES.seen,grip:GRIP.m,hands:(handsList(Date.now())||[]).map(function(h){return [Math.round(h.px/h.ew*100),Math.round(h.py/h.eh*100),+h.pinchR.toFixed(2)]})}},game:function(){return G},startGame:startGame,enter:function(g){return enter(!!g).then(function(t){if(window.DEX_UI)window.DEX_UI.reply(t);return t})},leave:leave,uStart:uStart,uCells:function(f){var ew=eyes[0]?eyes[0].clientWidth||1:1,eh=eyes[0]?eyes[0].clientHeight||1:1,H=(14+58*f.z)/100,W=H*.62*eh/ew,y1=1-f.b/100,y0=y1-H,a=e2v(f.x-W/2,y0),b=e2v(f.x+W/2,y1),o=[],x,y;if(!a||!b)return o;for(y=Math.max(0,Math.floor(Math.min(a[1],b[1])*36));y<Math.min(36,Math.ceil(Math.max(a[1],b[1])*36));y++)for(x=Math.max(0,Math.floor(Math.min(a[0],b[0])*64));x<Math.min(64,Math.ceil(Math.max(a[0],b[0])*64));x++)o.push(y*64+x);return o},uStop:uStop,ugame:function(){return U},uSpawn:uSpawn,uStep:uStep,uHit:uHit,holds:function(){return !!(M||(G&&G.paused)||(U&&U.paused))},quiet:function(t){var f=fold(t);return !!(U&&U.state==='play'&&!U.paused&&f.split(' ').length<=4&&/\b(uss|utes\w*|utom|ut|bumm|bum|bam|nyomd|nyomas|csap\w*|pofozd|kapd|rajta)\b/.test(f))},chat:chatSet,chatState:function(){return chatOn},menu:function(){return menuOpen()},menuState:function(){return M},addGame:function(id,name,start,say){GAMES.push({id:id,name:name,say:say||name,start:start})},active:function(){return !!(root&&root.classList.contains('on'))},work:setWork,mag:function(){return !!(MG&&MG.state!=='over')},mgState:function(){return MG},mgStep:mgStep,mgSpawn:mgSpawn,gesture:function(on){if(on===undefined)return GES.on;GES.on=!!on;GES.samples=[];csRender();return GES.on},gestureState:function(){return {on:GES.on,seen:GES.seen}},strip:function(on){return on===undefined?CS.on:csSet(on)},stripState:function(){return {on:CS.on,page:CS.page}},stripFlash:csFlash,wkBox:function(){return {r:WKB.r,t:WKB.t,w:WKB.w,h:WKB.h}},ride:function(){return !!RIDE},dino:function(){return !!DN},dnState:function(){return DN},dnStep:dnStep,dnFire:dnFire,dnSpawn:dnSpawn,dnHandFromLm:dnHandFromLm,workOn:function(){return !!workOn}};
 })();
 
 </script><script>

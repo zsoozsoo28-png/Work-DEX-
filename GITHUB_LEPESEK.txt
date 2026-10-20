@@ -108,3 +108,10 @@ WORK HANGPARANCSOK (VR-ben)
  • WORK a profil-menüben (jobb felső profil ikon): a „WORK” pont új lapon megnyitja a WORK-öt.
  • „chat” / „csevegés” / „csetet tegyél elém” = a kettőnk közti DEX-csevegés. „work chat” / „üzenetek” = a WORK üzenetei.
  • KÉZKÖVETÉS parancs: „kézkövetés” (be, elindítja), „kézkövetés állapot” (elmondja, működik-e, és ha nem, miért nem), „kézkövetés újra” (kényszerített újraindítás), „kézkövetés ki”. A kezeden pont jelenik meg: cián = nyitott kéz, sárga = csipesz. Ha a pont nem jelenik meg, a rendszer nem lát kezet; ilyenkor kérdezd: „kézkövetés állapot”.
+
+v42 – KÉZ A KÉP ELŐTT (Tony Stark)
+- A kamerakép kéz-alakú kivágása a WORK-ablak FÖLÉ kerül (cián kontúr, ujjhegyeken pontok), így a saját kezed látod az ablak előtt.
+- Koppintás: rövid csipesz (hüvelyk+mutató összeér és el) a WORK-ablak fölött = kattintás arra, ami az ujjhegyed alatt van. Sárga gyűrű jelzi.
+- Tartott + húzott csipesz továbbra is viszi az ablakot; két kézzel nagyít.
+- Hang: "kéz a kép előtt be / ki", "Tony Stark kéz előre", "kiemelt kéz be".
+- Ez nem valódi 3D: a kivágás a lapos kameraképből készül, enyhén késhet a gyors mozdulatoknál.
