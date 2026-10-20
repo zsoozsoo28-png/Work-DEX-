@@ -126,3 +126,9 @@ v44
 - Kitolás/behúzás: csipesz közben a kezed közelebb viszed a kamerához = az ablak nagyobb, távolabb = kisebb.
 - Letétel a térben: "tedd le a térbe" (giroszkóp, ha ellenkező irányba megy: "tér fordítva"); "vedd fel az ablakot".
 - Elemenkénti mozgatás: "elemenként mozgatom" -> csipesz + húzás egy kártyán/elemen; az ablak szélét megfogva az egész ablak mozog; "elemek alaphelyzet", "elem mozgatás ki".
+
+v45
+- Térbe tétel többféle szóval: "tedd le", "hagyd ott", "maradj ott", "engedd oda", "tedd oda", "maradjon ott", "hagyd", "tedd le a térbe". Ha 3,5 mp-ig nem jön giroszkóp-adat, a DEX megmondja.
+- "melyik verzió" -> megmondja a VR-rész verzióját (v45), így ellenőrizhető, hogy az új fájlok futnak-e.
+- Elem-mozgatás: "mozgasd el az elemet / a gombot / a kártyát" is bekapcsolja.
+- A kéz-kép (rárajzolt kéz) tárolója nullázva: alapból ki.
