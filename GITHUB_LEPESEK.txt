@@ -132,3 +132,8 @@ v45
 - "melyik verzió" -> megmondja a VR-rész verzióját (v45), így ellenőrizhető, hogy az új fájlok futnak-e.
 - Elem-mozgatás: "mozgasd el az elemet / a gombot / a kártyát" is bekapcsolja.
 - A kéz-kép (rárajzolt kéz) tárolója nullázva: alapból ki.
+
+v46
+- Átlátszó ablak (ha a kezed fölötte van): kicsit sötétebb háttér + élesebb kontraszt.
+- Térbe tétel újraírva: valódi 360 fokos forgáskövetés (giroszkóp + gravitáció + kamera látószöge). Elfordulsz: az ablak kimegy a képből; visszafordulsz: ott van. Függőleges nézés is követve. Telefon-tartás (álló/fekvő) automatikusan.
+- Korlát: csak forgást követ (nézés körbe), a telefon helyzetváltozását (odébb sétálás) nem. "melyik verzió" -> v46.
