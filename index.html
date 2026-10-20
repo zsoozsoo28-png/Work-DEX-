@@ -2358,6 +2358,10 @@ var QK='dex51_pubq';
  mi(IC.shield,'CONTROL / ADMIN',enterAdmin,'own','Csak neked');
  mi(IC.gear,'Beállítások',function(){closeMenu();var o=document.querySelector('[data-act="Beállítások"]');if(o)o.click()});
  mi('<rect x="3" y="8" width="18" height="9" rx="3"/><circle cx="8.500" cy="12.500" r="1.600"/><circle cx="15.500" cy="12.500" r="1.600"/>','VR mód',function(){closeMenu();if(window.DEX_VR)window.DEX_VR.enter(true)});
+ function openWorkTab(){closeMenu();var c=/\/dex\/[^\/]*$/.test(location.pathname)?['../work/index.html']:['./work.html','./work/index.html'],i=0;
+  function go(u){var w=null;try{w=window.open(new URL(u,location.href).href,'_blank')}catch(e){}if(!w)location.href=new URL(u,location.href).href}
+  (function next(){if(i>=c.length){toast('A WORK oldal nincs a tárhelyen (work.html hiányzik).');return}var u=c[i++];fetch(u,{method:'HEAD',cache:'no-store'}).then(function(r){if(r&&r.ok)go(u);else next()}).catch(function(){go(u)})})()}
+ mi('<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M9 9v11"/>','WORK',openWorkTab,'','Webshop');
  mi(IC.out,'Kijelentkezés',function(){closeMenu();var x=$('ctlLogout');if(x)x.click();else toast('Nincs aktív belépés.')});
  prof.onclick=function(e){e.stopPropagation();var s=!menu.classList.contains('show');menu.classList.toggle('show',s);prof.setAttribute('aria-expanded',String(s))};
  document.addEventListener('click',function(e){if(!menu.contains(e.target)&&e.target!==prof)closeMenu()});
@@ -2745,11 +2749,33 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
    if(workOn&&now>=GRIP.lock&&px>L-6&&px<R+6&&py>WKB.t-6&&py<WKB.t+WKB.h+6){GRIP.m=1;GRIP.px0=P.x;GRIP.py0=P.y;GRIP.r0=WKB.r;GRIP.t0=WKB.t;gripGlow(true);csFlash('move')}
    return GRIP.m===1||now<GRIP.lock}
   WKB.r=GRIP.r0-(P.x-GRIP.px0)*100;WKB.t=GRIP.t0+(P.y-GRIP.py0)*100;wkBoxFit();wkApply();return true}
+
+ /* Látható visszajelzés: pont a kezeden (cián = nyitott, sárga = csipesz). Ha a pont megjelenik, a rendszer lát. */
+ function handDots(HS){
+  hud(function(x){if(!x)return;var c=x.querySelector('.hdots');
+   if(!HS||!HS.length){if(c)c.style.display='none';return}
+   if(!c){c=document.createElement('div');c.className='hdots';c.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:6';x.appendChild(c)}
+   c.style.display='block';while(c.children.length<2){var d=document.createElement('i');d.style.cssText='position:absolute;width:4.2vh;height:4.2vh;margin:-2.1vh 0 0 -2.1vh;border-radius:50%;border:.5vh solid #8ce7ff;background:#8ce7ff33;box-shadow:0 0 2vh #8ce7ffaa;transition:background .08s';c.appendChild(d)}
+   for(var i=0;i<2;i++){var d2=c.children[i],h=HS[i];if(!h){d2.style.display='none';continue}d2.style.display='block';var pin=h.pinchR<.5;d2.style.left=(h.px/h.ew*100)+'%';d2.style.top=(h.py/h.eh*100)+'%';d2.style.borderColor=pin?'#ffe27a':'#8ce7ff';d2.style.background=pin?'#ffe27acc':'#8ce7ff33'}})}
+ function handStatus(){
+  var er={net:'a ./mp/ mappa (kézmodell) nem tölthető be – a GitHubra az mp mappát is fel kell tölteni az index.html mellé',init:'a böngésző nem tudta elindítani a modellt (a WebAssembly SIMD hiányzik vagy kevés a memória)',ctor:'a kézmodell nem indult el',timeout:'a modell betöltése túl sokáig tartott'};
+  if(!GES.on)return 'A kézvezérlés most ki van kapcsolva. Mondd: kézkövetés be.';
+  if(HD.err)return 'A pontos kézkövetés nem működik: '+(er[HD.err]||HD.err)+'. Addig csak egyszerű mozgásérzékelés megy, csipesz nincs. Mondd: kézkövetés újra, ha próbáljam újra.';
+  if(HD.loading||!HD.eng)return 'A kézmodell még töltődik (az első indításnál pár másodperc, ~12 MB). Ha sokáig tart, mondd: kézkövetés újra.';
+  var ago=HD.seenT?Math.round((Date.now()-HD.seenT)/1000):-1;
+  if(!HD.seen)return 'A kézmodell betöltött és fut ('+(HD.frames||0)+' képkockát dolgozott fel), de még egyszer sem láttam kezet. Tartsd a kezed a kép közepére, 20–40 cm-re, nyitott tenyérrel, jó fényben, és ne takarja a kamerát semmi.';
+  return 'A kézkövetés működik, utoljára '+(ago<=1?'épp most':ago+' másodperce')+' láttam kezet. A csipesz: érintsd össze a hüvelyk- és mutatóujjad a WORK-ablak fölött; ilyenkor a pont sárga lesz.'}
+ function handForce(again){
+  GES.on=true;GES.samples=[];if(!workOn&&window.DEX_VR)try{setWork(true)}catch(e){}
+  if(again||HD.err){HD.err='';HD.eng=null;HD.loading=false;HD.mode='';HD.seen=0;HD.frames=0;HD.busy=false;window.Hands=undefined}
+  try{dnLoadMP()}catch(e){}CS.on=true;csRender();
+  setTimeout(function(){try{window.DEX_UI&&window.DEX_UI.reply(handStatus())}catch(e){}},4500);
+  return (HD.eng?'A kézkövetés be van kapcsolva.':'Elindítom a kézkövetést, töltöm a kézmodellt.')+' Ha a kezed látom, egy pont jelenik meg rajta: cián, ha nyitott, sárga, ha csipeszben van. Pár másodperc múlva elmondom, hogyan megy.'}
  function trackHand(now){
-  var mgOn=!!(MG&&MG.state==='play'&&!MG.paused);if((!mgOn&&(!GES.on||!workOn))||U||G||M||RIDE||DN||now<GES.lock)return;
+  var mgOn=!!(MG&&MG.state==='play'&&!MG.paused);if((!mgOn&&(!GES.on||!workOn))||U||G||M||RIDE||DN||now<GES.lock){if(GRIP.m)gripEnd(now);if(GES.dots){GES.dots=0;handDots(null)}return}
   /* 1) pontos kézkövetés (MediaPipe, a kéz 21 pontja) – ez az elsődleges; közben a modell betöltődik */
   if(!mgOn&&(HD.mode==='mp'||typeof window.__handLm==='function'||typeof window.__handsLm==='function')){var hh=dnHand();
-   var HS=handsList(now),gr0=gripTrack(now,HS);if(gr0){GES.samples=[];return}
+   var HS=handsList(now);GES.dots=1;handDots(HS);var gr0=gripTrack(now,HS);if(gr0){GES.samples=[];return}
    if(typeof window.__handsLm==='function'&&HS.length)hh=HS[0];
    if(!hh){if(GES.samples.length&&now-GES.samples[GES.samples.length-1].t>280)GES.samples=[];return}
    GES.hand=now;GES.samples.push({x:hh.x,y:hh.y,t:now,sz:hh.size});GES.samples=GES.samples.filter(function(p){return now-p.t<900});
@@ -2797,6 +2823,11 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
    return wkBoxDone('move',{l:'Balra',r:'Jobbra',u:'Feljebb',d:'Lejjebb'}[dir]+' toltam a WORK-ablakot.')}
   return null}
  function stripCmd(f){
+  /* kézkövetés: be / ki / újra / állapot */
+  if(/\b(kezkovet\w*|kezfelismer\w*|kez ?teszt\w*|kezet figyel\w*|kezet kovess\w*|kovesd a kezem\w*)\b/.test(f)&&f.split(' ').length<=7){
+   if(/\b(ki|kikapcs\w*|leall\w*|vege|nem kell)\b/.test(f)&&!/\b(be|inditsd|ujra)\b/.test(f)){GES.on=false;GES.samples=[];handDots(null);return 'Kikapcsoltam a kézkövetést.'}
+   if(/\b(allapot\w*|miert|mi a helyzet|mukodik|hogy all|hogyan megy|mi van vele)\b/.test(f)&&!/\b(be|inditsd|ujra)\b/.test(f))return handStatus();
+   return handForce(/\b(ujra\w*|inditsd ujra|frissit\w*|ujrainditas)\b/.test(f))}
   /* gesztus / kézvezérlés */
   if(/\b(gesztus\w*|gombos|gombos mod|kezvezerl\w*|kez mod|kezmozdulat\w*|kezzel iranyit\w*|kezes mod)\b/.test(f)&&f.split(' ').length<=6){
    var off=/\b(ki|kikapcs\w*|vege|leall\w*|nem kell|megse|tiltsd)\b/.test(f);
@@ -2961,7 +2992,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function dnLoadMP(){if(window.__noMP||HD.eng||HD.loading||HD.err)return;HD.loading=true;var triedCdn=false;
   function boot(base){MPBASE=base;var s=document.createElement('script');s.src=base+'hands.js';s.crossOrigin='anonymous';
    s.onload=function(){try{var H=new window.Hands({locateFile:function(f){return MPBASE+f}});H.setOptions({maxNumHands:2,modelComplexity:0,minDetectionConfidence:.6,minTrackingConfidence:.5});HD.nh=2;
-    H.onResults(function(r){HD.res=(r&&r.multiHandLandmarks&&r.multiHandLandmarks[0])||null;HD.resAll=(r&&r.multiHandLandmarks)||[];HD.resT=Date.now();HD.busy=false});
+    H.onResults(function(r){HD.res=(r&&r.multiHandLandmarks&&r.multiHandLandmarks[0])||null;HD.resAll=(r&&r.multiHandLandmarks)||[];HD.resT=Date.now();HD.frames=(HD.frames||0)+1;if(HD.res){HD.seenT=HD.resT;HD.seen=(HD.seen||0)+1}HD.busy=false});
     Promise.resolve(H.initialize()).then(function(){HD.eng=H;HD.loading=false;HD.mode='mp'}).catch(function(e){fail('init')})}catch(e){fail('ctor')}};
    s.onerror=function(){try{s.remove()}catch(e){}fail('net')};document.head.appendChild(s)}
   function fail(why){if(!triedCdn&&MPBASE===MPLOCAL){triedCdn=true;window.Hands=undefined;boot(MPCDN);return}HD.err=why;HD.loading=false;dnSkinFallback()}
@@ -3152,9 +3183,10 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   if(vr&&/\b(dex orzoje|dex orzo\w*|lebego mag\w*|mag orzoje)\b/.test(f)&&!/\b(vege|ki|kilep\w*)\b/.test(f))return mgStart();
   if(vr&&/\b(csillagvasut|csillag vasut|hullamvasut)\b/.test(f)&&!/\b(vege|ki|kilep\w*)\b/.test(f))return rideStart();
   if(f.length<240){
-   var busyHU=!!(M||(G&&!G.done)||(U&&U.state!=='over')||(MG&&MG.state!=='over')||DN);if(vr&&!busyHU&&window.WDEA_HU_VOICE){var act=window.WDEA_HU_VOICE.resolveAction(raw);if(act&&(workOn||/\bwork\b/.test(f))){sendWorkCommand(raw);return act.action==='search'?'Megkeresem a WORK-ben: '+act.query+'.':'Görgetem a WORK felületét '+({up:'feljebb',down:'lejjebb',left:'balra',right:'jobbra'}[act.direction]||'')+'.'}var nav=window.WDEA_HU_VOICE.resolve(raw);if(nav&&!(/\b(cseveges\w*|chat\w*|beszelgetes\w*|kijelzo\w*|kepernyo\w*)\b/.test(f)&&!/\bwork\b/.test(f))&&!(nav.route==='messages'&&!workOn&&!/\bwork\b/.test(f))&&(workOn||/\b(nyis\w*|nyit\w*|mutas\w*|tedd|tegy\w*|rakd|hozd|menj\w*|lepj\w*|ugorj|vidd|valts\w*|navigalj|jelenits\w*|kinyit\w*)\b/.test(f))){if(nav.unsupported)return 'Az e-mail kampányküldés még nincs benne a WORK-ben. A jelenlegi kampányoldal hirdetési piszkozatot készít, e-mailt nem küld.';if(nav.route){setWorkRoute(nav.route);return 'Megnyitom a WORK-ben: '+nav.label+'.'}}}
+   var busyHU=!!(M||(G&&!G.done)||(U&&U.state!=='over')||(MG&&MG.state!=='over')||DN);if(vr&&!busyHU&&window.WDEA_HU_VOICE){var act=window.WDEA_HU_VOICE.resolveAction(raw);if(act&&(workOn||/\bwork\b/.test(f))){sendWorkCommand(raw);return act.action==='search'?'Megkeresem a WORK-ben: '+act.query+'.':'Görgetem a WORK felületét '+({up:'feljebb',down:'lejjebb',left:'balra',right:'jobbra'}[act.direction]||'')+'.'}var nav=window.WDEA_HU_VOICE.resolve(raw);if(nav&&!(/\b(cseveges\w*|cset\w*|csat\w*|chat\w*|beszelgetes\w*|kijelzo\w*|kepernyo\w*)\b/.test(f)&&!/\bwork\w*\b/.test(f)&&!/\buzenet\w*/.test(f))&&!(nav.route==='messages'&&!workOn&&!/\bwork\b/.test(f))&&(workOn||/\b(nyis\w*|nyit\w*|mutas\w*|tedd|tegy\w*|rakd|hozd|menj\w*|lepj\w*|ugorj|vidd|valts\w*|navigalj|jelenits\w*|kinyit\w*)\b/.test(f))){if(nav.unsupported)return 'Az e-mail kampányküldés még nincs benne a WORK-ben. A jelenlegi kampányoldal hirdetési piszkozatot készít, e-mailt nem küld.';if(nav.route){setWorkRoute(nav.route);return 'Megnyitom a WORK-ben: '+nav.label+'.'}}}
    if(vr&&!/\bwork\w*\b/.test(f)){
     var CH=/\b(cseveges\w*|cset\w*|chat\w*|uzenet\w*|uzenetablak\w*|beszelgetes\w*|kijelzo\w*|kepernyo\w*)\b/;
+    if(/\b(cseveges\w*|cset\w*|chat\w*|csat\w*|beszelgetes\w*)\b/.test(f)&&f.split(' ').length<=2&&!/\b(vissza|el|le|zar\w*|tuntesd|rejtsd|bezar\w*|ki)\b/.test(f)){chatSet(true);return 'Kitettem a kettőnk közti csevegést. Ha a WORK üzeneteit kéred, mondd: work chat. Elrejtés: csevegés vissza.'}
     if(CH.test(f)&&/\b(vissza|el|le|zar\w*|tuntesd|rejtsd|eltuntet\w*|bezar\w*|ki)\b/.test(f)&&!/\b(mutasd|tedd|rakd|hozd|jelenj\w*|elem|nyis\w*|nyit\w*|kinyit\w*)\b/.test(f)){chatSet(false);return 'Elrejtettem a csevegést.'}
     if(CH.test(f)&&/\b(mutas\w*|tedd|tegy\w*|rakd|rakj\w*|hozd|hozz\w*|jelenj\w*|lathassam|lassam|nyis\w*|nyit\w*|kinyit\w*)\b/.test(f)){chatSet(true);return chatOn&&document.querySelectorAll('#inlineMessages .msg').length?'Kitettem a csevegést. Ha beszélgetünk, itt látod. Elrejtés: csevegés vissza.':'Kitettem a csevegést. Még nincs benne üzenet, amint beszélgetünk, megjelenik. Elrejtés: csevegés vissza.'}}
    if(vr){var mc=menuCmd(f);if(mc!==null)return mc}
@@ -3186,11 +3218,12 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function wkFrames(){return [].slice.call(document.querySelectorAll('#dyVR .wk iframe')).filter(function(x){return x.contentWindow})}
  function send(text){var id='cmd-'+Date.now()+'-'+(++seq);return new Promise(function(resolve){var fr=wkFrames();if(fr.length){pending[id]={resolve:resolve,timer:setTimeout(function(){delete pending[id];resolve('A WORK nem válaszolt. Nyisd meg egyszer külön fülön is, hogy betöltődjön.')},5000)};fr.forEach(function(iframe){try{iframe.contentWindow.postMessage({channel:NAME,type:'command',requestId:id,text:text},location.origin)}catch(e){}});return}
   if(bc){pending[id]={resolve:resolve,timer:setTimeout(function(){delete pending[id];resolve('Nem találok megnyitott WORK-fület. Nyisd meg Chrome-ban a WORK oldalt, majd próbáld újra.')},5000)};bc.postMessage({type:'command',requestId:id,text:text});return}resolve('Ezen a böngészőn a helyi WORK-kapcsolat nem érhető el.')})}
+ window.DEX_ADMIN_SEND=send;
  /* Megvárja, míg a VR-ablak WORK-ja (mindkét szem) betöltött és a híd él. */
  function whenReady(cb,tries){tries=tries||0;var fr=wkFrames();var ok=fr.length&&fr.every(function(x){try{return !!(x.contentWindow.DEX_WORK_BRIDGE)}catch(e){return false}});if(ok||tries>40){cb(!!ok);return}setTimeout(function(){whenReady(cb,tries+1)},250)}
  var ROUTES=[ /* [útvonal, regex, egyértelmű?] – egyértelmű: VR-ben a WORK elrejtve is megnyitja */
   ['cart',/\bkosar\w*/,1],['orders',/\brendeles\w*/,1],['shopping',/\bvasarlas\w*|\buzletek\b|\buzletet\b|\bshopping\b|\bweb ?shop\w*|\bshop\w*|\bwebaruhaz\w*|\bvasarolni\b|\bvasaroljunk\b/,1],['store',/\btermek\w*|\bbemutato ?bolt\w*|\bbolt(?:ot|ba|ban|ok)?\b|\baruhaz\w*/,1],
-  ['messages',/\buzenet\w*|\bcset\w*|\bchat\w*|\bcsat\w*|\buzenetablak\w*/,1],['messages',/\bcseveges\w*|\bbeszelgetes\w*/,0],['notifications',/\bertesites\w*/,1],['home',/\bfo ?oldal\w*|\bkezdolap\w*|\bhome\b|\bfolap\w*/,1],['explore',/\bfelfedezes\w*|\bfelfedez\w*/,1],
+  ['messages',/\buzenet\w*|\bcset\w*|\bchat\w*|\bcsat\w*/,1],['messages',/\bcseveges\w*|\bbeszelgetes\w*/,0],['notifications',/\bertesites\w*/,1],['home',/\bfo ?oldal\w*|\bkezdolap\w*|\bhome\b|\bfolap\w*/,1],['explore',/\bfelfedezes\w*|\bfelfedez\w*/,1],
   ['profile',/\bprofil\w*/,1],['settings',/\bbeallitas\w*/,0],['help',/\bsegitseg\w*|\badomany\w*|\bsegely\w*/,0],['points',/\bpont(?:ok|jaim|jaimat)?\b|\begyenleg\w*/,0],['groups',/\bkozosseg\w*/,1],['saved',/\bmentett\w*|\bkedvenc\w*/,1],['support',/\bugyfelszolgalat\w*/,1],['business',/\buzleti kozpont\w*/,1],['studio',/\bsablon\w*|\bstudio\b/,1],['video',/\bvideo\w*/,1]];
  var RL={home:'Főoldal',explore:'Felfedezés',shopping:'Vásárlás',store:'Bemutatóbolt',cart:'Kosár',orders:'Rendelések',messages:'Üzenetek',notifications:'Értesítések',saved:'Mentettek',groups:'Közösségek',points:'Pontok',profile:'Profil',settings:'Beállítások',help:'Segítség',support:'Ügyfélszolgálat',business:'Üzleti központ',studio:'Boltsablon-szerkesztő',video:'WDEA VIDEO'};
  var OPENV=/(nyis|nyit|kinyit|mutas|mutat|tedd|tegy|rakd|rakj|rakja|hozd|hozz|hozza|jelenit|jelenj|menj|menjunk|lepj|lepjunk|ugorj|ugorjunk|vigy|nezz|nezd|nezzuk|megnez|keru?em|kerek|mehet|valts|kapcsold|indits|lassam|latni|szeretn|akarom|akarok|dobd|elem\b|ele\b|elo\b|kell|kene|keresem)/;
@@ -3235,7 +3268,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   var nW=f.split(' ').length,shortDest=vr&&nW<=3;
   if(!OPENV.test(f)&&!shortDest)return null;
   for(var i=0;i<ROUTES.length;i++){var R=ROUTES[i];if(!R[1].test(f))continue;
-   if(R[0]==='messages'&&!hasWork&&/\bcseveges\w*|\bbeszelgetes\w*/.test(f))return null; /* „csevegés” = a DEX saját csevegése, ha nem mondja: WORK */
+   if(R[0]==='messages'&&!hasWork&&/\bcseveges\w*|\bbeszelgetes\w*|\bcset\w*|\bchat\w*|\bcsat\w*/.test(f)&&!/\buzenet\w*/.test(f))return null; /* „chat” = a kettőnk közti DEX-csevegés; a WORK üzenetei: „work chat” / „üzenetek” */ /* „csevegés” = a DEX saját csevegése, ha nem mondja: WORK */
    if(hasWork||vis||(vr&&R[2]))return {nav:R[0]};
    return null}
   return null}
@@ -3273,6 +3306,33 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   if(isHide&&window.DEX_VR){window.DEX_VR.work(false);return 'Elrejtettem a WORK-öt.'}
   if(isWorkCmd){if(vr){var w=document.querySelector('#dyVR .wk');if(w&&w.hidden)window.DEX_VR.work(true)}send(s).then(function(t){if(window.DEX_UI)window.DEX_UI.reply(t)});return 'Megpróbálom végrehajtani a WORK-ben.'}
   return old.apply(this,arguments)};Dx.__workbridge=1;
+})();
+
+</script>
+<script>
+/* DEX → admin közvetlenül (szerver nélküli, GitHub Pages-es változatban): 8 koppintás a DEX feliraton, vagy hangra „Zsolt nyolcvannyolc admin”.
+   Szerveres változatban (/dex/) a meglévő szerveres admin-belépés marad; azt itt nem kerüljük meg. */
+(function(){'use strict';
+ function folded(s){return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim()}
+ function isServer(){return /^\/dex(\/|$)/.test(location.pathname)&&/^https?:$/.test(location.protocol)}
+ function workUrl(){var u=location.pathname.replace(/[^\/]*$/,'')+'work.html';return u}
+ function openAdmin(viaTap){
+  if(isServer())return 'Itt a szerveres változat fut, ott az admin belépést a szerver védi. Nyolcszor koppints a DEX feliratra, és add meg az admin jelszót.';
+  var vrAct=!!(window.DEX_VR&&window.DEX_VR.active&&window.DEX_VR.active());
+  if(vrAct&&window.DEX_ADMIN_SEND){var w0=document.querySelector('#dyVR .wk'),delay=0;if(!w0||w0.hidden){window.DEX_VR.work(true);delay=3500}
+   setTimeout(function(){window.DEX_ADMIN_SEND('@admin')},delay);return 'Megnyitom az admint a VR-ben lévő WORK-ben.'}
+  try{localStorage.setItem('wdea_admin_open',String(Date.now()))}catch(e){}
+  var w=null;try{w=window.open(workUrl()+'#admin','_blank')}catch(e){}
+  if(!w){setTimeout(function(){location.href=workUrl()+'#admin'},400);return 'Megnyitom az admint a WORK-ben (átlépek a WORK oldalra).'}
+  return 'Megnyitottam az admint a WORK-ben, egy új lapon.'}
+ var taps=[];
+ window.addEventListener('click',function(e){var t=e.target&&e.target.closest&&e.target.closest('.head .title');if(!t)return;if(isServer())return;
+  var n=Date.now();taps=taps.filter(function(x){return n-x<5000});taps.push(n);
+  if(taps.length>=8){taps=[];e.stopImmediatePropagation();e.preventDefault();var m=openAdmin(true);try{window.DEX_UI&&window.DEX_UI.reply(m)}catch(x){}}},true);
+ var Dx=window.DEX40;if(!Dx||typeof Dx.handle!=='function'||Dx.__admin39)return;var old=Dx.handle;
+ Dx.handle=function(raw){var f=folded(raw);
+  if(f.length<60&&/\bzsolt\b/.test(f)&&/\b(nyolcvan ?nyolc|nyolc ?nyolc|88)\b/.test(f)&&/\badmin\w*\b/.test(f))return openAdmin(false);
+  return old.apply(this,arguments)};Dx.__admin39=1;
 })();
 
 </script>

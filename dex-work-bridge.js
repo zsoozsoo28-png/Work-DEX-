@@ -36,6 +36,10 @@
   return bs>=(strict?100:76)?best:null}
  function pickLabel(q,strict){var e=pickEl(q,strict);return e?(String(e.getAttribute('aria-label')||e.textContent||'').replace(/\s+/g,' ').trim().slice(0,40)):''}
  function pickClick(q){var e=pickEl(q,true)||pickEl(q);if(!e)return 'Nem találtam ilyen nevű fület, gombot vagy menüpontot ezen az oldalon.';try{e.scrollIntoView({block:'nearest'})}catch(x){}e.click();return 'Rákattintottam: '+String(e.getAttribute('aria-label')||e.textContent||'').replace(/\s+/g,' ').trim().slice(0,40)+'.'}
+ /* Admin megnyitása a DEX-ből (GitHub Pages / szerver nélkül): a WORK saját Pontok-oldali admin-mezőjét tölti ki, tehát semmit nem kerül meg, ami a WORK-ben nincs már meg. */
+ function adminOpen(){var tries=0;function step(){var f=document.getElementById('points-admin-login');if(!f&&location.hash!=='#admin'){location.hash='#admin'}
+   setTimeout(function(){f=document.getElementById('points-admin-login');if(f){var i=f.querySelector('[name=code]');if(i){i.value='#x7k2';if(f.requestSubmit)f.requestSubmit();else f.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}))}}else if(tries++<8){step()}else{location.hash='#admin'}},550)}
+  step();return 'Megnyitom az admint a WORK-ben.'}
  function menuBtn(){return document.querySelector('[data-mobile-menu-toggle]')}
  function menuOpen(){var b=menuBtn();return !!(b&&b.getAttribute('aria-expanded')==='true')}
  function menu(act){var b=menuBtn();if(!b||!vis(b))return 'A menü ezen a kijelzőméreten mindig látszik.';var o=menuOpen();if(act==='open'&&o)return 'A menü már nyitva van.';if(act==='close'&&!o)return 'A menü már be van zárva.';b.click();return o?'Becsuktam a menüt.':'Kihoztam a menüt.'}
@@ -47,6 +51,7 @@
   if((m=/^@scroll (up|down|top|bottom|left|right) ([0-9.]+)$/.exec(t)))return scrl(m[1],+m[2]||.6);
   if(t==='@back'){history.back();return 'Visszaléptem.'}
   if((m=/^@menu (open|close|toggle)$/.exec(t)))return menu(m[1]);
+  if(t==='@admin')return adminOpen();
   if((m=/^@pick (.+)$/.exec(t)))return pickClick(m[1]);
   if(t==='@dex')return openDex();
   if(t==='@voice')return voiceBtn();
@@ -60,6 +65,7 @@
  function onMessage(e){var d=e.data||{};if(d.type==='command'&&typeof d.text==='string'){var answer;try{answer=run(d.text,d.requestId)}catch(err){answer='Nem sikerült végrehajtani a WORK-parancsot.'}say(answer,d.requestId)}else if(d.type==='reset'){try{localStorage.removeItem(STORE)}catch(e){}if(watcher){watcher.stop();watcher=null}}}
  try{channel=new BroadcastChannel(CHANNEL);channel.addEventListener('message',onMessage)}catch(e){}
  if(window.parent!==window){window.addEventListener('message',function(e){if(e.source!==window.parent||!e.data||e.data.channel!==CHANNEL)return;onMessage({data:e.data})});try{window.parent.postMessage({channel:CHANNEL,type:'ready'},location.origin)}catch(e){}}
+ try{var ao=+localStorage.getItem('wdea_admin_open')||0;if(ao&&Date.now()-ao<120000){localStorage.removeItem('wdea_admin_open');setTimeout(adminOpen,1500)}}catch(e){}
  window.DEX_WORK_BRIDGE={has:pickLabel,run:run,nav:nav,scroll:scrl,edits:edits,reset:function(){save([]);if(watcher){watcher.stop();watcher=null}},apply:persistApply};
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',persistApply,{once:true});else setTimeout(persistApply,0);
 })();
