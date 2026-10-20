@@ -828,6 +828,109 @@ body:has(.wdea-control-embedded) #wdea-companion{z-index:2147482500!important}
 body:has(.wdea-control-embedded) #wdea-dex-edge-tab{z-index:2147482600!important}
 @media(max-width:700px){body:has(.wdea-control-embedded) .wdea-control-embedded iframe{height:100dvh!important}}
 </style>
+<style id="wdea-unify-v1">
+/* ===== WDEA WORK · egységes felület v1 (csak kinézet és elrendezés; működés, azonosítók, útvonalak érintetlenek) ===== */
+@font-face{font-family:"Manrope";font-weight:100 900;src:local("Manrope"),local("Inter"),local("Roboto"),local("Segoe UI"),local("SF Pro Text"),local("Helvetica Neue"),local("Arial"),local("Liberation Sans"),local("DejaVu Sans")}
+@font-face{font-family:"Space Grotesk";font-weight:100 900;src:local("Space Grotesk"),local("Inter"),local("Roboto"),local("Segoe UI"),local("SF Pro Display"),local("Helvetica Neue"),local("Arial"),local("Liberation Sans"),local("DejaVu Sans")}
+:root{--u-g:14px;--u-r:18px;--u-r-sm:12px;--u-ink:#f6f7fb;--u-muted:#a9afc0;--u-line:#2b2d3c;--u-ice:#a9bde0;--u-surface:linear-gradient(160deg,#151927,#0f1220)}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:Manrope,Inter,"Segoe UI",Roboto,"Helvetica Neue",Arial,system-ui,sans-serif;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+.u-min{font-size:11px!important}
+
+/* --- 1. Semmi nem lóghat ki: a szülő soha nem szélesebb a képernyőnél, a szöveg tördelődik --- */
+.app-shell,.main-shell,.page-content{max-width:100%;min-width:0}
+.page-content{overflow-x:clip}
+.app-shell :where(div,section,article,aside,main,form,nav,header,footer,ul,ol,li,p,h1,h2,h3,h4,label,fieldset){min-width:0}
+.app-shell :where(h1,h2,h3,h4,p,li,label,span,small,b,strong,em,a,button,legend,td,th,dt,dd){overflow-wrap:anywhere}
+.app-shell :where(input,select,textarea){max-width:100%;min-width:0}
+.app-shell :where(img,video,canvas,iframe){max-width:100%}
+.app-shell :where(img,video){object-fit:cover}
+.app-shell :where(table){max-width:100%}
+.app-shell :where(pre,code){white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* --- 2. Kártyás rácsok: ha nem férnek el egymás mellett, átrendeződnek (nem nyomódnak össze) --- */
+.grid.two,.form-grid,.template-choice-grid,.help-cta-grid,.help-form-grid,.pocket-wallet-grid,.admin-vault-form,.admin-vault-list,.admin-connections-grid,.partner-program-grid,.admin-payment-setup .form-grid,.provider-definition-list,.shopify-advanced-fields,.wallet-action-row,.pocket-program-links,.license-summary{--u-n:2;--u-min:14em}
+.grid.three,.wallet-donation-grid,.admin-store-facts,.admin-system-grid,.admin-partner-balances,.license-module-options{--u-n:3;--u-min:12em}
+.help-kpi-band,.help-point-metrics,.wallet-stat-grid{--u-n:3;--u-min:7em}
+.shopify-import-steps{--u-n:3;--u-min:16em}
+.grid.four,.admin-partner-metrics,.admin-partner-packages,.provider-summary-grid,.provider-category-grid,.provider-detail-grid,.provider-link-grid,.license-flow-grid,.wallet-topup-options,.checkout-steps{--u-n:4;--u-min:10em}
+.quick-grid,.profile-shortcuts{--u-n:4;--u-min:8em}
+.shop-product-grid{--u-n:4;--u-min:10em}
+.feed-aside{--u-n:2;--u-min:12em}
+:is(.grid.two,.form-grid,.template-choice-grid,.help-cta-grid,.help-form-grid,.pocket-wallet-grid,.admin-vault-form,.admin-vault-list,.admin-connections-grid,.partner-program-grid,.provider-definition-list,.shopify-advanced-fields,.wallet-action-row,.pocket-program-links,.license-summary,.grid.three,.help-kpi-band,.help-point-metrics,.wallet-stat-grid,.wallet-donation-grid,.admin-store-facts,.admin-system-grid,.admin-partner-balances,.license-module-options,.shopify-import-steps,.grid.four,.admin-partner-metrics,.admin-partner-packages,.provider-summary-grid,.provider-category-grid,.provider-detail-grid,.provider-link-grid,.license-flow-grid,.wallet-topup-options,.checkout-steps,.quick-grid,.profile-shortcuts,.shop-product-grid,.feed-aside){
+ grid-template-columns:repeat(auto-fit,minmax(max(var(--u-min),calc((100% - (var(--u-n) - 1) * var(--u-g)) / var(--u-n))),1fr))}
+.grid.two.mobile-one{grid-template-columns:minmax(0,1fr)}
+@media(max-width:760px){.grid.two.mobile-one{grid-template-columns:minmax(0,1fr)}}
+
+/* --- 3. Egységes kártya, sarok, tipográfia --- */
+.card,section.card,article.card,button.card,.shop-product,.home-module-card{border-radius:var(--u-r);border-color:var(--u-line)}
+.card,section.card,article.card{background:var(--u-surface)}
+.card-title{font-size:16px;line-height:1.3;letter-spacing:-.01em}
+.card-sub,.page-heading p{font-size:12.5px;line-height:1.55;color:var(--u-muted)}
+.page-heading h1{font-size:clamp(24px,6.4vw,34px);line-height:1.15}
+.eyebrow{color:var(--u-ice);letter-spacing:.14em}
+.tag{background:#171b27;border-color:#33384a;color:#c5cbd9;line-height:1.3}
+.tag.blue{background:#1d1824;border-color:#5a2a3c;color:#f0b6c3}
+.button{line-height:1.25;text-align:center;flex-wrap:wrap}
+.button.small{min-height:36px}
+.filter-chip,.post-action,.nav-item{line-height:1.25}
+
+/* --- 4. Sorok, fejlécek, műveletek: ha szűk a hely, törnek új sorba (nem csúsznak egymásra, nem lógnak ki) --- */
+.app-shell :where([class*="-row"]:not(.filter-row),[class*="actions"],[class*="toolbar"],[class$="-head"],[class*="heading"],[class*="header"],.post-head,.section-head){flex-wrap:wrap;row-gap:8px}
+.page-heading>div:first-child,.section-head>div:first-child{flex-grow:1;min-width:min(100%,14em)}
+.post-head .post-author{flex-grow:1;min-width:min(100%,9em)}
+.post-head .demo-delete{white-space:normal;max-width:100%;text-align:left;line-height:1.3}
+.settings-row{column-gap:12px}
+.settings-row>*:last-child{max-width:100%}
+.settings-row>div:nth-child(2){flex-grow:1;min-width:min(100%,10em)}
+.callout{overflow-wrap:anywhere}
+
+/* --- 5. Sztori-sor: a gyűrű a kártya része (nem lebeg a felirat fölött) --- */
+.home-story-card{justify-content:flex-start;min-height:0;padding-top:10px}
+.home-story-ring{position:static;flex:0 0 auto}
+.home-story-card b,.home-story-card small{font-size:13px;line-height:1.3;text-align:center;max-width:100%}
+.home-story-card small{white-space:normal}
+.u-min12{font-size:12px!important}
+
+/* --- 6. Felső sáv (telefon): a logó, az Adomány és a pontjelző nem csúszik egymásra --- */
+.mobile-brand{align-items:center;gap:6px;min-width:0;flex-wrap:nowrap}
+.mobile-home-link{flex:0 0 auto;align-items:center;gap:5px}
+.mobile-home-link>span{letter-spacing:.14em;font-size:11px;white-space:nowrap}
+.mobile-help-row{flex:0 1 auto;flex-wrap:nowrap;gap:5px;min-width:0}
+.mobile-help-shortcut,.mobile-help-row>.mobile-help-shortcut{flex:0 0 auto;min-width:0;padding:0 7px;gap:2px;white-space:nowrap}
+.mobile-help-shortcut small{font-size:11px;line-height:1.1}
+.donation-counter,.mobile-help-row>.donation-counter{flex:0 0 auto;min-width:0;padding:0 8px;letter-spacing:0;font-size:11px;line-height:1.1;white-space:nowrap;text-align:center;height:42px;min-height:0;font-weight:800}
+.top-points,.top-points *{white-space:nowrap}
+.app-shell .eyebrow,.eyebrow{color:var(--u-ice)}
+
+/* --- 7. Bolt-kártya: a banner- és a kártyaszabály egymásra csúszott; kártyaként viselkedik --- */
+.merchant-feature.store-directory-card{position:static;display:grid;height:auto;overflow:visible;margin:0;padding:12px;gap:10px;background:var(--u-surface);border-color:var(--u-line)}
+.merchant-feature.store-directory-card:after{display:none}
+.merchant-feature.store-directory-card .store-directory-open{grid-template-columns:minmax(72px,96px) minmax(0,1fr);gap:12px;align-items:center}
+.merchant-feature.store-directory-card .store-directory-open img{position:static;inset:auto;width:100%;height:auto;aspect-ratio:1/1;max-height:96px;border-radius:12px}
+.merchant-feature.store-directory-card .store-directory-open span{position:static;transform:none;display:block}
+.merchant-feature.store-directory-card .store-directory-open b{font:700 16px/1.3 "Space Grotesk",Manrope,sans-serif;margin:4px 0}
+.merchant-feature.store-directory-card .store-directory-open small{font-size:11px;color:#b5c3d8;letter-spacing:.07em}
+.merchant-feature.store-directory-card .store-directory-open em{font-size:12px;color:#b9c7db}
+.merchant-feature.store-directory-card>.button{width:100%;min-height:42px}
+
+/* --- 8. Oldalsáv: nagyobb betűnél is olvasható, szükség esetén görgethető --- */
+.sidebar{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.nav-item{height:auto;min-height:46px;padding-top:8px;padding-bottom:8px}
+.side-nav{min-width:0}
+
+/* --- 9. Hírfolyam-író: a telefonos kinézet nagy kijelzőn is ugyanaz (eddig csak telefonon volt formázva) --- */
+.feed-composer{display:grid;gap:10px;padding:13px;border-radius:20px;background:radial-gradient(ellipse at 92% 0%,#6f3cc42b,transparent 44%),linear-gradient(145deg,#111a2c,#0b101c);border-color:#35476a;box-shadow:0 10px 28px #0004,inset 0 0 20px #46389a1c}
+.composer-main{display:flex;align-items:center;gap:9px;min-width:0}
+.feed-composer .avatar{width:42px;height:42px;flex:0 0 auto}
+.feed-composer .composer-input{flex:1 1 auto;height:48px;min-width:0;padding:0 12px;border-radius:14px;font-size:14px;background:#0a101b;border:1px solid #35425c;text-align:left;color:#9aa3b7}
+.feed-composer .composer-add{flex:0 0 auto;width:44px;height:44px;border-radius:14px;border:1px solid #5a3a7a;background:linear-gradient(135deg,#3a1a40,#2b2150);color:#fff;font-size:20px}
+.composer-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding-top:9px;border-top:1px solid #34415b}
+.composer-shortcuts button{min-width:0;min-height:40px;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 8px;border:1px solid #334465;border-radius:12px;background:#10192a;color:#d5e0f2;font-size:12px;font-weight:700}
+.composer-shortcuts button span{font-size:15px;color:#a9bde0}
+.composer-shortcuts button:active{border-color:#a17af6;background:#1a2140}
+
+</style>
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -1800,5 +1903,38 @@ tab.addEventListener('click',()=>set(false));let start=null;tab.addEventListener
 </script>
 <script src="wdea-dex-link.js"></script>
 <script>window.DEX_LAYER_AUTO=false;</script><script src="layer.js"></script><script src="dex-work-bridge.js"></script>
+<script id="wdea-unify-v1-js">
+/* WDEA WORK · egységes felület v1: olvashatósági alsó határ (csak betűméret-osztály, semmi más) */
+(function(){'use strict';
+ var SKIP='#wdea-theme-editor,#wdea-companion,#wdea-ai-panel,#wdea-quick-voice,#wdea-dex-edge-tab,.wdea-control-embedded,#wdea-voice-feedback';
+ var queue=[],sched=false;
+ function skip(n){return n.closest&&n.closest(SKIP)}
+ function fix(root){
+  if(!root||root.nodeType!==1||skip(root))return;
+  var tn=root.tagName;if(tn==='SCRIPT'||tn==='STYLE'||tn==='SVG'||tn==='svg')return;
+  var list=[root],all=root.getElementsByTagName('*'),i,out=[];
+  for(i=0;i<all.length;i++)list.push(all[i]);
+  for(i=0;i<list.length;i++){
+   var e=list[i],t=e.tagName;if(t==='SCRIPT'||t==='STYLE'||t==='svg'||t==='SVG'||t==='path'||t==='VIDEO'||t==='IMG')continue;
+   var has=false,c;for(c=e.firstChild;c;c=c.nextSibling){if(c.nodeType===3&&c.nodeValue.trim().length>1){has=true;break}}
+   if(!has)continue;
+   if(e.classList.contains('u-min')||e.classList.contains('u-min12'))continue;
+   if(e.closest&&e.closest('#wdea-theme-editor,#wdea-companion,#wdea-ai-panel,#wdea-quick-voice,#wdea-dex-edge-tab,.wdea-control-embedded'))continue;
+   var fs=parseFloat(getComputedStyle(e).fontSize);if(!(fs>1))continue;
+   var min=(e.textContent||'').trim().length>40?12:11;
+   if(fs<min-.01)out.push([e,min]);
+  }
+  for(i=0;i<out.length;i++)out[i][0].classList.add(out[i][1]===12?'u-min12':'u-min');
+ }
+ function flush(){sched=false;var q=queue;queue=[];for(var i=0;i<q.length;i++){try{fix(q[i])}catch(e){}}}
+ function later(n){queue.push(n);if(!sched){sched=true;(window.requestAnimationFrame||setTimeout)(flush)}}
+ function start(){
+  later(document.body);
+  try{new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var a=ms[i].addedNodes;for(var j=0;j<a.length;j++)if(a[j].nodeType===1)later(a[j])}}).observe(document.body,{childList:true,subtree:true})}catch(e){}
+ }
+ if(document.body)start();else document.addEventListener('DOMContentLoaded',start);
+})();
+
+</script>
 </body>
 </html>

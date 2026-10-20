@@ -82,3 +82,11 @@ WORK HANGPARANCSOK (VR-ben)
  • KÉZFELISMERÉS: az első indításnál internet kell (a MediaPipe kézmodellt a telefon letölti és elmenti, utána hálózat nélkül is megy). Ha a modell nem tölt be, egyszerűbb színalapú kézfelismerés lép be (jó fény kell, lőni ilyenkor hanggal érdemes).
  • KORLÁT: a dínó a kamerakép elé kerül; valódi bútor mögé NEM tud bújni (ehhez a telefonnak mélységfelismerés kellene). A VR-tartó nem takarhatja a kamerát, a kéznek bele kell férnie a kép látóterébe.
  • A magyar hangfelismerés offline működését a saját telefonodon kell kipróbálni.
+
+ÚJ (v39): WORK EGYSÉGES FELÜLET + VR-PARANCSOK
+ • WORK: egységes betűskála, csak a szöveg nő nagyobb betűnél (kártya/kép nem torzul), szűk helyen a kép a felirat fölé kerül, közös visszafogott színalap. Funkciók változatlanok.
+ • VR-ben: „work”, „webshop”, „shop”, „főoldalt tegyél elém”, „csetet tegyél elém”, „üzeneteket/kosarat/profilt/rendeléseket mutasd” – a WORK akkor is előjön, ha nem volt kint. Félrehallásra is (pl. „vörköt tedd elém”).
+ • „kattints a DEX-re” – a WORK-ön belüli DEX-csevegő kinyílik. „menüt hozd ki/csukd be a workben”.
+ • Kézmozdulat (gesztusmód alapból BE): fel/le = görgetés, balra/jobbra = lapozás, ha nincs mit lapozni, kijön a WORK menüje. Érintés a VR-ablakon átmegy a WORK-be. Ha zavar a véletlen görgetés: „gesztus ki”.
+ • „kapcsold be a gombot” = hang gomb. „kapcsold ki a hangszórót” = felolvasás ki. „tedd át a hangszórót”: a böngésző nem tudja átváltani a hangkimenetet, a telefon értesítési sávjában kell választani.
+ • Valódi telefonon kell kipróbálni: kézgesztusok, érintés a VR-ablakon, a WORK VR-ablak megjelenése (a képek külső forrásból jönnek, offline csak a képfelirat látszik).
