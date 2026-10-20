@@ -2892,7 +2892,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  /* ---- DEX DÍNÓÜLDÖZÉS: kézkövetés + kézhez kötött játékpisztoly + dínók a kamerakép előtt ---- */
  var DN=null,DNF=0,DNBEST=+(localStorage.getItem('dex51_dino_best')||0)||0,dnSaid=false;
  var HD={eng:null,loading:false,err:'',busy:false,lastSend:0,res:null,resT:0,mode:'',skin:null,hist:[],pinchOn:false,lastArea:0,lastAreaT:0};
- var MPBASE='https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/';
+ var MPBASE='./mp/'; /* a kézkövető a csomagban van: CDN nélkül, offline is betöltődik */
  function v2e(vx,vy){var v=eyes[0]&&eyes[0].querySelector('video');if(!v||!v.videoWidth)return null;var ew=eyes[0].clientWidth||1,eh=eyes[0].clientHeight||1,va=v.videoWidth/v.videoHeight,ea=ew/eh;
   if(va>ea){var dw=eh*va;return [(vx*dw-(dw-ew)/2)/ew,vy]}var dh=ew/va;return [vx,(vy*dh-(dh-eh)/2)/eh]}
  function dnHandFromLm(lm){ /* 21 MediaPipe-pont (videó-normalizált) → kéz a szem pixelkoordinátáiban */

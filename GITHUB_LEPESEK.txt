@@ -20,6 +20,10 @@ TELEFONON
 
 HA A VR-BEN 404 JELENIK MEG A WORK HELYETT: a work.html nincs feltöltve. Töltsd fel.
 
+KÉZKÖVETÉS OFFLINE (mp mappa v44-tól)
+ • A csomag tartalmazza az mp mappát (hands.js, wasm, kézmodell). Frissítéskor töltsd fel egészben, együtt a többi fájllal — így a VR-játékok kézkövetése internet nélkül is megy (első megnyitás után a telefon eltárolja).
+ • Ha az mp mappa hiányzik, a kézkövetés nem fog elindulni hálózat nélkül (a régi CDN-ről töltött változat csak internettel ment).
+
 KORLÁTOK: nincs szerver; a WORK itt demó, az adat csak a telefonon van. A tárhely nyilvános, jelszót ne tegyél bele.
 
 ÚJ: az admin (CONTROL / ADMIN) két új gombbal bővült: „WORK megjelenítése” (előnézet a DEX-en belül) és „Átlépés a WORK-be”.
