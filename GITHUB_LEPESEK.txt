@@ -70,3 +70,15 @@ WORK HANGPARANCSOK (VR-ben)
  • Irányítás hanggal: „balra”, „jobbra”, „középre”, „pajzs”, „gyorsabban”, „lassabban”, „állj” (szünet), „folytasd”, „még egyszer”, „játék vége”.
  • Irányítás kézzel (gesztus mód nélkül is, amíg a játék megy): legyintés balra/jobbra = DEX kitér, felfelé = pajzs. A pajzs ~1,6 mp-ig véd, utána kb. 3 mp-ig töltődik.
  • Menü megnyitásakor a játék szünetel, a „vissza” folytatja. Legjobb pont a telefonon marad.
+
+ÚJ JÁTÉK (v38): DEX DÍNÓÜLDÖZÉS
+ • VR-ben: „játékok”, majd „DEX Dínóüldözés” (vagy közvetlenül: „dínóüldözés”).
+ • Teljes képernyő, a szoba kamerája végig látszik; halvány dzsungel-levelek, Dex a bal szélen, nincs menü és nincs fekete panel.
+ • INDULÁS: először kézfelismerés. Emeld fel a kezed a kamera elé. Csak ha felismerte, jelenik meg a kék-sárga játékpisztoly a kezedben, és kapsz egy gyakorló célkört.
+ • CÉLZÁS: a mutatóujjad iránya vezeti a célkeresztet. LÖVÉS: érintsd össze a hüvelyk- és mutatóujjad, vagy mondd: „lőj”.
+ • Ha a kamera elveszíti a kezed: a pisztoly és a célkereszt azonnal eltűnik, lőni NEM lehet (se csippentéssel, se hanggal).
+ • A dínók a kép két oldalán bújnak elő, majd elbújnak. Dex hangosan segít („Nézz jobbra, ott látom a dínót!”). Találatkor fényeffekt, a dínó elszalad, jön a következő. Vér nincs.
+ • Hangparancsok: „indítsuk el”, „segíts”, „mutasd, merre van”, „következő dínó”, „állj”, „folytasd”, „lépj ki”, „lőj”.
+ • KÉZFELISMERÉS: az első indításnál internet kell (a MediaPipe kézmodellt a telefon letölti és elmenti, utána hálózat nélkül is megy). Ha a modell nem tölt be, egyszerűbb színalapú kézfelismerés lép be (jó fény kell, lőni ilyenkor hanggal érdemes).
+ • KORLÁT: a dínó a kamerakép elé kerül; valódi bútor mögé NEM tud bújni (ehhez a telefonnak mélységfelismerés kellene). A VR-tartó nem takarhatja a kamerát, a kéznek bele kell férnie a kép látóterébe.
+ • A magyar hangfelismerés offline működését a saját telefonodon kell kipróbálni.
