@@ -2504,7 +2504,7 @@ document.body.appendChild(prof);document.body.appendChild(menu);
   '#dyVR .vm .me{color:#9fe1ff;font-size:3.4vh}'+
   '#dyVR .warn{position:absolute;left:6%;right:6%;top:42%;transform:translateY(-50%);padding:1.6vh 2vh;border-radius:2vh;background:#000000b0;border:1px solid #ffd27a88;color:#ffe7b3;font:600 3.6vh/1.3 system-ui,sans-serif;text-align:center}'+
   '#dyVR .foot{position:absolute;left:0;right:0;bottom:1.2%;text-align:center;white-space:nowrap;overflow:hidden;font:600 2vh system-ui,sans-serif;color:#ffd27acc;text-shadow:0 1px 3px #000}'+
-  '#dyVR .wk{pointer-events:auto;touch-action:none;position:absolute;right:5%;top:13%;width:42%;height:74%;border:1px solid #8ce7ff77;border-radius:2vh;overflow:hidden;background:#06142a2e;box-shadow:0 0 18px #49c8ff66,inset 0 0 14px #49c8ff22}#dyVR .wk iframe{width:300%;height:300%;border:0;transform:scale(.3334);transform-origin:0 0;pointer-events:none;background:transparent;opacity:.97}'+
+  '#dyVR .wk iframe{transition:opacity .18s}#dyVR .wk.hov iframe{opacity:.34}#dyVR .wk{pointer-events:auto;touch-action:none;position:absolute;right:5%;top:13%;width:42%;height:74%;border:1px solid #8ce7ff77;border-radius:2vh;overflow:hidden;background:#06142a2e;box-shadow:0 0 18px #49c8ff66,inset 0 0 14px #49c8ff22}#dyVR .wk iframe{width:300%;height:300%;border:0;transform:scale(.3334);transform-origin:0 0;pointer-events:none;background:transparent;opacity:.97}'+
   '#dyVR .sk{position:absolute;left:5%;top:16%;display:none;gap:2.4vh;align-items:flex-start;padding:1.2vh 1.5vh;border-radius:1.5vh;background:#04123d62;border:1px solid #5fe3ff55;box-shadow:0 0 14px #3d7bff40;backdrop-filter:blur(1.5px);transform-origin:0 0;transform:scale(var(--skz,1))}#dyVR .sk.on{display:flex}'+
   '#dyVR .sk table{border-collapse:separate;border-spacing:.5vh}#dyVR .sk td{width:4.7vh;height:4.7vh;text-align:center;font:700 3.5vh/4.7vh system-ui,sans-serif;color:#eaf6ff;text-shadow:0 1px 5px #000,0 0 8px #001;border-radius:.7vh;background:#06162b35}#dyVR .sk td.f{background:#2fd5ff66;color:#fff;box-shadow:0 0 10px #2fd5ff;text-decoration:line-through;text-decoration-thickness:.5vh}#dyVR .sk td.h{outline:.5vh solid #ffd27a;animation:skh 1s infinite}@keyframes skh{50%{outline-color:transparent}}'+
   '#dyVR .sk .wl{font:600 2.9vh/1.3 system-ui,sans-serif;color:#cfeaff;text-shadow:0 0 6px #000;min-width:14vh}#dyVR .sk .wl b{display:block;color:#ffd27a;font-size:2.6vh;letter-spacing:.08em;margin-bottom:.6vh}#dyVR .sk .wl i{display:block;font-style:normal}#dyVR .sk .wl i.d{color:#7fe8ff;text-decoration:line-through}#dyVR .sk .tm{margin-top:1vh;color:#9bb7d8;font-size:2.4vh}#dyVR .sk.p{opacity:.5}'+
@@ -2583,7 +2583,7 @@ document.body.appendChild(prof);document.body.appendChild(menu);
   if(on&&workChk!==true){
    probeWork(workCands(),0,function(sel,missing){if(missing){workChk=false;workOn=false;setWork2(false);try{if(window.DEX_UI)window.DEX_UI.reply('A WORK oldal nincs a tárhelyen: a work/index.html (vagy a work.html) hiányzik a DEX mellől. Töltsd fel ugyanoda, ahol a DEX van, vagy használd a PC-s szervert.')}catch(e){}}else{workChk=true;workSel=sel;setWork2(true)}});return}
   setWork2(on)}
- function setWork2(on){workOn=!!on;hud(function(x){var w=x.querySelector('.wk');w.hidden=!workOn;if(workOn){w.style.right=WKB.r+'%';w.style.top=WKB.t+'%';w.style.width=WKB.w+'%';w.style.height=WKB.h+'%'}if(workOn&&!w.firstChild){var f=document.createElement('iframe');f.src=workUrl();f.setAttribute('loading','eager');f.onload=function(){try{var d=f.contentDocument;if(d){var st=d.createElement('style');st.textContent='html,body{background:transparent!important}.app,.app-shell{background:transparent!important}';d.head.appendChild(st)}}catch(e){}};w.appendChild(f)}else if(!workOn){w.innerHTML=''}})}
+ function setWork2(on){workOn=!!on;hud(function(x){var w=x.querySelector('.wk');w.hidden=!workOn;if(workOn){w.style.right=er()+'%';w.style.top=et()+'%';w.style.width=WKB.w+'%';w.style.height=WKB.h+'%'}if(workOn&&!w.firstChild){var f=document.createElement('iframe');f.src=workUrl();f.setAttribute('loading','eager');f.onload=function(){try{var d=f.contentDocument;if(d){var st=d.createElement('style');st.textContent='html,body{background:transparent!important}.app,.app-shell{background:transparent!important}';d.head.appendChild(st)}}catch(e){}};w.appendChild(f)}else if(!workOn){w.innerHTML=''}})}
  function setWorkRoute(route){setWork(true);var tries=0;function apply(){var frames=root?root.querySelectorAll('.wk iframe'):[];if(frames.length){try{frames.forEach(function(f){f.contentWindow.location.hash='#'+route})}catch(e){}return}if(tries++<24)setTimeout(apply,250)}setTimeout(apply,180)}
  function sendWorkCommand(text){setWork(true);var tries=0;function send(){var frames=root?root.querySelectorAll('.wk iframe'):[];if(frames.length){frames.forEach(function(f){try{f.contentWindow.postMessage({channel:'wdea-dex-command-v1',text:String(text||'')},location.origin)}catch(e){}});return}if(tries++<24)setTimeout(send,250)}setTimeout(send,220)}
  function warn(t,ms){hud(function(x){var w=x.querySelector('.warn');w.textContent=t;w.hidden=false});timers.push(setTimeout(function(){hud(function(x){x.querySelector('.warn').hidden=true})},ms||6000))}
@@ -2713,7 +2713,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  var CS={on:false,page:0,fl:{}},CSP=[
   {t:'WORK oldalak',c:[['vásárlások','a WORK Vásárlás oldala','shopping'],['termékek','bemutatóbolt','store'],['kosár','kosár oldal','cart'],['rendelések','rendeléseid','orders'],['üzenetek','WORK üzenetek','messages'],['főoldal','kezdőlap','home'],['értesítések','értesítések','notifications'],['profil','profil oldal','profile'],['beállítások','beállítások','settings'],['segítség','súgó oldal','help']]},
   {t:'Görgetés és lapozás',c:[['görgess lejjebb','le','down'],['görgess feljebb','fel','up'],['kicsit lejjebb','kis lépés','down'],['sokat lejjebb','nagy lépés','down'],['lapozz jobbra','jobbra','right'],['lapozz balra','balra','left'],['az aljára','oldal vége','bottom'],['a tetejére','oldal teteje','top']]},
-  {t:'WORK-ablak',c:[['WORK nagyobb','nagyít','big'],['WORK kisebb','kisebbít','small'],['told a WORK-öt balra / jobbra / fel / le','mozgat','move'],['szélesítsd ki a WORK-öt','szélesebb','big'],['✋ csípd meg és húzd','kézzel mozgatás','move'],['✋✋ két kézzel csípj, tágítsd','kézzel nagyítás','big'],['✋ rövid csipesz = katt','kattintás az ujjad alatt','tap'],['kéz a kép előtt ki / be','kézkivágás','hf'],['WORK középre','középre','mid'],['WORK alaphelyzet','visszaállít','reset'],['WORK el','elrejt','hide']]},
+  {t:'WORK-ablak',c:[['WORK nagyobb','nagyít','big'],['WORK kisebb','kisebbít','small'],['told a WORK-öt balra / jobbra / fel / le','mozgat','move'],['szélesítsd ki a WORK-öt','szélesebb','big'],['✋ csípd meg és húzd','kézzel mozgatás','move'],['✋✋ két kézzel csípj, tágítsd','kézzel nagyítás','big'],['✋ rövid csipesz = katt','kattintás az ujjad alatt','tap'],['✋ csipesz + kéz közelebb/távolabb','kitolás, behúzás','big'],['tedd le a térbe','ablak a térben marad','move'],['elem mozgatás be / ki','kártyák külön','move'],['kéz a kép előtt ki / be','kézkivágás','hf'],['WORK középre','középre','mid'],['WORK alaphelyzet','visszaállít','reset'],['WORK el','elrejt','hide']]},
   {t:'DEX és játékok',c:[['játékok','játékmenü','games'],['mutasd a csevegéseket','DEX-csevegés','chat'],['csevegés vissza','csevegés el','chatoff'],['gesztus mód ki / be','kézvezérlés','ges'],['szalag tovább','következő lap','next'],['szalag el','szalag rejt','hide2'],['VR vége','kilépés','exit']]}];
  function csRender(){hud(function(x){var e=x.querySelector('.cs');if(!e)return;e.classList.toggle('on',CS.on);if(!CS.on){e.innerHTML='';return}
   var P=CSP[CS.page%CSP.length],h='<h6>IRÁNYÍTÓ SZALAG · '+P.t+' · '+(CS.page%CSP.length+1)+'/'+CSP.length+' · kéz: <em>'+(GES.on?('BE'+(HD.mode==='mp'?' · pontos':(HD.loading?' · töltődik':' · mozgás'))):'KI')+'</em></h6>';
@@ -2722,7 +2722,10 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   e.innerHTML=h+'</div>'})}
  function csSet(on){CS.on=!!on;csRender();return CS.on}
  function csFlash(k){if(!k)return;CS.fl[k]=1;if(CS.on)csRender();setTimeout(function(){delete CS.fl[k];if(CS.on)csRender()},900)}
- function wkApply(){hud(function(x){var w=x.querySelector('.wk');if(!w)return;w.style.right=WKB.r+'%';w.style.top=WKB.t+'%';w.style.width=WKB.w+'%';w.style.height=WKB.h+'%'})}
+ var SP={on:0,dx:0,dy:0,yaw:0,pitch:0,sg:1,ev:0,t:0};
+ function er(){return WKB.r+SP.dx}
+ function et(){return WKB.t+SP.dy}
+ function wkApply(){hud(function(x){var w=x.querySelector('.wk');if(!w)return;w.style.right=er()+'%';w.style.top=et()+'%';w.style.width=WKB.w+'%';w.style.height=WKB.h+'%'})}
  function wkPost(text){var fr=root?[].slice.call(root.querySelectorAll('.wk iframe')):[];fr.forEach(function(f){try{f.contentWindow.postMessage({channel:'wdea-dex-work-v1',type:'command',requestId:'g-'+Date.now(),text:text},location.origin)}catch(e){}});return fr.length}
  function gesDo(dir){if(MG&&MG.state!=='over'){mgGesture(dir);return}csFlash(dir);var k={up:'@scroll up .6',down:'@scroll down .6',left:'@scroll left .7',right:'@scroll right .7'}[dir];wkPost(k)}
 
@@ -2734,12 +2737,12 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   if(HD.mode==='mp'&&HD.eng&&HD.resAll&&now-HD.resT<350)return HD.resAll.map(dnHandFromMP).filter(Boolean);return []}
  function gripGlow(on){hud(function(x){var w=x.querySelector('.wk');if(w)w.style.borderColor=on?'#ffe27a':'';if(w)w.style.boxShadow=on?'0 0 3vh #ffe27a99':''})}
  function gripTap(fx,fy){if(fx<0||fx>1||fy<0||fy>1)return false;wkPost('@tap '+fx.toFixed(4)+' '+fy.toFixed(4));csFlash('tap');
-  hud(function(x){var r=document.createElement('i');r.style.cssText='position:absolute;left:'+((100-WKB.r-WKB.w)+fx*WKB.w)+'%;top:'+(WKB.t+fy*WKB.h)+'%;width:6vh;height:6vh;margin:-3vh 0 0 -3vh;border-radius:50%;border:.5vh solid #ffe27a;box-shadow:0 0 2vh #ffe27a;pointer-events:none;z-index:7;transition:transform .45s,opacity .45s;transform:scale(.3);opacity:1';x.appendChild(r);setTimeout(function(){r.style.transform='scale(1.5)';r.style.opacity='0'},20);setTimeout(function(){try{r.remove()}catch(e){}},520)});TAPN++;return true}
+  hud(function(x){var r=document.createElement('i');r.style.cssText='position:absolute;left:'+((100-er()-WKB.w)+fx*WKB.w)+'%;top:'+(et()+fy*WKB.h)+'%;width:6vh;height:6vh;margin:-3vh 0 0 -3vh;border-radius:50%;border:.5vh solid #ffe27a;box-shadow:0 0 2vh #ffe27a;pointer-events:none;z-index:7;transition:transform .45s,opacity .45s;transform:scale(.3);opacity:1';x.appendChild(r);setTimeout(function(){r.style.transform='scale(1.5)';r.style.opacity='0'},20);setTimeout(function(){try{r.remove()}catch(e){}},520)});TAPN++;return true}
  var TAPN=0;
- function gripEnd(now){if(GRIP.m){var tap=GRIP.m===1&&!GRIP.moved&&workOn&&now-GRIP.ts<1100&&GRIP.rel;GRIP.m=0;GRIP.rel=0;wkBoxFit();wkSave();GRIP.lock=now+(tap?350:800);gripGlow(false);
-  if(tap){var fx=(GRIP.tx*100-(100-WKB.r-WKB.w))/WKB.w,fy=(GRIP.ty*100-WKB.t)/WKB.h;gripTap(fx,fy)}}}
+ function gripEnd(now){if(GRIP.m){if(GRIP.eg){wkPost('@drop');GRIP.eg=0}var tap=GRIP.m===1&&!GRIP.moved&&workOn&&now-GRIP.ts<1100&&GRIP.rel;GRIP.m=0;GRIP.rel=0;wkBoxFit();wkSave();GRIP.lock=now+(tap?350:800);gripGlow(false);
+  if(tap){var fx=(GRIP.tx*100-(100-er()-WKB.w))/WKB.w,fy=(GRIP.ty*100-et())/WKB.h;gripTap(fx,fy)}}}
  function gripTrack(now,HS){
-  var pin=HS.filter(function(h){return h.pinchR<(GRIP.m?.5:.32)}).map(function(h){return {x:h.px/h.ew,y:h.py/h.eh,ew:h.ew,eh:h.eh}});
+  var pin=HS.filter(function(h){return h.pinchR<(GRIP.m?.5:.32)}).map(function(h){return {x:h.px/h.ew,y:h.py/h.eh,ew:h.ew,eh:h.eh,sz:h.size}});
   if(!pin.length){if(GRIP.m){if(!GRIP.lost)GRIP.lost=now;if(now-GRIP.lost>(GRIP.m===1&&!GRIP.moved?150:250)){GRIP.lost=0;GRIP.rel=1;gripEnd(now)}}return GRIP.m||now<GRIP.lock}
   GRIP.lost=0;
   if(pin.length>=2){pin.sort(function(a,b){return a.x-b.x});var A=pin[0],B=pin[pin.length-1];
@@ -2749,15 +2752,25 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
    return true}
   var P=pin[0];
   if(GRIP.m===2){return true}  /* az egyik kéz elengedte: a másik elengedéséig nem történik semmi, nincs ugrás */
-  if(GRIP.m!==1){var L=100-WKB.r-WKB.w,R=100-WKB.r,px=P.x*100,py=P.y*100;
-   if(workOn&&now>=GRIP.lock&&px>L-6&&px<R+6&&py>WKB.t-6&&py<WKB.t+WKB.h+6){GRIP.m=1;GRIP.px0=P.x;GRIP.py0=P.y;GRIP.r0=WKB.r;GRIP.t0=WKB.t;GRIP.moved=0;GRIP.ts=now;GRIP.tx=P.x;GRIP.ty=P.y;GRIP.rel=0;GRIP.ew=P.ew;GRIP.eh=P.eh;gripGlow(true)}
+  if(GRIP.m!==1){var L=100-er()-WKB.w,R=100-er(),px=P.x*100,py=P.y*100,ET=et();
+   if(workOn&&now>=GRIP.lock&&px>L-6&&px<R+6&&py>ET-6&&py<ET+WKB.h+6){GRIP.el=ELEM.on&&px>L+WKB.w*.07&&px<R-WKB.w*.07&&py>ET+WKB.h*.07&&py<ET+WKB.h-WKB.h*.04?1:0;GRIP.eg=0;GRIP.s0=P.sz||0;GRIP.sm=P.sz||0;GRIP.w0=WKB.w;GRIP.h0=WKB.h;GRIP.dep=0;GRIP.m=1;GRIP.px0=P.x;GRIP.py0=P.y;GRIP.r0=WKB.r;GRIP.t0=WKB.t;GRIP.moved=0;GRIP.ts=now;GRIP.tx=P.x;GRIP.ty=P.y;GRIP.rel=0;GRIP.ew=P.ew;GRIP.eh=P.eh;gripGlow(true)}
    return GRIP.m===1||now<GRIP.lock}
-  if(!GRIP.moved){if(Math.sqrt(Math.pow((P.x-GRIP.px0)*P.ew,2)+Math.pow((P.y-GRIP.py0)*P.eh,2))<.045*P.ew)return true;GRIP.moved=1;gripGlow(true);csFlash('move')}
+  if(P.sz&&GRIP.s0){GRIP.sm=GRIP.sm*.6+P.sz*.4;if(!GRIP.dep&&Math.abs(GRIP.sm/GRIP.s0-1)>.16){GRIP.dep=1;GRIP.moved=1;GRIP.s0=GRIP.sm;GRIP.px0=P.x;GRIP.py0=P.y;GRIP.r0=WKB.r;GRIP.t0=WKB.t;gripGlow(true);csFlash('big')}}
+  if(!GRIP.moved){if(Math.sqrt(Math.pow((P.x-GRIP.px0)*P.ew,2)+Math.pow((P.y-GRIP.py0)*P.eh,2))<.045*P.ew)return true;GRIP.moved=1;gripGlow(true);csFlash('move');
+   if(GRIP.el){var gx=(GRIP.tx*100-(100-er()-WKB.w))/WKB.w,gy=(GRIP.ty*100-et())/WKB.h;wkPost('@grab '+gx.toFixed(4)+' '+gy.toFixed(4));GRIP.eg=1}}
+  if(GRIP.eg){wkPost('@drag '+(((P.x-GRIP.tx)*100)/WKB.w).toFixed(4)+' '+(((P.y-GRIP.ty)*100)/WKB.h).toFixed(4));return true}
+  if(GRIP.dep&&GRIP.s0){var kk=Math.max(.45,Math.min(3,1+(GRIP.sm/GRIP.s0-1)*1.4));WKB.w=GRIP.w0*kk;WKB.h=GRIP.h0*kk;var cx2=100-GRIP.r0-GRIP.w0/2-(P.x-GRIP.px0)*100,cy2=GRIP.t0+GRIP.h0/2+(P.y-GRIP.py0)*100;WKB.r=100-cx2-WKB.w/2;WKB.t=cy2-WKB.h/2;wkBoxFit();wkApply();return true}
   WKB.r=GRIP.r0-(P.x-GRIP.px0)*100;WKB.t=GRIP.t0+(P.y-GRIP.py0)*100;wkBoxFit();wkApply();return true}
+ var ELEM={on:false};
+ function spOnMotion(e){if(!SP.on)return;var r=e.rotationRate;if(!r)return;var iv=(e.interval||16);if(iv>2)iv=iv/1000;var f=iv>0&&iv<1?iv:.016;
+  SP.yaw+=(r.beta||0)*f*SP.sg;SP.pitch+=(r.gamma||0)*f*SP.sg;var ew=(eyes[0]&&eyes[0].clientWidth)||1,eh=(eyes[0]&&eyes[0].clientHeight)||1,fov=62;
+  SP.dx=Math.max(-60,Math.min(60,SP.yaw/fov*100));SP.dy=Math.max(-60,Math.min(60,SP.pitch/(fov*eh/ew)*100));var n=Date.now();if(n-SP.t>30){SP.t=n;wkApply()}}
+ function spSet(on,flip){if(flip)SP.sg=-SP.sg;SP.on=on?1:0;SP.yaw=0;SP.pitch=0;SP.dx=0;SP.dy=0;if(on&&!SP.ev){SP.ev=1;try{window.addEventListener('devicemotion',spOnMotion)}catch(e){}
+   try{if(window.DeviceMotionEvent&&DeviceMotionEvent.requestPermission)DeviceMotionEvent.requestPermission().catch(function(){})}catch(e){}}wkApply()}
 
 /* ---- Kéz a kép előtt: a kamerakép kéz-alakú kivágása a WORK-ablak FÖLÉ rajzolva (Tony Stark) ---- */
- var HF={on:true,raf:0,last:0,cv:[],hs:[],n:0,t:0};
- try{if(localStorage.getItem('dex_handfront')==='0')HF.on=false}catch(e){}
+ var HF={on:false,raf:0,last:0,cv:[],hs:[],n:0,t:0};
+ try{if(localStorage.getItem('dex_handfront')==='1')HF.on=true}catch(e){}
  var BONES=[[0,1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16],[17,18,19,20]];
  function hfDraw(){HF.raf=0;var now=Date.now(),HS=HF.hs;
   if(!HF.on||!root||!HS.length||now-HF.t>450||!workOn){hud(function(x){var c=x&&x.querySelector('.hfront');if(c)c.style.display='none'});return}
@@ -2776,6 +2789,9 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   HF.n++;HF.raf=requestAnimationFrame(hfDraw)}
  function hudVis(){var c=root&&root.querySelectorAll('.hfront');return c?[].filter.call(c,function(q){return q.style.display==='block'}).length:0}
  function hfFeed(HS){HF.hs=(HS||[]).filter(function(h){return h&&h.P});if(HF.hs.length){HF.t=Date.now();if(!HF.raf&&HF.on)HF.raf=requestAnimationFrame(hfDraw)}}
+ var HOV=0;
+ function hovCheck(HS){var on=0;if(workOn&&HS&&HS.length){var L=100-er()-WKB.w,R=100-er(),T=et(),B=T+WKB.h;HS.forEach(function(h){[[h.tx,h.ty],[h.x,h.y]].forEach(function(p){var px=p[0]/h.ew*100,py=p[1]/h.eh*100;if(px>L&&px<R&&py>T&&py<B)on=1})})}
+  if(on!==HOV){HOV=on;hud(function(x){var w=x&&x.querySelector('.wk');if(w)w.classList.toggle('hov',!!on)})}}
  function hfSet(on){HF.on=!!on;try{localStorage.setItem('dex_handfront',on?'1':'0')}catch(e){}if(on){if(HF.hs.length&&!HF.raf)HF.raf=requestAnimationFrame(hfDraw)}else hud(function(x){var c=x&&x.querySelector('.hfront');if(c)c.style.display='none'});return on}
  /* Látható visszajelzés: pont a kezeden (cián = nyitott, sárga = csipesz). Ha a pont megjelenik, a rendszer lát. */
  function handDots(HS){
@@ -2799,10 +2815,10 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   setTimeout(function(){try{window.DEX_UI&&window.DEX_UI.reply(handStatus())}catch(e){}},4500);
   return (HD.eng?'A kézkövetés be van kapcsolva.':'Elindítom a kézkövetést, töltöm a kézmodellt.')+' Ha a kezed látom, egy pont jelenik meg rajta: cián, ha nyitott, sárga, ha csipeszben van. Pár másodperc múlva elmondom, hogyan megy.'}
  function trackHand(now){
-  var mgOn=!!(MG&&MG.state==='play'&&!MG.paused);if((!mgOn&&(!GES.on||!workOn))||U||G||M||RIDE||DN||now<GES.lock){if(GRIP.m)gripEnd(now);if(GES.dots){GES.dots=0;handDots(null);hfFeed([])}return}
+  var mgOn=!!(MG&&MG.state==='play'&&!MG.paused);if((!mgOn&&(!GES.on||!workOn))||U||G||M||RIDE||DN||now<GES.lock){if(GRIP.m)gripEnd(now);if(GES.dots){GES.dots=0;handDots(null);hfFeed([]);hovCheck([])}return}
   /* 1) pontos kézkövetés (MediaPipe, a kéz 21 pontja) – ez az elsődleges; közben a modell betöltődik */
   if(!mgOn&&(HD.mode==='mp'||typeof window.__handLm==='function'||typeof window.__handsLm==='function')){var hh=dnHand();
-   var HS=handsList(now);GES.dots=1;handDots(HS);hfFeed(HS);var gr0=gripTrack(now,HS);if(gr0){GES.samples=[];return}
+   var HS=handsList(now);GES.dots=1;handDots(HS);hfFeed(HS);hovCheck(HS);var gr0=gripTrack(now,HS);if(gr0){GES.samples=[];return}
    if(typeof window.__handsLm==='function'&&HS.length)hh=HS[0];
    if(!hh){if(GES.samples.length&&now-GES.samples[GES.samples.length-1].t>280)GES.samples=[];return}
    GES.hand=now;GES.samples.push({x:hh.x,y:hh.y,t:now,sz:hh.size});GES.samples=GES.samples.filter(function(p){return now-p.t<900});
@@ -2867,7 +2883,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   var c=document.createElement('canvas');c.width=ew;c.height=eh;var g=c.getContext('2d');g.fillStyle='#050b22';g.fillRect(0,0,ew,eh);
   if(v&&v.videoWidth&&!root.classList.contains('nocam')){var odd=CAM.r%2===1,bw=odd?eh:ew,bh=odd?ew:eh,sc=Math.max(bw/v.videoWidth,bh/v.videoHeight);g.save();g.translate(ew/2,eh/2);g.rotate(CAM.r*Math.PI/2);if(CAM.m)g.scale(-1,1);try{g.drawImage(v,-v.videoWidth*sc/2,-v.videoHeight*sc/2,v.videoWidth*sc,v.videoHeight*sc)}catch(x){}g.restore()}
   var hc=null,hf=e.querySelector('.hfront');if(hf&&hf.style.display!=='none'){hc=document.createElement('canvas');hc.width=ew;hc.height=eh;hc.getContext('2d').drawImage(hf,0,0)}
-  var bx=(100-WKB.r-WKB.w)/100*ew,by=WKB.t/100*eh,bww=WKB.w/100*ew,bhh=WKB.h/100*eh,wasWork=workOn;
+  var bx=(100-er()-WKB.w)/100*ew,by=et()/100*eh,bww=WKB.w/100*ew,bhh=WKB.h/100*eh,wasWork=workOn;
   shotWorkImg(function(wi){if(wi&&wasWork){g.save();g.beginPath();if(g.roundRect)g.roundRect(bx,by,bww,bhh,eh*.02);else g.rect(bx,by,bww,bhh);g.clip();g.fillStyle='rgba(6,20,42,.18)';g.fillRect(bx,by,bww,bhh);g.globalAlpha=.97;g.drawImage(wi,bx,by,bww,bhh);g.restore();g.strokeStyle='rgba(140,231,255,.55)';g.lineWidth=2;g.strokeRect(bx,by,bww,bhh)}
    if(hc)g.drawImage(hc,0,0);cb(c,!!wi)})}
  function shotFlash(){hud(function(x){var f=document.createElement('div');f.style.cssText='position:absolute;inset:0;background:#fff;opacity:.85;pointer-events:none;z-index:9;transition:opacity .5s';x.appendChild(f);setTimeout(function(){f.style.opacity='0'},40);setTimeout(function(){try{f.remove()}catch(e){}},600)})}
@@ -2877,6 +2893,15 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  var SHOT={n:0,last:0,work:false};
  function shotCmd(f){if(/\b(screenshot\w*|skrinsot\w*|szkrinsot\w*|kepernyokep\w*|kepernyofoto\w*|fenykepezd\w*|fotozd\w*|fotozz\w*|keszits\w* (egy )?(kepet|fotot|screenshotot)|kepet? rolam|mentsd el a kepet)\b/.test(f)&&f.split(' ').length<=7&&!/\b(fenykepezz|fotozz)\b/.test(f)){setTimeout(shotSave,200);return 'Fényképezek. A kép pár másodperc múlva mentődik a Letöltések közé.'}return null}
  function stripCmd(f){
+  /* térbe rögzítés */
+  if(/\b(terben|terbe|asztalra|levegoben|lebegj\w*|terrogzit\w*|terre?gzit\w*)\b/.test(f)&&f.split(' ').length<=8&&/\b(tedd|tegyed|rogzit\w*|rakd|hagyd|tegyel|terrogzit\w*|lebegj\w*|marad\w*|ott)\b/.test(f)&&!/\b(ki|vedd fel|vedd le|ne maradjon|oldd|kapcsold ki)\b/.test(f)){if(!workOn)try{setWork(true)}catch(e){}spSet(true,false);return 'Letettem a térbe: a WORK-ablak ott marad, ahol hagytad, akkor is, ha elfordítod a fejed. Ha ellenkező irányba megy, mondd: tér fordítva. Felvétel: vedd fel az ablakot.'}
+  if(/\b(ter|terrogzit\w*|terben|terre?gzit\w*)\b/.test(f)&&/\bfordit\w*\b|\bfordva\b|\bfordítva\b/.test(f)&&f.split(' ').length<=5){spSet(true,true);return 'Megfordítottam a tér irányát.'}
+  if(/\b(vedd fel|vedd le|szedd le|oldd fel|terrogzites ki|terrogzit\w* ki|terben ki|ne maradjon (a )?terben)\b/.test(f)&&/\b(ablak\w*|work\w*|vork\w*|terrogzit\w*|ter)\b/.test(f)&&f.split(' ').length<=6){spSet(false,false);return 'Felvettem: az ablak újra a nézeteddel együtt mozog.'}
+  /* elemenkénti mozgatás */
+  if(/\b(elemenkent|elemek\w*|kartyak\w*|kartyat|elem\b)/.test(f)&&(/\b(mozg\w*|huz\w*|kulon\w*|nyujt\w*|fogd\w*)/.test(f)||/\b(alaphelyzet\w*|visszarak\w*)\b/.test(f))&&f.split(' ').length<=7){
+   if(/\b(alaphelyzet\w*|visszarak\w*|vissza)\b/.test(f)){wkPost('@dropall');return 'Visszaraktam az elemeket a helyükre.'}
+   if(/\b(ki|kikapcs\w*|ablak)\b/.test(f)&&!/\bbe\b/.test(f)){ELEM.on=false;return 'Elem-mozgatás ki: a csipesz újra az egész ablakot viszi.'}
+   ELEM.on=true;return 'Elem-mozgatás be: csípd meg és húzd az ablakban azt a kártyát vagy elemet, amit mozgatni akarsz. Az ablak szélét megfogva az egész ablakot viszed. Rövid koppintás továbbra is kattint. Kikapcsolás: elem mozgatás ki.'}
   /* fénykép a nézetről */
   var shr=shotCmd(f);if(shr)return shr
   /* kamerakép forgatása / tükrözése */
@@ -3293,7 +3318,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function netChip(){var off=navigator.onLine===false;of.style.display=off?'block':'none';return off}
  window.addEventListener('offline',function(){netChip();try{if(window.DEX_UI)window.DEX_UI.reply('Offline módban vagyok. A helyi parancsok, a jegyzetek, a VR és a szókereső működnek; az okos mód és a WORK a számítógépre vár.')}catch(e){}});
  window.addEventListener('online',function(){netChip()});netChip();
- Dx.__vr=1;window.DEX_VR={shotCmd:shotCmd,shot:function(){return new Promise(function(res){shotMake(function(c,w){res(c?{w:c.width,h:c.height,work:!!w,url:c.toDataURL('image/png')}:null)})})},shotInfo:function(){return SHOT},cam:function(){return {r:CAM.r,m:CAM.m,mode:camMode()}},camSet:function(r,m){camSet(r,m,false)},wkCmd:function(f){return wkBoxCmd(f)},handFront:function(){return {on:HF.on,frames:HF.n,vis:hudVis(),taps:TAPN}},handFrontSet:hfSet,handInfo:function(){return {mode:HD.mode,err:HD.err,loading:HD.loading,base:MPBASE,swipes:GES.seen,grip:GRIP.m,hands:(handsList(Date.now())||[]).map(function(h){return [Math.round(h.px/h.ew*100),Math.round(h.py/h.eh*100),+h.pinchR.toFixed(2)]})}},game:function(){return G},startGame:startGame,enter:function(g){return enter(!!g).then(function(t){if(window.DEX_UI)window.DEX_UI.reply(t);return t})},leave:leave,uStart:uStart,uCells:function(f){var ew=eyes[0]?eyes[0].clientWidth||1:1,eh=eyes[0]?eyes[0].clientHeight||1:1,H=(14+58*f.z)/100,W=H*.62*eh/ew,y1=1-f.b/100,y0=y1-H,a=e2v(f.x-W/2,y0),b=e2v(f.x+W/2,y1),o=[],x,y;if(!a||!b)return o;for(y=Math.max(0,Math.floor(Math.min(a[1],b[1])*36));y<Math.min(36,Math.ceil(Math.max(a[1],b[1])*36));y++)for(x=Math.max(0,Math.floor(Math.min(a[0],b[0])*64));x<Math.min(64,Math.ceil(Math.max(a[0],b[0])*64));x++)o.push(y*64+x);return o},uStop:uStop,ugame:function(){return U},uSpawn:uSpawn,uStep:uStep,uHit:uHit,holds:function(){return !!(M||(G&&G.paused)||(U&&U.paused))},quiet:function(t){var f=fold(t);return !!(U&&U.state==='play'&&!U.paused&&f.split(' ').length<=4&&/\b(uss|utes\w*|utom|ut|bumm|bum|bam|nyomd|nyomas|csap\w*|pofozd|kapd|rajta)\b/.test(f))},chat:chatSet,chatState:function(){return chatOn},menu:function(){return menuOpen()},menuState:function(){return M},addGame:function(id,name,start,say){GAMES.push({id:id,name:name,say:say||name,start:start})},active:function(){return !!(root&&root.classList.contains('on'))},work:setWork,mag:function(){return !!(MG&&MG.state!=='over')},mgState:function(){return MG},mgStep:mgStep,mgSpawn:mgSpawn,gesture:function(on){if(on===undefined)return GES.on;GES.on=!!on;GES.samples=[];csRender();return GES.on},gestureState:function(){return {on:GES.on,seen:GES.seen}},strip:function(on){return on===undefined?CS.on:csSet(on)},stripState:function(){return {on:CS.on,page:CS.page}},stripFlash:csFlash,wkBox:function(){return {r:WKB.r,t:WKB.t,w:WKB.w,h:WKB.h}},ride:function(){return !!RIDE},dino:function(){return !!DN},dnState:function(){return DN},dnStep:dnStep,dnFire:dnFire,dnSpawn:dnSpawn,dnHandFromLm:dnHandFromLm,workOn:function(){return !!workOn}};
+ Dx.__vr=1;window.DEX_VR={space:function(){return {on:SP.on,dx:SP.dx,dy:SP.dy,sg:SP.sg}},elem:function(){return ELEM.on},spMotion:spOnMotion,shotCmd:shotCmd,shot:function(){return new Promise(function(res){shotMake(function(c,w){res(c?{w:c.width,h:c.height,work:!!w,url:c.toDataURL('image/png')}:null)})})},shotInfo:function(){return SHOT},cam:function(){return {r:CAM.r,m:CAM.m,mode:camMode()}},camSet:function(r,m){camSet(r,m,false)},wkCmd:function(f){return wkBoxCmd(f)},handFront:function(){return {on:HF.on,frames:HF.n,vis:hudVis(),taps:TAPN}},handFrontSet:hfSet,handInfo:function(){return {mode:HD.mode,err:HD.err,loading:HD.loading,base:MPBASE,swipes:GES.seen,grip:GRIP.m,hands:(handsList(Date.now())||[]).map(function(h){return [Math.round(h.px/h.ew*100),Math.round(h.py/h.eh*100),+h.pinchR.toFixed(2)]})}},game:function(){return G},startGame:startGame,enter:function(g){return enter(!!g).then(function(t){if(window.DEX_UI)window.DEX_UI.reply(t);return t})},leave:leave,uStart:uStart,uCells:function(f){var ew=eyes[0]?eyes[0].clientWidth||1:1,eh=eyes[0]?eyes[0].clientHeight||1:1,H=(14+58*f.z)/100,W=H*.62*eh/ew,y1=1-f.b/100,y0=y1-H,a=e2v(f.x-W/2,y0),b=e2v(f.x+W/2,y1),o=[],x,y;if(!a||!b)return o;for(y=Math.max(0,Math.floor(Math.min(a[1],b[1])*36));y<Math.min(36,Math.ceil(Math.max(a[1],b[1])*36));y++)for(x=Math.max(0,Math.floor(Math.min(a[0],b[0])*64));x<Math.min(64,Math.ceil(Math.max(a[0],b[0])*64));x++)o.push(y*64+x);return o},uStop:uStop,ugame:function(){return U},uSpawn:uSpawn,uStep:uStep,uHit:uHit,holds:function(){return !!(M||(G&&G.paused)||(U&&U.paused))},quiet:function(t){var f=fold(t);return !!(U&&U.state==='play'&&!U.paused&&f.split(' ').length<=4&&/\b(uss|utes\w*|utom|ut|bumm|bum|bam|nyomd|nyomas|csap\w*|pofozd|kapd|rajta)\b/.test(f))},chat:chatSet,chatState:function(){return chatOn},menu:function(){return menuOpen()},menuState:function(){return M},addGame:function(id,name,start,say){GAMES.push({id:id,name:name,say:say||name,start:start})},active:function(){return !!(root&&root.classList.contains('on'))},work:setWork,mag:function(){return !!(MG&&MG.state!=='over')},mgState:function(){return MG},mgStep:mgStep,mgSpawn:mgSpawn,gesture:function(on){if(on===undefined)return GES.on;GES.on=!!on;GES.samples=[];csRender();return GES.on},gestureState:function(){return {on:GES.on,seen:GES.seen}},strip:function(on){return on===undefined?CS.on:csSet(on)},stripState:function(){return {on:CS.on,page:CS.page}},stripFlash:csFlash,wkBox:function(){return {r:WKB.r,t:WKB.t,w:WKB.w,h:WKB.h}},ride:function(){return !!RIDE},dino:function(){return !!DN},dnState:function(){return DN},dnStep:dnStep,dnFire:dnFire,dnSpawn:dnSpawn,dnHandFromLm:dnHandFromLm,workOn:function(){return !!workOn}};
 })();
 
 </script><script>

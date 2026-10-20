@@ -120,3 +120,9 @@ v43
 - Kéz: természetes kép, csík nélkül, csak egy pont (cián = nyitott kéz a mutatóujjon, sárga = csipesz). Hologramszerű, éles WORK-ablak.
 - Kamera forgatása: "forgasd el a kamerát" (90°-onként, "balra" visszafelé), "tükrözd a kamerát", "kamera alaphelyzet". Álló telefonnál alapból 270°.
 - "screenshot" / "fényképezd le" / "fotózd le": kép a nézetről (kamera + WORK + kéz), letöltésként mentve. A WORK tartalma néhány másodperc alatt kerül rá.
+
+v44
+- A rárajzolt kéz-kép alapból ki: a valódi kezed látszik; ha a kezed az ablak fölé ér, az ablak áttetszővé válik. (Régi kivágás: "kéz a kép előtt be".)
+- Kitolás/behúzás: csipesz közben a kezed közelebb viszed a kamerához = az ablak nagyobb, távolabb = kisebb.
+- Letétel a térben: "tedd le a térbe" (giroszkóp, ha ellenkező irányba megy: "tér fordítva"); "vedd fel az ablakot".
+- Elemenkénti mozgatás: "elemenként mozgatom" -> csipesz + húzás egy kártyán/elemen; az ablak szélét megfogva az egész ablak mozog; "elemek alaphelyzet", "elem mozgatás ki".

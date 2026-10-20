@@ -45,6 +45,15 @@
  function menu(act){var b=menuBtn();if(!b||!vis(b))return 'A menü ezen a kijelzőméreten mindig látszik.';var o=menuOpen();if(act==='open'&&o)return 'A menü már nyitva van.';if(act==='close'&&!o)return 'A menü már be van zárva.';b.click();return o?'Becsuktam a menüt.':'Kihoztam a menüt.'}
  function openDex(){var c=document.getElementById('wdea-companion');if(c){c.click();return 'Megnyitottam a DEX csevegőt a WORK-ben.'}try{if(window.WDEA_WORK_AI&&window.WDEA_WORK_AI.open){window.WDEA_WORK_AI.open();return 'Megnyitottam a DEX csevegőt a WORK-ben.'}}catch(e){}return 'Nem találom a DEX-et ezen a WORK-oldalon.'}
  function voiceBtn(){var q=document.getElementById('wdea-quick-voice');if(!q)return 'Nem találom a hang gombját ezen az oldalon.';(q.querySelector('button')||q).click();return 'Megnyomtam a hang gombot.'}
+ var EG=null;
+ function egPick(el){var W=innerWidth,H=innerHeight,best=null,n=0;while(el&&el!==document.body&&el!==document.documentElement&&n++<12){var r=el.getBoundingClientRect(),tg=el.tagName,cl=(el.className&&el.className.baseVal===undefined?String(el.className):'')+' '+(el.id||'');
+   var okSize=r.width>=44&&r.height>=30&&r.width<W*.85&&r.height<H*.85;if(okSize){var cardish=/^(ARTICLE|LI|FIGURE|ASIDE|FORM)$/.test(tg)||/card|post|tile|item|panel|story|widget|box|block|product|chip|tab|btn/i.test(cl);if(cardish)return el;if(!best&&/^(SECTION|DIV|BUTTON|A|IMG|VIDEO)$/.test(tg))best=el}el=el.parentElement}return best}
+ function egGrab(fx,fy){var el=document.elementFromPoint(Math.round(fx*innerWidth),Math.round(fy*innerHeight));var t=egPick(el);if(!t){EG=null;return 'Itt nincs mozgatható elem.'}
+  var m=/translate\(([-0-9.]+)px,\s*([-0-9.]+)px\)/.exec(t.style.transform||'');EG={el:t,x0:m?+m[1]:0,y0:m?+m[2]:0,pos:t.style.position,z:t.style.zIndex};
+  if(getComputedStyle(t).position==='static')t.style.position='relative';t.style.zIndex='9999';t.style.transition='none';t.style.outline='2px solid #8ce7ff';t.style.outlineOffset='2px';t.setAttribute('data-dex-move','1');return 'Megfogtam.'}
+ function egDrag(dx,dy){if(!EG)return '';var x=EG.x0+dx*innerWidth,y=EG.y0+dy*innerHeight;EG.el.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)';return ''}
+ function egDrop(){if(EG){EG.el.style.outline='';EG.el.style.outlineOffset='';EG.el.style.zIndex='9999';EG=null}return ''}
+ function egAll(){EG=null;[].forEach.call(document.querySelectorAll('[data-dex-move]'),function(e){e.style.transform='';e.style.outline='';e.style.zIndex='';e.style.position='';e.removeAttribute('data-dex-move')});return 'Visszaraktam az elemeket.'}
  function tap(fx,fy){var x=Math.round(fx*innerWidth),y=Math.round(fy*innerHeight),el=document.elementFromPoint(x,y);if(!el)return 'Oda nem tudok kattintani.';var t=el.closest('button,a,[role=button],[data-route],[data-action],input,select,textarea,summary,label,[onclick]')||el;try{if(t.focus&&/INPUT|TEXTAREA|SELECT/.test(t.tagName))t.focus()}catch(e){}t.click();return 'Rákattintottam.'}
  function run(raw,id){var t=String(raw||'').trim(),n=fold(t),m,c;
   if((m=/^@nav ([a-z]+)$/.exec(t)))return nav(m[1]);
@@ -56,6 +65,10 @@
   if(t==='@dex')return openDex();
   if(t==='@voice')return voiceBtn();
   if((m=/^@tap ([0-9.]+) ([0-9.]+)$/.exec(t)))return tap(+m[1],+m[2]);
+  if((m=/^@grab ([0-9.\-]+) ([0-9.\-]+)$/.exec(t)))return egGrab(+m[1],+m[2]);
+  if((m=/^@drag ([0-9.\-]+) ([0-9.\-]+)$/.exec(t)))return egDrag(+m[1],+m[2]);
+  if(t==='@drop')return egDrop();
+  if(t==='@dropall')return egAll();
   if((m=/^(?:ird at|ird at|nevezd at|csereld le)\s+(.+?)\s+(?:erre|helyette)\s+(.+)$/i.exec(n))){var orig=t.match(/^(?:írd át|ird at|nevezd át|nevezd at|cseréld le|csereld le)\s+(.+?)\s+(?:erre|helyette)\s+(.+)$/i);return textEdit(orig?orig[1]:m[1],orig?orig[2]:m[2])}
   if((m=/^(?:szinezd at|szinezd|valtoztasd meg)\s+(.+?)\s+(?:szinet\s+)?(kekre|kek|lilara|lila|rozsaszinre|rozsaszin|feherre|feher|zoldre|zold)$/i.exec(n))){c={kek:'#49c8ff',lilara:'#c285ff',lila:'#c285ff',rozsaszinre:'#ff72bd',rozsaszin:'#ff72bd',feherre:'#ffffff',feher:'#ffffff',zoldre:'#55e2a0',zold:'#55e2a0',kekre:'#49c8ff'}[m[2]];return colorEdit(m[1],c)}
   if((m=/^(?:keresd meg|keresd|kutass|talald meg)\s+(?:a\s+|az\s+)?(.+?)(?:\s+(?:oldalon|oldalt))?$/i.exec(n)))return search(m[1]);
