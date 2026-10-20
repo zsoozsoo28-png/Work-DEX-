@@ -115,3 +115,8 @@ v42 – KÉZ A KÉP ELŐTT (Tony Stark)
 - Tartott + húzott csipesz továbbra is viszi az ablakot; két kézzel nagyít.
 - Hang: "kéz a kép előtt be / ki", "Tony Stark kéz előre", "kiemelt kéz be".
 - Ez nem valódi 3D: a kivágás a lapos kameraképből készül, enyhén késhet a gyors mozdulatoknál.
+
+v43
+- Kéz: természetes kép, csík nélkül, csak egy pont (cián = nyitott kéz a mutatóujjon, sárga = csipesz). Hologramszerű, éles WORK-ablak.
+- Kamera forgatása: "forgasd el a kamerát" (90°-onként, "balra" visszafelé), "tükrözd a kamerát", "kamera alaphelyzet". Álló telefonnál alapból 270°.
+- "screenshot" / "fényképezd le" / "fotózd le": kép a nézetről (kamera + WORK + kéz), letöltésként mentve. A WORK tartalma néhány másodperc alatt kerül rá.
