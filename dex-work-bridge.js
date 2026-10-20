@@ -27,6 +27,15 @@
   if(d==='top')to=0;else if(d==='bottom')to=max;else to=Math.max(0,Math.min(max,top+(d==='up'?-1:1)*k*h));
   if(sc)sc.scrollTo({top:to,behavior:'smooth'});else window.scrollTo({top:to,behavior:'smooth'});
   if(d==='down'&&top>=max-2)return 'Nem tudok lejjebb görgetni, ez az oldal alja.';if(d==='up'&&top<=1)return 'Nem tudok feljebb görgetni, ez az oldal teteje.';return 'Görgettem.'}
+ /* Oldalon belüli nevek (fül, szűrő, gomb, menüpont): „képek”, „videók”, „hirdetések”… – magyar ragokkal is, offline is */
+ function stemEq(x,y){if(x===y)return true;var m=Math.min(x.length,y.length);if(m<4)return false;var k=0;while(k<m&&x.charCodeAt(k)===y.charCodeAt(k))k++;return k>=Math.max(4,m-2)}
+ function pickEl(q,strict){q=fold(q).split(' ').filter(function(w){return w.length>1&&!/^(a|az|egy|es|meg|kerlek|legyszi|nyisd|mutasd|menj|ide|oda|rea|ra|kattints|nyomd|mehet)$/.test(w)});if(!q.length)return null;
+  var els=[].slice.call(document.querySelectorAll('button,a[href],a[data-route],[role=button],[role=tab],[data-route],[data-filter],[data-tab],summary')),best=null,bs=0;
+  els.forEach(function(e){if(!vis(e)||e.closest('#wdea-theme-editor,#wdea-ai-panel,[hidden]'))return;var lab=fold((e.getAttribute('aria-label')||'')+' '+(e.textContent||'')).trim();if(!lab||lab.length>60)return;var lw=lab.split(' ').filter(function(w){return w&&!/^[0-9]+$/.test(w)});if(!lw.length||lw.length>6)return;
+   var ok=q.every(function(w){return lw.some(function(l){return stemEq(w,l)})});if(!ok)return;var sc=100-(lw.length-q.length)*8;if(lw.length===q.length&&q.every(function(w,i){return stemEq(w,lw[i])}))sc=100;if(q.every(function(w){return lw.indexOf(w)>=0}))sc+=3;if(e.matches('[role=tab],[data-feed-filter],[data-filter],[data-tab]'))sc+=1;var r=e.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0)sc+=2;if(sc>bs){bs=sc;best=e}});
+  return bs>=(strict?100:76)?best:null}
+ function pickLabel(q,strict){var e=pickEl(q,strict);return e?(String(e.getAttribute('aria-label')||e.textContent||'').replace(/\s+/g,' ').trim().slice(0,40)):''}
+ function pickClick(q){var e=pickEl(q,true)||pickEl(q);if(!e)return 'Nem találtam ilyen nevű fület, gombot vagy menüpontot ezen az oldalon.';try{e.scrollIntoView({block:'nearest'})}catch(x){}e.click();return 'Rákattintottam: '+String(e.getAttribute('aria-label')||e.textContent||'').replace(/\s+/g,' ').trim().slice(0,40)+'.'}
  function menuBtn(){return document.querySelector('[data-mobile-menu-toggle]')}
  function menuOpen(){var b=menuBtn();return !!(b&&b.getAttribute('aria-expanded')==='true')}
  function menu(act){var b=menuBtn();if(!b||!vis(b))return 'A menü ezen a kijelzőméreten mindig látszik.';var o=menuOpen();if(act==='open'&&o)return 'A menü már nyitva van.';if(act==='close'&&!o)return 'A menü már be van zárva.';b.click();return o?'Becsuktam a menüt.':'Kihoztam a menüt.'}
@@ -38,6 +47,7 @@
   if((m=/^@scroll (up|down|top|bottom|left|right) ([0-9.]+)$/.exec(t)))return scrl(m[1],+m[2]||.6);
   if(t==='@back'){history.back();return 'Visszaléptem.'}
   if((m=/^@menu (open|close|toggle)$/.exec(t)))return menu(m[1]);
+  if((m=/^@pick (.+)$/.exec(t)))return pickClick(m[1]);
   if(t==='@dex')return openDex();
   if(t==='@voice')return voiceBtn();
   if((m=/^@tap ([0-9.]+) ([0-9.]+)$/.exec(t)))return tap(+m[1],+m[2]);
@@ -50,6 +60,6 @@
  function onMessage(e){var d=e.data||{};if(d.type==='command'&&typeof d.text==='string'){var answer;try{answer=run(d.text,d.requestId)}catch(err){answer='Nem sikerült végrehajtani a WORK-parancsot.'}say(answer,d.requestId)}else if(d.type==='reset'){try{localStorage.removeItem(STORE)}catch(e){}if(watcher){watcher.stop();watcher=null}}}
  try{channel=new BroadcastChannel(CHANNEL);channel.addEventListener('message',onMessage)}catch(e){}
  if(window.parent!==window){window.addEventListener('message',function(e){if(e.source!==window.parent||!e.data||e.data.channel!==CHANNEL)return;onMessage({data:e.data})});try{window.parent.postMessage({channel:CHANNEL,type:'ready'},location.origin)}catch(e){}}
- window.DEX_WORK_BRIDGE={run:run,nav:nav,scroll:scrl,edits:edits,reset:function(){save([]);if(watcher){watcher.stop();watcher=null}},apply:persistApply};
+ window.DEX_WORK_BRIDGE={has:pickLabel,run:run,nav:nav,scroll:scrl,edits:edits,reset:function(){save([]);if(watcher){watcher.stop();watcher=null}},apply:persistApply};
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',persistApply,{once:true});else setTimeout(persistApply,0);
 })();

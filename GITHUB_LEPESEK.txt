@@ -20,10 +20,6 @@ TELEFONON
 
 HA A VR-BEN 404 JELENIK MEG A WORK HELYETT: a work.html nincs feltöltve. Töltsd fel.
 
-KÉZKÖVETÉS OFFLINE (mp mappa v44-tól)
- • A csomag tartalmazza az mp mappát (hands.js, wasm, kézmodell). Frissítéskor töltsd fel egészben, együtt a többi fájllal — így a VR-játékok kézkövetése internet nélkül is megy (első megnyitás után a telefon eltárolja).
- • Ha az mp mappa hiányzik, a kézkövetés nem fog elindulni hálózat nélkül (a régi CDN-ről töltött változat csak internettel ment).
-
 KORLÁTOK: nincs szerver; a WORK itt demó, az adat csak a telefonon van. A tárhely nyilvános, jelszót ne tegyél bele.
 
 ÚJ: az admin (CONTROL / ADMIN) két új gombbal bővült: „WORK megjelenítése” (előnézet a DEX-en belül) és „Átlépés a WORK-be”.
@@ -94,3 +90,15 @@ WORK HANGPARANCSOK (VR-ben)
  • Kézmozdulat (gesztusmód alapból BE): fel/le = görgetés, balra/jobbra = lapozás, ha nincs mit lapozni, kijön a WORK menüje. Érintés a VR-ablakon átmegy a WORK-be. Ha zavar a véletlen görgetés: „gesztus ki”.
  • „kapcsold be a gombot” = hang gomb. „kapcsold ki a hangszórót” = felolvasás ki. „tedd át a hangszórót”: a böngésző nem tudja átváltani a hangkimenetet, a telefon értesítési sávjában kell választani.
  • Valódi telefonon kell kipróbálni: kézgesztusok, érintés a VR-ablakon, a WORK VR-ablak megjelenése (a képek külső forrásból jönnek, offline csak a képfelirat látszik).
+
+ÚJ (v40): KÉZKÖVETÉS, CSIPESZ, HANGOS ABLAKMÉRET
+ • FONTOS: a „mp” mappa (a kézkövető modell, 8 fájl) a csomag része. Az index.html-lel együtt töltsd fel a GitHubra MAPPÁSTUL (Add file → Upload files → húzd be az egész mp mappát). A modell onnan töltődik, internet/CDN nélkül, és a telefon elmenti.
+ • Kézmozdulat (gesztusmód alapból BE, „gesztus ki” kikapcsolja): fel/le görget, balra/jobbra lapoz. Pontos kézfelismeréssel (21 pont), nem csak képkülönbséggel. A szalagon látod: „kéz: BE · pontos”.
+ • CSIPESZ: a WORK-ablakot két ujjal (hüvelyk+mutató) megcsípve megfogod és viszed (sárga keret). Két kézzel csípve és széthúzva nagyítod, összehúzva kicsinyíted. Elengedés után fél másodpercig nem lapoz.
+ • Hangra: „szélesítsd ki a workot / vörköt”, „szélesebb”, „keskenyebb”, „magasabb”, „alacsonyabb”, „nagyobb/kisebb a work”, „teljes képernyő work”, „told balra a workot”, „work középre”, „work alaphelyzet”.
+ • Rövid parancsok, ha a WORK kint van: „görgess”, „tovább”, „lenn”, „mutass még”, „vissza fel”, „legalulra”, „legfelülre”, „oldal eleje / vége”, „lapozz”, „következő”, „előző”, „lapozz vissza”, „csússz jobbra / balra”.
+ • Windows-szerver: a .tflite, .data, .binarypb fájlokat is kiszolgálja (ez hiányzott, ezért nem töltődhetett volna be a modell).
+ • KORLÁT: a kézfelismerést, a csipeszt és a kétkezes nagyítást géppel hamis kézadatokkal teszteltem, igazi kézzel a te telefonodon kell kipróbálni. A kéz nem takarhatja a kamerát, jó fény kell. A „hands_solution_simd_wasm_bin.data” 0 bájtos, ez rendben van. Nagyon régi telefonon (SIMD nélkül) a modell nem indul, ilyenkor a képkülönbséges mozgásérzékelés dolgozik.
+
+ • RÖGZÍTÉS: amit csipesszel vagy hanggal beállítasz (WORK helye, mérete), elengedés után ott marad és el is mentődik (újraindítás után is). „rögzítsd”, „maradjon így”, „mentsd el” megerősíti. „work alaphelyzet” visszaállítja.
+ • OLDALON BELÜLI NEVEK: ha a WORK előtted van, bármilyen látható fül/gomb/menüpont nevét kimondhatod („képek”, „videók”, „hirdetések”, „vállalkozások”, „neked”…), ragokkal és ékezet nélkül is, és rákattint. Offline is működik, a DEX-csevegő nyitva tartása mellett is.
