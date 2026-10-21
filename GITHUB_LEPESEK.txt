@@ -193,3 +193,13 @@ v53
   - A kezed fehér körvonallal látszik, az ujjhegyen pont (sárga, ha csípsz).
   - "kézkövetés ki/be" (XR-ben). Ha a telefon nem adja ki a kameraképet, a DEX megmondja; akkor nézéssel + koppintással megy.
 - "melyik verzió" -> v53.
+
+v54 (fénysugár a valódi térben)
+- A kijelző alapból távolabb (1,6 m) és nagyobb; közelebb lépve megnő, mint egy igazi monitor.
+- Fénysugár: ha kinyújtod a mutatóujjad (a többi behajlítva), vékony kék sugár megy a kezedtől a kijelzőig, ahol egy pont mutatja, hová célzol. A kezed lent maradhat, távolról irányítasz.
+- Kattintás: csípés (hüvelyk + mutató), koppintás a képernyőre / szemüveg-gomb, vagy hangra: "kattints", "koppints", "menj rá", "nyomd meg" – mindig oda, ahová a sugár mutat.
+- "fogd meg" -> megfogja az elemet a sugár alatt, a kezed után viszi; "engedd el" -> leteszi. "fogd meg az ablakot" -> az egész kijelzőt viszi.
+- A valódi kezed a kijelző ELŐTT látszik (kivágva, fehér körvonallal), nem a kijelző mögött.
+- "sugár ki/be". Két kézzel csípve széthúzva továbbra is nagyítod.
+- "melyik verzió" -> v54.
+- (v54) Gyorsítás: a kijelző képének frissítése a valódi térben kb. 15-ször gyorsabb (kevesebb akadás, simább kéz és sugár). A csipeszes kattintás akkor is működik, ha a telefon épp akad.
