@@ -2934,7 +2934,8 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   try{dnLoadMP()}catch(e){}CS.on=true;csRender();
   setTimeout(function(){try{window.DEX_UI&&window.DEX_UI.reply(handStatus())}catch(e){}},4500);
   return (HD.eng?'A kézkövetés be van kapcsolva.':'Elindítom a kézkövetést, töltöm a kézmodellt.')+' Ha a kezed látom, egy pont jelenik meg rajta: cián, ha nyitott, sárga, ha csipeszben van. Pár másodperc múlva elmondom, hogyan megy.'}
- function trackHand(now){
+ var XRON=0;
+ function trackHand(now){if(XRON)return;
   var mgOn=!!(MG&&MG.state==='play'&&!MG.paused);
   if(!mgOn&&GES.on&&!workOn&&!U&&!G&&!M&&!RIDE&&!DN&&root&&root.classList.contains('on')&&(HD.mode==='mp'||typeof window.__handsLm==='function')){var HSo=handsList(now);if(GRIP.m===2){gripTrack(now,HSo);return}openTrack(now,HSo);if(GES.dots||HSo.length){GES.dots=HSo.length?1:0;handDots(HSo.length?HSo:null)}return}
   if((!mgOn&&(!GES.on||!workOn))||U||G||M||RIDE||DN||now<GES.lock){if(GRIP.m)gripEnd(now);if(GES.dots){GES.dots=0;handDots(null);hfFeed([]);hovCheck([])}return}
@@ -3051,7 +3052,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   if(/\b(vedd fel|vedd le|szedd le|oldd fel|terrogzites ki|terrogzit\w* ki|terben ki|ne maradjon (a )?terben)\b/.test(f)&&/\b(ablak\w*|work\w*|vork\w*|terrogzit\w*|ter)\b/.test(f)&&n<=6){spSet(false,false);try{window.DEX_XR&&window.DEX_XR.disarm()}catch(e){}return 'Felvettem: az ablak újra a nézeteddel együtt mozog.'}
   return null}
  function verCmd(f){if(/\b(verzio\w*|melyik verzio\w*|milyen verzio\w*)\b/.test(f)&&f.split(' ').length<=5)return 'A VR-rész verziója: '+VRVER+'.';return null}
- var VRVER='v52';
+ var VRVER='v53';
  function stripCmd(f){
   var spr=spaceCmd(f)||verCmd(f);if(spr)return spr
   /* elemenkénti mozgatás */
@@ -3475,7 +3476,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function netChip(){var off=navigator.onLine===false;of.style.display=off?'block':'none';return off}
  window.addEventListener('offline',function(){netChip();try{if(window.DEX_UI)window.DEX_UI.reply('Offline módban vagyok. A helyi parancsok, a jegyzetek, a VR és a szókereső működnek; az okos mód és a WORK a számítógépre vár.')}catch(e){}});
  window.addEventListener('online',function(){netChip()});netChip();
- Dx.__vr=1;window.DEX_VR={fov:function(){return spFov()},spaceCmd:spaceCmd,ver:function(){return VRVER},space:function(){return {on:SP.on,dx:SP.dx,dy:SP.dy,sg:SP.sg}},elem:function(){return ELEM.on},spMotion:spOnMotion,spOrient:spOnOrient,dock:function(){return {on:DOCK.on,hov:DOCK.hov,n:DOCK.n,last:DOCK.last,items:DOCK.items,rect:dockRect(),bat:DOCK.bat}},dockGo:dockGo,outline:function(){return {on:HOL.on,n:HOL.n,vis:HOL.vis}},shotWork:shotWorkImg,hoverAt:function(fx,fy){if(fx<0)hoverSend(-1,-1);else hoverSend(fx,fy)},tapAt:function(fx,fy){return gripTap(fx,fy)},camPause:camPause,camResume:camResume,xrPrep:xrPrep,tilt:function(){return {x:TILT.x,y:TILT.y}},win2:function(){return {on:W2.on,r:W2.r,t:W2.t,w:W2.w,h:W2.h,route:W2.route}},threads:function(){return {on:THR.on,n:THR.n,vis:THR.vis}},hover:function(){return {on:HVL.on,k:HVL.k,n:HVL.n}},opens:function(){return OPN.n},xr:function(){return XR},shotCmd:shotCmd,shot:function(){return new Promise(function(res){shotMake(function(c,w){res(c?{w:c.width,h:c.height,work:!!w,url:c.toDataURL('image/png')}:null)})})},shotInfo:function(){return SHOT},cam:function(){return {r:CAM.r,m:CAM.m,mode:camMode()}},camSet:function(r,m){camSet(r,m,false)},wkCmd:function(f){return wkBoxCmd(f)},handFront:function(){return {on:HF.on,frames:HF.n,vis:hudVis(),taps:TAPN}},handFrontSet:hfSet,handInfo:function(){return {mode:HD.mode,err:HD.err,loading:HD.loading,base:MPBASE,swipes:GES.seen,grip:GRIP.m,hands:(handsList(Date.now())||[]).map(function(h){return [Math.round(h.px/h.ew*100),Math.round(h.py/h.eh*100),+h.pinchR.toFixed(2)]})}},game:function(){return G},startGame:startGame,enter:function(g){return enter(!!g).then(function(t){if(window.DEX_UI)window.DEX_UI.reply(t);return t})},leave:leave,uStart:uStart,uCells:function(f){var ew=eyes[0]?eyes[0].clientWidth||1:1,eh=eyes[0]?eyes[0].clientHeight||1:1,H=(14+58*f.z)/100,W=H*.62*eh/ew,y1=1-f.b/100,y0=y1-H,a=e2v(f.x-W/2,y0),b=e2v(f.x+W/2,y1),o=[],x,y;if(!a||!b)return o;for(y=Math.max(0,Math.floor(Math.min(a[1],b[1])*36));y<Math.min(36,Math.ceil(Math.max(a[1],b[1])*36));y++)for(x=Math.max(0,Math.floor(Math.min(a[0],b[0])*64));x<Math.min(64,Math.ceil(Math.max(a[0],b[0])*64));x++)o.push(y*64+x);return o},uStop:uStop,ugame:function(){return U},uSpawn:uSpawn,uStep:uStep,uHit:uHit,holds:function(){return !!(M||(G&&G.paused)||(U&&U.paused))},quiet:function(t){var f=fold(t);return !!(U&&U.state==='play'&&!U.paused&&f.split(' ').length<=4&&/\b(uss|utes\w*|utom|ut|bumm|bum|bam|nyomd|nyomas|csap\w*|pofozd|kapd|rajta)\b/.test(f))},chat:chatSet,chatState:function(){return chatOn},menu:function(){return menuOpen()},menuState:function(){return M},addGame:function(id,name,start,say){GAMES.push({id:id,name:name,say:say||name,start:start})},active:function(){return !!(root&&root.classList.contains('on'))},work:setWork,mag:function(){return !!(MG&&MG.state!=='over')},mgState:function(){return MG},mgStep:mgStep,mgSpawn:mgSpawn,gesture:function(on){if(on===undefined)return GES.on;GES.on=!!on;GES.samples=[];csRender();return GES.on},gestureState:function(){return {on:GES.on,seen:GES.seen}},strip:function(on){return on===undefined?CS.on:csSet(on)},stripState:function(){return {on:CS.on,page:CS.page}},stripFlash:csFlash,wkBox:function(){return {r:WKB.r,t:WKB.t,w:WKB.w,h:WKB.h}},ride:function(){return !!RIDE},dino:function(){return !!DN},dnState:function(){return DN},dnStep:dnStep,dnFire:dnFire,dnSpawn:dnSpawn,dnHandFromLm:dnHandFromLm,workOn:function(){return !!workOn}};
+ Dx.__vr=1;window.DEX_VR={fov:function(){return spFov()},spaceCmd:spaceCmd,ver:function(){return VRVER},space:function(){return {on:SP.on,dx:SP.dx,dy:SP.dy,sg:SP.sg}},elem:function(){return ELEM.on},spMotion:spOnMotion,spOrient:spOnOrient,dock:function(){return {on:DOCK.on,hov:DOCK.hov,n:DOCK.n,last:DOCK.last,items:DOCK.items,rect:dockRect(),bat:DOCK.bat}},dockGo:dockGo,outline:function(){return {on:HOL.on,n:HOL.n,vis:HOL.vis}},shotWork:shotWorkImg,hoverAt:function(fx,fy){if(fx<0)hoverSend(-1,-1);else hoverSend(fx,fy)},tapAt:function(fx,fy){return gripTap(fx,fy)},camPause:camPause,camResume:camResume,xrPrep:xrPrep,xrOn:function(){return XRON},xrActive:function(on){XRON=on?1:0;if(on){try{if(GRIP.m)gripEnd(Date.now());GRIP.m=0;GES.samples=[];GES.dots=0;handDots(null);hfFeed([]);hovCheck([])}catch(e){}}},mpLoad:function(){try{if(!HD.eng&&!HD.loading&&!HD.err)dnLoadMP()}catch(e){}return {eng:!!HD.eng,err:HD.err||'',loading:!!HD.loading}},mpSend:function(c){if(!HD.eng||(HD.busy&&Date.now()-(HD.xrT||0)<600))return false;HD.busy=true;HD.xrT=Date.now();try{Promise.resolve(HD.eng.send({image:c})).catch(function(){HD.busy=false})}catch(e){HD.busy=false}return true},mpRes:function(){return {all:HD.resAll||[],t:HD.resT||0}},tilt:function(){return {x:TILT.x,y:TILT.y}},win2:function(){return {on:W2.on,r:W2.r,t:W2.t,w:W2.w,h:W2.h,route:W2.route}},threads:function(){return {on:THR.on,n:THR.n,vis:THR.vis}},hover:function(){return {on:HVL.on,k:HVL.k,n:HVL.n}},opens:function(){return OPN.n},xr:function(){return XR},shotCmd:shotCmd,shot:function(){return new Promise(function(res){shotMake(function(c,w){res(c?{w:c.width,h:c.height,work:!!w,url:c.toDataURL('image/png')}:null)})})},shotInfo:function(){return SHOT},cam:function(){return {r:CAM.r,m:CAM.m,mode:camMode()}},camSet:function(r,m){camSet(r,m,false)},wkCmd:function(f){return wkBoxCmd(f)},handFront:function(){return {on:HF.on,frames:HF.n,vis:hudVis(),taps:TAPN}},handFrontSet:hfSet,handInfo:function(){return {mode:HD.mode,err:HD.err,loading:HD.loading,base:MPBASE,swipes:GES.seen,grip:GRIP.m,hands:(handsList(Date.now())||[]).map(function(h){return [Math.round(h.px/h.ew*100),Math.round(h.py/h.eh*100),+h.pinchR.toFixed(2)]})}},game:function(){return G},startGame:startGame,enter:function(g){return enter(!!g).then(function(t){if(window.DEX_UI)window.DEX_UI.reply(t);return t})},leave:leave,uStart:uStart,uCells:function(f){var ew=eyes[0]?eyes[0].clientWidth||1:1,eh=eyes[0]?eyes[0].clientHeight||1:1,H=(14+58*f.z)/100,W=H*.62*eh/ew,y1=1-f.b/100,y0=y1-H,a=e2v(f.x-W/2,y0),b=e2v(f.x+W/2,y1),o=[],x,y;if(!a||!b)return o;for(y=Math.max(0,Math.floor(Math.min(a[1],b[1])*36));y<Math.min(36,Math.ceil(Math.max(a[1],b[1])*36));y++)for(x=Math.max(0,Math.floor(Math.min(a[0],b[0])*64));x<Math.min(64,Math.ceil(Math.max(a[0],b[0])*64));x++)o.push(y*64+x);return o},uStop:uStop,ugame:function(){return U},uSpawn:uSpawn,uStep:uStep,uHit:uHit,holds:function(){return !!(M||(G&&G.paused)||(U&&U.paused))},quiet:function(t){var f=fold(t);return !!(U&&U.state==='play'&&!U.paused&&f.split(' ').length<=4&&/\b(uss|utes\w*|utom|ut|bumm|bum|bam|nyomd|nyomas|csap\w*|pofozd|kapd|rajta)\b/.test(f))},chat:chatSet,chatState:function(){return chatOn},menu:function(){return menuOpen()},menuState:function(){return M},addGame:function(id,name,start,say){GAMES.push({id:id,name:name,say:say||name,start:start})},active:function(){return !!(root&&root.classList.contains('on'))},work:setWork,mag:function(){return !!(MG&&MG.state!=='over')},mgState:function(){return MG},mgStep:mgStep,mgSpawn:mgSpawn,gesture:function(on){if(on===undefined)return GES.on;GES.on=!!on;GES.samples=[];csRender();return GES.on},gestureState:function(){return {on:GES.on,seen:GES.seen}},strip:function(on){return on===undefined?CS.on:csSet(on)},stripState:function(){return {on:CS.on,page:CS.page}},stripFlash:csFlash,wkBox:function(){return {r:WKB.r,t:WKB.t,w:WKB.w,h:WKB.h}},ride:function(){return !!RIDE},dino:function(){return !!DN},dnState:function(){return DN},dnStep:dnStep,dnFire:dnFire,dnSpawn:dnSpawn,dnHandFromLm:dnHandFromLm,workOn:function(){return !!workOn}};
 })();
 
 </script><script>
@@ -3649,10 +3650,11 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   XS.quad={c:c,n:sc3(fh,-1),r:r,u:[0,1,0],w:w,h:h,R:Math.max(.6,dist||XS.dist)};return XS.quad}
  function model(q){return new Float32Array([q.r[0]*q.w,q.r[1]*q.w,q.r[2]*q.w,0, 0,q.h,0,0, q.n[0],q.n[1],q.n[2],0, q.c[0],q.c[1],q.c[2],1])}
  /* nézési sugár → ablak-pont (0..1), vagy null */
- function hitFlat(q,M){var o=[M[12],M[13],M[14]],d=nrm([-M[8],-M[9],-M[10]]),dn=dot(d,q.n);if(Math.abs(dn)<1e-5)return null;
+ function gazeRay(M){return {o:[M[12],M[13],M[14]],d:nrm([-M[8],-M[9],-M[10]])}}
+ function hitFlat(q,M,ray){var RY=ray||gazeRay(M),o=RY.o,d=RY.d,dn=dot(d,q.n);if(Math.abs(dn)<1e-5)return null;
   var t=dot(sub(q.c,o),q.n)/dn;if(t<=0)return null;var p=add(o,sc3(d,t)),rel=sub(p,q.c),fx=dot(rel,q.r)/q.w+.5,fy=.5-dot(rel,q.u)/q.h;
   if(fx<0||fx>1||fy<0||fy>1)return null;return {fx:fx,fy:fy,t:t,back:dn>0}}
- function hitQuad(M){var q=XS.quad;if(!q)return null;if(!q.R)return hitFlat(q,M);var o=[M[12],M[13],M[14]],d=nrm([-M[8],-M[9],-M[10]]),C=add(q.c,sc3(q.n,q.R)),
+ function hitQuad(M,ray){var q=XS.quad;if(!q)return null;if(!q.R)return hitFlat(q,M,ray);var RY=ray||gazeRay(M),o=RY.o,d=RY.d,C=add(q.c,sc3(q.n,q.R)),
    ox=o[0]-C[0],oz=o[2]-C[2],a=d[0]*d[0]+d[2]*d[2];if(a<1e-8)return null;var b=2*(ox*d[0]+oz*d[2]),cc=ox*ox+oz*oz-q.R*q.R,disc=b*b-4*a*cc;if(disc<0)return null;
    var sq=Math.sqrt(disc),ts=[(-b-sq)/(2*a),(-b+sq)/(2*a)],best=null;
    ts.forEach(function(t){if(t<=0||best)return;var p=add(o,sc3(d,t)),v=sub(p,C),fw=-dot(v,q.n);if(fw<=0)return;var ang=Math.atan2(dot(v,q.r),fw),fx=ang*q.R/q.w+.5,fy=.5-(p[1]-q.c[1])/q.h;if(fx<0||fx>1||fy<0||fy>1)return;best={fx:fx,fy:fy,t:t,back:dot(sub(o,q.c),q.n)<0}});return best}
@@ -3664,11 +3666,12 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
      FS='precision mediump float;varying vec2 v;uniform sampler2D s;uniform float a;uniform vec4 k;uniform float b;void main(){vec4 c=texture2D(s,v);float e=step(v.x,0.012)+step(0.988,v.x)+step(v.y,0.012)+step(0.988,v.y);c.rgb=mix(c.rgb,vec3(0.55,0.9,1.0),clamp(e,0.0,1.0)*0.85);c.rgb*=b;gl_FragColor=vec4(c.rgb,a)*k;}',
      BS='attribute vec2 p;uniform vec4 u;varying vec2 v;void main(){v=vec2(mix(u.x,u.y,p.x*0.5+0.5),mix(u.z,u.w,p.y*0.5+0.5));gl_Position=vec4(p,0.0,1.0);}',
      BF='precision mediump float;varying vec2 v;uniform sampler2D s;void main(){gl_FragColor=vec4(texture2D(s,v).rgb,1.0);}',
+     OF='precision mediump float;varying vec2 v;uniform sampler2D s;void main(){gl_FragColor=texture2D(s,v);}',
      DS='attribute vec2 p;uniform vec4 c;varying vec2 v;void main(){v=p;gl_Position=vec4(c.x+p.x*c.z,c.y+p.y*c.w,0.0,1.0);}',
      DF='precision mediump float;varying vec2 v;uniform vec4 k;void main(){float r=length(v);if(r>1.0)discard;float ring=step(0.55,r);gl_FragColor=vec4(k.rgb,k.a*(0.35+0.65*ring));}';
  function prog(gl,a,b){function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);return o}var p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,a));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,b));gl.linkProgram(p);return p}
  var G={};
- function glInit(gl){G.q=prog(gl,VS,FS);G.b=prog(gl,BS,BF);G.d=prog(gl,DS,DF);
+ function glInit(gl){G.q=prog(gl,VS,FS);G.b=prog(gl,BS,BF);G.d=prog(gl,DS,DF);G.o=prog(gl,BS,OF);
   G.vb=gl.createBuffer();G.vk='';G.vn=4;G.db=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,G.db);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-.5,-.5,0,0,1, .5,-.5,0,1,1, -.5,.5,0,0,0, .5,.5,0,1,0]),gl.STATIC_DRAW);
   G.fb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,G.fb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
   XS.tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,XS.tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([10,30,60,220]));texParams(gl)}
@@ -3680,6 +3683,8 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function drawQuad(gl,mvp,back,buf,cnt,tex){gl.useProgram(G.q);gl.bindBuffer(gl.ARRAY_BUFFER,buf||G.vb);var lp=gl.getAttribLocation(G.q,'p'),lt=gl.getAttribLocation(G.q,'t');gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,3,gl.FLOAT,false,20,0);gl.enableVertexAttribArray(lt);gl.vertexAttribPointer(lt,2,gl.FLOAT,false,20,12);
   gl.uniformMatrix4fv(gl.getUniformLocation(G.q,'m'),false,mvp);gl.uniform1f(gl.getUniformLocation(G.q,'a'),.94);gl.uniform1f(gl.getUniformLocation(G.q,'b'),back?.45:1);gl.uniform4f(gl.getUniformLocation(G.q,'k'),1,1,1,1);
   gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tex||XS.tex);gl.uniform1i(gl.getUniformLocation(G.q,'s'),0);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.disable(gl.CULL_FACE);gl.drawArrays(gl.TRIANGLE_STRIP,0,cnt||G.vn)}
+ function drawOv(gl,tex,u0,u1,v0,v1){gl.useProgram(G.o);gl.bindBuffer(gl.ARRAY_BUFFER,G.fb);var l=gl.getAttribLocation(G.o,'p');gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,2,gl.FLOAT,false,0,0);
+  gl.uniform4f(gl.getUniformLocation(G.o,'u'),u0,u1,v0,v1);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1i(gl.getUniformLocation(G.o,'s'),0);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
  function drawDot(gl,x,y,sx,sy,on){gl.useProgram(G.d);gl.bindBuffer(gl.ARRAY_BUFFER,G.fb);var l=gl.getAttribLocation(G.d,'p');gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,2,gl.FLOAT,false,0,0);
   gl.uniform4f(gl.getUniformLocation(G.d,'c'),x,y,sx,sy);gl.uniform4f(gl.getUniformLocation(G.d,'k'),on?1:.55,on?.89:.9,on?.48:1,on?.95:.7);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
 
@@ -3698,7 +3703,45 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   g.fillStyle='rgba(255,255,255,.14)';g.fillRect(1024*.22,18,2,68);var n=d.items.length,iw=1024*.78/n;g.font='44px system-ui,sans-serif';
   d.items.forEach(function(it,i){var cx=1024*.22+iw*(i+.5);if(i===DK.hov){g.fillStyle='rgba(255,255,255,.22)';g.beginPath();g.arc(cx,52,44,0,7);g.fill();g.strokeStyle='#fff';g.lineWidth=3;g.stroke()}g.fillStyle='#fff';g.fillText(it[1],cx,56)});
   if(!DK.tex)DK.tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,DK.tex);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);texParams(gl);return true}
- function dockHitAR(M){var dq=dockQ(),d=dockItems();if(!dq||!d)return null;var h=hitFlat(dq,M);if(!h||h.back)return null;if(h.fx<.22)return -1;return Math.max(0,Math.min(d.items.length-1,Math.floor((h.fx-.22)/.78*d.items.length)))}
+ function dockHitAR(M,ray){var dq=dockQ(),d=dockItems();if(!dq||!d)return null;var h=hitFlat(dq,M,ray);if(!h||h.back)return null;if(h.fx<.22)return -1;return Math.max(0,Math.min(d.items.length-1,Math.floor((h.fx-.22)/.78*d.items.length)))}
+ /* ---- KÉZKÖVETÉS A VALÓDI TÉRBEN (külön a VR-étől): az AR kameraképe → kézmodell → csipesz, fogás, koppintás ---- */
+ var XH={on:true,fb:null,ftex:null,cw:0,ch:0,cv:null,px:null,last:0,res:[],hands:[],pin:0,pinT:0,g0:null,dk0:null,grab:null,moved:0,two:null,lostT:0,taps:0,dockTaps:0,drags:0,ov:0,otex:null,ocv:null,occ:null,said:{},asp:2,pt:null,src:''};
+ function xhSay(k,t){if(XH.said[k])return;XH.said[k]=1;reply(t)}
+ function xhCapture(gl,camTex,W,H){if(!XH.on)return;var now=performance.now();if(now-XH.last<70)return;XH.asp=W/H;
+  if(typeof window.__xrHandsLm==='function'){XH.last=now;XH.res=window.__xrHandsLm()||[];XH.resT=Date.now();XH.src='teszt';return}
+  var vr=VR();if(!vr.mpSend)return;var st=vr.mpLoad();if(st.err){xhSay('mp','A kézmodell nem töltődött be ('+st.err+'), ezért az XR-térben most nincs kézkövetés. Nézéssel és koppintással irányíts.');return}if(!st.eng)return;XH.last=now;XH.src='mp';
+  var cw,ch;if(W>=H){cw=320;ch=Math.max(16,Math.round(320*H/W))}else{ch=320;cw=Math.max(16,Math.round(320*W/H))}
+  if(!XH.fb||XH.cw!==cw||XH.ch!==ch){XH.cw=cw;XH.ch=ch;XH.ftex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,XH.ftex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,cw,ch,0,gl.RGBA,gl.UNSIGNED_BYTE,null);texParams(gl);XH.fb=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,XH.fb);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,XH.ftex,0)}
+  gl.bindFramebuffer(gl.FRAMEBUFFER,XH.fb);gl.viewport(0,0,cw,ch);drawBg(gl,camTex,0,1,1,0);if(!XH.px||XH.px.length!==cw*ch*4)XH.px=new Uint8Array(cw*ch*4);gl.readPixels(0,0,cw,ch,gl.RGBA,gl.UNSIGNED_BYTE,XH.px);
+  if(!XH.cv)XH.cv=document.createElement('canvas');if(XH.cv.width!==cw||XH.cv.height!==ch){XH.cv.width=cw;XH.cv.height=ch}XH.cv.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(XH.px.buffer),cw,ch),0,0);vr.mpSend(XH.cv)}
+ function rayAt(M,P,sx,sy){var nx=sx*2-1,ny=1-sy*2,dv=[(nx+P[8])/P[0],(ny+P[9])/P[5],-1];return {o:[M[12],M[13],M[14]],d:nrm([M[0]*dv[0]+M[4]*dv[1]+M[8]*dv[2],M[1]*dv[0]+M[5]*dv[1]+M[9]*dv[2],M[2]*dv[0]+M[6]*dv[1]+M[10]*dv[2]])}}
+ function xhProcess(M,P){if(!XH.on){XH.hands=[];return}var all;if(XH.src==='teszt'||typeof window.__xrHandsLm==='function')all=XH.res||[];else{var r=VR().mpRes?VR().mpRes():null;all=(r&&Date.now()-r.t<400)?r.all:[]}
+  var asp=XH.asp,now=Date.now();function d(a,b){var dx=(a.x-b.x)*asp,dy=a.y-b.y;return Math.sqrt(dx*dx+dy*dy)}
+  XH.hands=all.filter(function(l){return l&&l.length>=21}).map(function(l){var sz=d(l[0],l[9])||1e-3;return {lm:l,pr:d(l[4],l[8])/sz,tip:[l[8].x,l[8].y],pp:[(l[4].x+l[8].x)/2,(l[4].y+l[8].y)/2],sz:sz}});
+  var H=XH.hands;if(!H.length){XH.two=null;if(XH.pin&&(!XH.lostT||now-XH.lostT<0)){XH.lostT=now}if(XH.pin&&now-XH.lostT>260)xhRelease(now,true);XH.pt=null;return}XH.lostT=0;
+  var pins=H.filter(function(h){return h.pr<(XH.pin?.5:.32)});
+  /* két kéz: széthúzás = nagyítás */
+  if(pins.length>=2&&XS.quad){var a=pins[0].pp,b=pins[1].pp,dd=Math.sqrt(Math.pow((a[0]-b[0])*asp,2)+Math.pow(a[1]-b[1],2));if(!XH.two){XH.two={d0:dd,w0:XS.quad.w,h0:XS.quad.h};XH.grab=null;XH.pin=0}else if(XH.two.d0>.02){var k=Math.max(.3,Math.min(3.5,dd/XH.two.d0));XS.quad.w=XH.two.w0*k;XS.quad.h=XH.two.h0*k;XH.scaled=1}return}
+  if(XH.two&&pins.length<2){XH.two=null;XH.lockT=now+300;return}
+  var h=pins[0]||H[0],ray=rayAt(M,P,h.tip[0],h.tip[1]),g=hitQuad(M,ray);XH.pt={fx:g?g.fx:-1,fy:g?g.fy:-1,on:!!g};
+  if(g&&!g.back)hoverFeed(g);var dk=g?null:dockHitAR(M,ray);if(dk!=null){DK.hov=dk;XS.dockHand=dk}else XS.dockHand=null;
+  if(pins.length&&!XH.pin&&!(XH.lockT>now)){var pr=rayAt(M,P,pins[0].pp[0],pins[0].pp[1]),g0=hitQuad(M,pr);XH.pin=1;XH.pinT=now;XH.moved=0;XH.g0=g0&&!g0.back?g0:null;XH.dk0=XH.g0?null:dockHitAR(M,pr);
+   XH.grab=XH.g0&&XS.quad?{t:XH.g0.t,p0:add(pr.o,sc3(pr.d,XH.g0.t)),c0:XS.quad.c.slice()}:null}
+  else if(XH.pin&&pins.length){if(XH.grab){var pr2=rayAt(M,P,pins[0].pp[0],pins[0].pp[1]),np=add(pr2.o,sc3(pr2.d,XH.grab.t)),dl=sub(np,XH.grab.p0);if(!XH.moved&&Math.sqrt(dot(dl,dl))>.035){XH.moved=1;XH.drags++}if(XH.moved){XS.quad.c=add(XH.grab.c0,dl)}}}
+  else if(XH.pin&&!pins.length)xhRelease(now,false)}
+ function xhRelease(now,lost){var tap=!XH.moved&&now-XH.pinT<(lost?1300:1100);XH.pin=0;XH.grab=null;XH.lockT=now+250;
+  if(!tap)return;if(XH.g0){XH.taps++;try{VR().tapAt&&VR().tapAt(XH.g0.fx,XH.g0.fy)}catch(e){}setTimeout(function(){snap(true)},450);setTimeout(function(){snap(true)},1500)}
+  else if(XH.dk0!=null&&XH.dk0>=0){XH.dockTaps++;try{VR().dockGo&&VR().dockGo(XH.dk0)}catch(e){}setTimeout(function(){snap(true)},700);setTimeout(function(){snap(true)},1800)}}
+ /* a kéz rajza (fehér körvonal + ujjhegy-pont), a kameraképpel azonos kivágással */
+ var XB=[[0,1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16],[17,18,19,20]];
+ function xhOverlay(gl){var H=XH.hands;if(!H.length){XH.ovOk=0;return}var cw=480,ch=Math.max(16,Math.round(480/XH.asp));if(!XH.ocv){XH.ocv=document.createElement('canvas');XH.occ=document.createElement('canvas')}
+  [XH.ocv,XH.occ].forEach(function(c){if(c.width!==cw||c.height!==ch){c.width=cw;c.height=ch}});var o=XH.occ.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,cw,ch);o.lineCap='round';o.lineJoin='round';
+  function shape(extra){H.forEach(function(h){var L=h.lm,P=L.map(function(q){return [q.x*cw,q.y*ch]}),w=h.sz*ch*.3+extra;XB.forEach(function(b,bi){o.lineWidth=bi===0?w*.95:w*.9;o.beginPath();o.moveTo(P[b[0]][0],P[b[0]][1]);for(var k=1;k<b.length;k++)o.lineTo(P[b[k]][0],P[b[k]][1]);o.stroke()});
+   o.lineWidth=w*1.05;o.beginPath();[0,1,5,9,13,17].forEach(function(k,j){j?o.lineTo(P[k][0],P[k][1]):o.moveTo(P[k][0],P[k][1])});o.closePath();o.fill();o.stroke()})}
+  var th=Math.max(1.5,H[0].sz*ch*.03);o.globalCompositeOperation='source-over';o.strokeStyle='#fff';o.fillStyle='#fff';shape(th*2);o.globalCompositeOperation='destination-out';shape(0);o.globalCompositeOperation='source-over';
+  var g=XH.ocv.getContext('2d');g.clearRect(0,0,cw,ch);g.globalAlpha=.92;g.shadowColor='#fff';g.shadowBlur=4;g.drawImage(XH.occ,0,0);g.globalAlpha=1;g.shadowBlur=0;
+  H.forEach(function(h){var pin=h.pr<.5,x=(pin?h.pp[0]:h.tip[0])*cw,y=(pin?h.pp[1]:h.tip[1])*ch;g.beginPath();g.arc(x,y,pin?9:7,0,7);g.fillStyle=pin?'rgba(255,226,122,.9)':'rgba(140,231,255,.35)';g.fill();g.lineWidth=3;g.strokeStyle=pin?'#ffe27a':'#8ce7ff';g.stroke()});
+  if(!XH.otex)XH.otex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,XH.otex);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,XH.ocv);texParams(gl);XH.ovOk=1;XH.ov++}
  /* ---- képkocka ---- */
  function onFrame(t,frame){var s=XS.sess;if(!s)return;s.requestAnimationFrame(onFrame);var pose=frame.getViewerPose(XS.ref);if(!pose)return;var gl=XS.gl,layer=s.renderState.baseLayer;
   XS.frames++;var view=pose.views[0],M=pose.transform.matrix;XS.lastPose=M;
@@ -3706,16 +3749,18 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   var g=hitQuad(M);XS.gaze=g;hoverFeed(g);snap(false);var dh=g?null:dockHitAR(M);XS.dockGaze=dh;DK.hov=dh==null?-1:dh;curveMesh(gl,XS.quad);var hasDock=dockTex(gl),dq=hasDock?dockQ():null,Md=dq?model(dq):null;
   gl.bindFramebuffer(gl.FRAMEBUFFER,layer.framebuffer);var vp=layer.getViewport(view),W=vp.width,H=vp.height;
   var camTex=null;if(XS.bind&&view.camera){try{camTex=XS.bind.getCameraImage(view.camera)}catch(e){camTex=null}}
+  if(camTex){try{xhCapture(gl,camTex,W,H)}catch(e){XS.err='kéz:'+(e&&e.message)}gl.bindFramebuffer(gl.FRAMEBUFFER,layer.framebuffer);try{xhProcess(M,view.projectionMatrix);xhOverlay(gl)}catch(e){XS.err='kéz2:'+(e&&e.message)}}else if(XS.frames>90&&XH.on)xhSay('nocam','A telefon nem adja ki a kameraképet a valódi térben, ezért itt nincs kézkövetés. Nézéssel és koppintással, meg hanggal irányíts.');
+  if(XS.dockHand!=null&&camTex)DK.hov=XS.dockHand;
   XS.stereo=camTex?1:0;var P=view.projectionMatrix,Vw=view.transform.inverse.matrix,Mq=model(XS.quad),back=!!(g&&g.back);
   if(camTex){gl.viewport(vp.x,vp.y,W,H);gl.clearColor(0,0,0,1);gl.clear(gl.COLOR_BUFFER_BIT);
    /* a két szem a telefon VALÓDI vízszintes tengelye mentén: a világ „fel” iránya a nézet-térben dönti el (fekvő telefon a szemüvegben → a hosszanti tengely mentén) */
    var ux=Vw[4],uy=Vw[5],land=Math.abs(ux)>Math.abs(uy);XS.split=land?'y':'x';var on=!!g||dh!=null;
    if(!land){var P2=new Float32Array(P);P2[0]=P[0]*2;P2[8]=0;
-    [-1,1].forEach(function(e,i){gl.viewport(vp.x+(i?W/2:0),vp.y,W/2,H);drawBg(gl,camTex,.25,.75);var Ve=mul(tr(-e*XS.ipd/2,0,0),Vw);drawQuad(gl,mul(mul(P2,Ve),Mq),backFace(Vw));if(Md)drawQuad(gl,mul(mul(P2,Ve),Md),false,G.db,4,DK.tex);
+    [-1,1].forEach(function(e,i){gl.viewport(vp.x+(i?W/2:0),vp.y,W/2,H);drawBg(gl,camTex,.25,.75);var Ve=mul(tr(-e*XS.ipd/2,0,0),Vw);drawQuad(gl,mul(mul(P2,Ve),Mq),backFace(Vw));if(Md)drawQuad(gl,mul(mul(P2,Ve),Md),false,G.db,4,DK.tex);if(XH.ovOk)drawOv(gl,XH.otex,.25,.75,1,0);
      var mn=Math.min(W/2,H);drawDot(gl,0,0,.044*mn/(W/2),.044*mn/H,on)})}
    else{var P3=new Float32Array(P);P3[5]=P[5]*2;P3[9]=0;var sg=ux>0?1:-1;
     [0,1].forEach(function(i){var top=(i===0)===(sg>0);gl.viewport(vp.x,vp.y+(top?H/2:0),W,H/2);drawBg(gl,camTex,0,1,.25,.75);var ey=(i===0?sg:-sg)*XS.ipd/2,Ve=mul(tr(0,-ey,0),Vw);
-     drawQuad(gl,mul(mul(P3,Ve),Mq),backFace(Vw));if(Md)drawQuad(gl,mul(mul(P3,Ve),Md),false,G.db,4,DK.tex);var mn=Math.min(W,H/2);drawDot(gl,0,0,.044*mn/W,.044*mn/(H/2),on)})}}
+     drawQuad(gl,mul(mul(P3,Ve),Mq),backFace(Vw));if(Md)drawQuad(gl,mul(mul(P3,Ve),Md),false,G.db,4,DK.tex);if(XH.ovOk)drawOv(gl,XH.otex,0,1,.75,.25);var mn=Math.min(W,H/2);drawDot(gl,0,0,.044*mn/W,.044*mn/(H/2),on)})}}
   else{gl.viewport(vp.x,vp.y,W,H);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);drawQuad(gl,mul(mul(P,Vw),Mq),backFace(Vw));if(Md)drawQuad(gl,mul(mul(P,Vw),Md),false,G.db,4,DK.tex);drawDot(gl,0,0,.018*H/W,.018,!!g||dh!=null)}}
  function backFace(Vw){var q=XS.quad,M=XS.lastPose;if(!q||!M)return false;return dot(sub([M[12],M[13],M[14]],q.c),q.n)<0}
  var HVK='';function hoverFeed(g){var k=g&&!g.back?g.fx.toFixed(2)+','+g.fy.toFixed(2):'off';if(k===HVK)return;HVK=k;try{VR().hoverAt&&VR().hoverAt(g&&!g.back?g.fx:-1,g&&!g.back?g.fy:-1)}catch(e){}}
@@ -3725,14 +3770,14 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function start(){if(XS.on||XS.starting)return Promise.resolve(false);var x=navigator.xr;if(!x){reply('Ez a böngésző nem ismeri a WebXR-t.');return Promise.resolve(false)}
   XS.starting=1;XS.armed=0;disarmUI();XS.solo=0;try{if(!(VR().active&&VR().active())&&VR().xrPrep)XS.solo=VR().xrPrep()?1:0}catch(e){}try{VR().camPause&&VR().camPause()}catch(e){}
   var req;try{req=x.requestSession('immersive-ar',{requiredFeatures:['local'],optionalFeatures:['camera-access','local-floor']})}catch(e){req=Promise.reject(e)}
-  return req.then(function(s){DK.tex=null;DK.key='';G.vk='';XS.sess=s;XS.on=1;XS.starting=0;XS.quad=null;XS.frames=0;XS.ending=0;
+  return req.then(function(s){DK.tex=null;DK.key='';G.vk='';XH.fb=null;XH.otex=null;XH.ovOk=0;XH.said={};XH.pin=0;XH.two=null;XH.hands=[];try{VR().xrActive&&VR().xrActive(true);VR().mpLoad&&VR().mpLoad()}catch(e){}XS.sess=s;XS.on=1;XS.starting=0;XS.quad=null;XS.frames=0;XS.ending=0;
    var cv=XS.cv=document.createElement('canvas');var gl=XS.gl=cv.getContext('webgl',{xrCompatible:true,alpha:true,antialias:true});glInit(gl);
    s.updateRenderState({baseLayer:new XRWebGLLayer(s,gl)});try{XS.bind=window.XRWebGLBinding?new XRWebGLBinding(s,gl):null}catch(e){XS.bind=null}
    s.addEventListener('select',onSelect);s.addEventListener('end',onEnd);
    return s.requestReferenceSpace('local').then(function(ref){XS.ref=ref;snap(true);s.requestAnimationFrame(onFrame);
     setTimeout(function(){if(!XS.on)return;reply(XS.stereo?'Valódi tér bekapcsolva: az ablak a szobában marad, odébb sétálhatsz és körbejárhatod. Kattintás: nézz a gombra, hogy a pont sárga legyen, és koppints a képernyőre vagy nyomd meg a szemüveg gombját. Ide hozás: hozd ide. Kilépés: tér vége.':'Valódi tér bekapcsolva, de a telefon nem adott kamera-hozzáférést, ezért egyképes (szemüveg nélküli) nézet megy. Kattintás: nézz a gombra és koppints. Kilépés: tér vége.')},1200);return true})},
   function(e){XS.starting=0;XS.err=(e&&(e.name||e.message))||'hiba';try{if(XS.solo){XS.solo=0;VR().leave&&VR().leave()}else VR().camResume&&VR().camResume()}catch(x){}reply('Nem indult el a valódi tér ('+XS.err+'). '+(XS.err==='SecurityError'||XS.err==='NotAllowedError'?'A böngésző csak érintésre engedi: mondd újra, és koppints a képernyőre.':'Lehet, hogy a Google Play-szolgáltatások AR-hez (ARCore) hiányzik vagy frissíteni kell.'));return false})}
- function onEnd(){XS.on=0;XS.sess=null;XS.bind=null;XS.gl=null;XS.quad=null;HVK='';try{VR().hoverAt&&VR().hoverAt(-1,-1)}catch(e){}if(XS.solo){XS.solo=0;try{VR().leave&&VR().leave()}catch(e){}if(!XS.ending)reply('Kiléptem az XR térből.');return}try{VR().camResume&&VR().camResume()}catch(e){}if(!XS.ending)reply('Kiléptem a valódi térből, újra a szemüveges nézet megy.')}
+ function onEnd(){try{VR().xrActive&&VR().xrActive(false)}catch(e){}XS.on=0;XS.sess=null;XS.bind=null;XS.gl=null;XS.quad=null;HVK='';try{VR().hoverAt&&VR().hoverAt(-1,-1)}catch(e){}if(XS.solo){XS.solo=0;try{VR().leave&&VR().leave()}catch(e){}if(!XS.ending)reply('Kiléptem az XR térből.');return}try{VR().camResume&&VR().camResume()}catch(e){}if(!XS.ending)reply('Kiléptem a valódi térből, újra a szemüveges nézet megy.')}
  function stop(){if(!XS.sess)return false;XS.ending=1;try{XS.sess.end()}catch(e){onEnd()}return true}
 
  /* ---- „tedd le” után: egy koppintás indítja (a böngésző csak érintésre enged AR-t) ---- */
@@ -3755,6 +3800,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   arm();return 'XR tér: koppints egyszer a képernyőre (vagy nyomd meg a szemüveg gombját), és indul. Hangra magától nem indulhat, mert a böngésző csak érintésre engedi. A VR-hez mondd: VR.'}
  /* ---- hangparancsok AR közben (a DEX_VR spaceCmd hívja) ---- */
  function cmd(f){if(!XS.on)return null;var n=f.split(' ').length;
+  if(/\b(kez\w*|kezkovet\w*)\b/.test(f)&&/\b(ki|be|kapcsold\w*|stop|indit\w*)\b/.test(f)&&n<=5){XH.on=!/\b(ki|stop)\b/.test(f);XH.pin=0;XH.grab=null;XH.hands=[];XH.ovOk=0;return XH.on?'Bekapcsoltam a kézkövetést a valódi térben: mutass az ablakra, csípd össze az ujjad a kattintáshoz, csipesszel fogva viszed, két kézzel nagyítod.':'Kikapcsoltam a kézkövetést a valódi térben.'}
   if(/\b(ter|ar|xr|valodi ter)\b.*\b(vege|ki|kilep\w*|bezar\w*|stop)\b|\b(vedd fel|lepj ki|kilepes)\b/.test(f)&&n<=6){stop();XS.ending=0;return 'Kilépek a valódi térből; az ablak újra a nézeteddel mozog.'}
   if(/\b(hozd ide|gyere ide|tedd ide|elem|ide)\b/.test(f)&&n<=5){XS.replace=1;return 'Ide hoztam az ablakot, eléd.'}
   if(/\b(kozelebb|kozelit\w*)\b/.test(f)&&n<=5){XS.dist=Math.max(.45,XS.dist-.25);XS.replace=1;return 'Közelebb hoztam.'}
@@ -3764,7 +3810,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   if(/\b(kep|kamera\w*)\b.*\b(fordit\w*|fordva|fejjel)\b/.test(f)&&n<=5){XS.flipV=XS.flipV?0:1;return 'Megfordítottam a kameraképet.'}
   return null}
 
- window.DEX_XR={menuStart:menuStart,voice:voice,isWord:isWord,supported:function(){return XS.sup},probe:probe,arm:arm,disarm:function(){XS.armed=0;disarmUI()},start:start,stop:stop,cmd:cmd,state:function(){return {split:XS.split||'',solo:XS.solo||0,dockGaze:XS.dockGaze,dockTaps:XS.dockTaps||0,on:XS.on,armed:XS.armed,sup:XS.sup,stereo:XS.stereo,frames:XS.frames,taps:XS.taps,snaps:XS.snaps||0,quad:XS.quad,gaze:XS.gaze,err:XS.err,dist:XS.dist}},
+ window.DEX_XR={menuStart:menuStart,voice:voice,isWord:isWord,supported:function(){return XS.sup},probe:probe,arm:arm,disarm:function(){XS.armed=0;disarmUI()},start:start,stop:stop,cmd:cmd,state:function(){return {xh:{on:XH.on,n:XH.hands.length,pin:XH.pin,taps:XH.taps,dockTaps:XH.dockTaps,drags:XH.drags,ov:XH.ov,pt:XH.pt,src:XH.src},split:XS.split||'',solo:XS.solo||0,dockGaze:XS.dockGaze,dockTaps:XS.dockTaps||0,on:XS.on,armed:XS.armed,sup:XS.sup,stereo:XS.stereo,frames:XS.frames,taps:XS.taps,snaps:XS.snaps||0,quad:XS.quad,gaze:XS.gaze,err:XS.err,dist:XS.dist}},
   _m:{mul:mul,inv:inv,tr:tr,placeFrom:placeFrom,hitQuad:hitQuad,project:project}};
 })();
 

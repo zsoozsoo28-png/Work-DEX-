@@ -183,3 +183,13 @@ v52
 - XR tér szemüvegben: ha a telefon fekszik (szemüvegben), a két szem képe a hosszanti tengely mentén válik szét, mindkettő egyenes, fekvő kép. Álló telefonnál (kézben) a régi nézet marad. Ezt a telefon helyzetéből magától dönti el.
 - Az XR-ablak alapból kisebb, hogy a dokksávval együtt beférjen egy szem képébe ("nagyobb", "közelebb" nagyít).
 - "melyik verzió" -> v52.
+
+v53
+- KÉZKÖVETÉS A VALÓDI TÉRBEN (XR): a telefon AR-kameraképét kapja a kézmodell. Külön a VR-étől: amíg az XR tér fut, a VR kézvezérlése szünetel, utána ugyanúgy megy tovább.
+  - Mutatás: a mutatóujjad hegye alatt a gomb/kártya kiemelődik.
+  - Rövid csipesz az ablakon = kattintás; a dokksáv ikonján = oldalváltás.
+  - Csipesszel fogva húzod = az ablak a térben odébb megy, és ott marad.
+  - Két kézzel csípve széthúzod = nagyobb, összehúzod = kisebb.
+  - A kezed fehér körvonallal látszik, az ujjhegyen pont (sárga, ha csípsz).
+  - "kézkövetés ki/be" (XR-ben). Ha a telefon nem adja ki a kameraképet, a DEX megmondja; akkor nézéssel + koppintással megy.
+- "melyik verzió" -> v53.
