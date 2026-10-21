@@ -1045,7 +1045,7 @@ body.wdea-home #page>.page-back-button,body.wdea-home #page>.home-title{display:
 .wh-greet h2{margin:4px 0 2px;font:700 clamp(26px,6.5vw,38px)/1.1 'Space Grotesk',Manrope,sans-serif;letter-spacing:-.02em;background:linear-gradient(100deg,#fff 30%,#c9c2ff 70%,#ff9ec0);-webkit-background-clip:text;background-clip:text;color:transparent}
 .wh-greet h2 span{-webkit-text-fill-color:initial;color:initial}
 .wh-greet p{margin:0;color:#aab3cc;font-size:15px}
-.wh-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.wh-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .wh-act{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 4px 10px;border-radius:18px;border:1px solid #2a3753;background:linear-gradient(160deg,#131d33,#0e1426);color:#e9eeff;cursor:pointer;transition:transform .15s,border-color .15s}
 .wh-act:hover{transform:translateY(-2px);border-color:#7d76e9}
 .wh-act small{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
@@ -1061,12 +1061,15 @@ body.wdea-home #page>.page-back-button,body.wdea-home #page>.home-title{display:
 .wh-lbl i{width:8px;height:8px;border-radius:50%;background:#2fd28b;box-shadow:0 0 8px #2fd28b}
 .wh-row{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .wh-row button{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:58px;border:0;background:none;color:#e9eeff;font:600 12px Manrope,sans-serif;cursor:pointer}
-/* modulsáv: kompakt kártyák */
-body.wdea-home .home-module-section{margin-top:4px}
-body.wdea-home .home-module-card{min-height:0!important;height:auto!important;padding:12px 14px!important;flex-basis:190px!important;width:190px!important;min-width:190px!important;display:grid!important;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:11px;align-items:center;text-align:left}
-body.wdea-home .home-module-card .home-module-glyph{grid-row:1/3;position:static!important;margin:0!important;font-size:24px!important;line-height:1!important}
-body.wdea-home .home-module-card b{font-size:15px!important;margin:0!important}
-body.wdea-home .home-module-card small{font-size:12px!important;margin:0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* modulok: rendezett rács (nincs görgetős sáv, nincs ismétlődő másolat) */
+body.wdea-home .home-module-section{margin:6px auto 14px!important;padding:0 2px!important;max-width:900px;width:auto!important;overflow:visible!important}
+body.wdea-home .home-module-rail{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px!important;overflow:visible!important;padding:0!important;margin:0!important;width:auto!important;scroll-snap-type:none!important;mask-image:none!important;-webkit-mask-image:none!important}
+body.wdea-home .home-module-rail>[data-home-loop-copy]{display:none!important}
+body.wdea-home .home-module-card{width:auto!important;min-width:0!important;max-width:none!important;flex:none!important;height:auto!important;min-height:86px!important;padding:12px 6px 10px!important;margin:0!important;display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start;gap:7px;text-align:center;border-radius:16px!important;transform:none!important}
+body.wdea-home .home-module-card .home-module-glyph{position:static!important;margin:0!important;font-size:22px!important;line-height:1!important;inset:auto!important}
+body.wdea-home .home-module-card b{font-size:12px!important;line-height:1.2!important;margin:0!important;white-space:normal;overflow-wrap:anywhere}
+body.wdea-home .home-module-card small{display:none!important}
+@media(min-width:761px){body.wdea-home .home-module-rail{grid-template-columns:repeat(8,minmax(0,1fr))}}
 @media(max-width:380px){.wh-actions{gap:6px}.wh-ic{width:42px;height:42px}.wh-act small{font-size:11px}}
 @media(min-width:761px){.wm-shell{border-radius:22px 0 0 22px}}
 @media(prefers-reduced-motion:reduce){.wm-shell,#wdea-msg-toast,.wc-b.yes,#wdea-call .wm-av.xl{transition:none!important;animation:none!important}}
@@ -2427,7 +2430,7 @@ function html(){var n=name(),M=window.WDEA_MSG,people=M?M.users().filter(functio
  var date=new Date().toLocaleDateString(['hu-HU','de-AT','en-GB','it-IT'][lang()],{weekday:'long',month:'long',day:'numeric'});
  var acts=[['msg','<svg viewBox="0 0 24 24"><path d="M12 3C6.9 3 3 6.6 3 11.1c0 2.5 1.2 4.7 3.2 6.2V21l3.3-1.8c.8.2 1.7.3 2.5.3 5.1 0 9-3.6 9-8.1S17.1 3 12 3Zm1 10.9-2.3-2.4-4.4 2.4 4.8-5.1 2.4 2.4 4.3-2.4-4.8 5.1Z"/></svg>',T('Üzenetek','Chats','Chats','Chat')],
   ['call','<svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>',T('Hívás','Anrufen','Call','Chiama')],
-  ['ai','<b>✦</b>','AI'],['give','<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.3-9.2C1.5 8.6 3.6 5 7.1 5c2 0 3.4 1.1 4.9 2.8C13.5 6.1 14.9 5 16.9 5c3.5 0 5.6 3.6 4.4 6.8C19.5 16.4 12 21 12 21Z"/></svg>',T('Adomány','Spenden','Donate','Dona')]];
+  ['ai','<b>✦</b>','AI']];
  return '<div class="wh-top"><div class="wh-greet"><small>'+esc(date)+'</small><h2>'+greet()+(n?', '+esc(n):'')+'! <span aria-hidden="true">👋</span></h2><p>'+T('Mi történik ma a közösségben?','Was passiert heute in der Community?','What\'s happening in the community today?','Cosa succede oggi nella community?')+'</p></div></div>'+
   '<div class="wh-actions" role="group">'+acts.map(function(a){return '<button type="button" class="wh-act wh-'+a[0]+'" data-wh="'+a[0]+'" aria-label="'+String(a[2]).replace(/<[^>]*>/g,'')+' – '+T('főoldali gyorsgomb','Schnellzugriff Startseite','home quick action','azione rapida home')+'"><span class="wh-ic">'+a[1]+(a[0]==='msg'?'<b class="wh-badge" data-wm-badge hidden>0</b>':'')+'</span><small>'+a[2]+'</small></button>'}).join('')+'</div>'+
   (people.length?'<div class="wh-people"><small class="wh-lbl"><i></i>'+T('Elérhetők most','Jetzt online','Online now','Online ora')+'</small><div class="wh-row">'+people.map(function(u){return '<button type="button" data-wh="chat" data-pid="'+esc(u.id)+'"><span class="wm-av lg" style="--h:'+hue(u.name)+'">'+esc(String(u.name).slice(0,1).toUpperCase())+'<i class="wm-dot"></i></span><span>'+esc(String(u.name).split(' ')[0])+'</span></button>'}).join('')+'</div></div>':'');}
