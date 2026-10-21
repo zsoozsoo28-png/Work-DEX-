@@ -1,0 +1,24 @@
+DEX DÍNÓNYOMOZÓK — GYORS HASZNÁLAT
+
+Indítás
+• A DEX VR-ben mondd: „játékok”, majd válaszd a „DEX Dínónyomozók” játékot.
+• Közvetlenül is kérheted: „DEX, indítsd el a Dínónyomozókat.”
+• A meglévő „DEX Dínóüldözés” külön játékmódként megmaradt.
+
+Játék
+1. Tedd a telefont a VR-szemüvegbe úgy, hogy a kamera szabadon lásson.
+2. Emeld fel a kezed a kamera elé; a kézkövetés elindítja a keresést.
+3. Figyeld a DEX jelzéseit, a neszt és a képernyőn megjelenő nyomokat.
+4. Amikor előbújik a dínó, mutass rá, majd csippents (érintsd össze a hüvelyk- és mutatóujjad), vagy mondd: „megvan”.
+5. A játék folytatódik a következő bújócskázó dínóval.
+
+Hangparancsok
+• „Segíts” / „merre van?” — DEX ad egy tippet.
+• „Következő dínó” — továbblép a következő keresésre.
+• „Szünet” / „folytasd” — megállítja vagy folytatja a játékot.
+• „Játék vége” — kilép.
+
+Megjegyzés
+A játék a meglévő DEX kamerás, két szemre osztott VR-nézetét használja, és átlátszó grafikát rajzol a kameraképre. A dínó képernyőn belüli helyét változtatja és időnként elbújik; a jelenlegi telefonos kamerakép önmagában nem méri fel a szoba mélységét, így a kanapé mögötti valódi takarást nem tudja pontosan megjeleníteni. Ehhez kompatibilis, HTTPS-en futó WebXR/AR eszköz és térérzékelés kell.
+
+Gyerekekkel játék előtt legyen szabad a közvetlen környezet, és a telefont tartó szemüveget csak álló helyzetben próbáljátok ki.
