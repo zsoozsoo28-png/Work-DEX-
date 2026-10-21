@@ -1099,7 +1099,10 @@ body.wdea-home .home-rail-controls{display:none!important}
 #side-nav .wdea-nav-h.g3{order:20}#side-nav [data-route=business]{order:21}#side-nav [data-route=storeConnect]{order:22}#side-nav [data-route=studio]{order:23}
 #side-nav .wdea-nav-h.g4{order:30}#side-nav [data-route=profile]{order:31}#side-nav [data-route=settings]{order:32}#side-nav [data-route=support]{order:33}
 #side-nav>*{order:40}
-@media(max-width:760px){#page{padding-bottom:max(96px,env(safe-area-inset-bottom,0px) + 90px)!important}}
+@media(max-width:760px){body:not(.video-route):not(.chat-route) #page{padding-bottom:max(96px,env(safe-area-inset-bottom,0px) + 90px)!important}}
+/* videóoldal: a videó a képernyő aljáig ér, a Hang gomb balra (jobbra a robot), a videó saját alsó menüje fölé kerül */
+html body.video-route #wdea-quick-voice{right:auto!important;left:12px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 104px)!important;transform:none!important;translate:none!important;width:56px!important;height:56px!important}
+html body.video-route #wdea-quick-status{right:auto!important;left:12px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 166px)!important;transform:none!important}
 /* széles nézet (asztal, VR-ablak): egy Üzenetek gomb, nincs „Helyi mód” felirat, tömörebb oldalmenü */
 .top-actions>.icon-button[data-route=messages]:not(.wdea-msg-btn),.top-actions>.online-pill{display:none!important}
 @media(min-width:761px){#side-nav{gap:2px}#side-nav .nav-item{min-height:40px;padding-top:7px!important;padding-bottom:7px!important}#side-nav .wdea-nav-h{margin:10px 12px 2px}}
