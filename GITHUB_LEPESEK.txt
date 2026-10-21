@@ -215,3 +215,5 @@ WORK – Üzenetek és hívás, új főoldal (2026-10-21)
 - FONTOS: a GitHub Pages csak statikus oldal, ott DEMÓ módban fut (minta-ismerősök). Valódi üzenetküldés és hívás a saját WDEA szervereden megy (START_WDEA, https://...:8443/work/index.html) – ehhez a TELJES csomag kell.
 - Főoldal: köszöntés + gyorsgombok + elérhetők; a főoldalon nincs Vissza gomb és nagy cím (a többi oldalon a Vissza megmaradt).
 - DEX: beszéd közben a szája világít.
+- Rendrakás minden WORK-oldalon (telefon, széles nézet, VR): egy Vissza gomb, nincs dupla menüpont/gomb, csoportosított oldalmenü.
+- FONTOS a GitHubon: ha a repóban van egy régi "work" MAPPA (work/index.html), töröld. A DEX most már a work.html-t nyitja elsőként, de a régi mappa csak zavart okoz.

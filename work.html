@@ -1045,7 +1045,7 @@ body.wdea-home #page>.page-back-button,body.wdea-home #page>.home-title{display:
 .wh-greet h2{margin:4px 0 2px;font:700 clamp(26px,6.5vw,38px)/1.1 'Space Grotesk',Manrope,sans-serif;letter-spacing:-.02em;background:linear-gradient(100deg,#fff 30%,#c9c2ff 70%,#ff9ec0);-webkit-background-clip:text;background-clip:text;color:transparent}
 .wh-greet h2 span{-webkit-text-fill-color:initial;color:initial}
 .wh-greet p{margin:0;color:#aab3cc;font-size:15px}
-.wh-actions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.wh-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .wh-act{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 4px 10px;border-radius:18px;border:1px solid #2a3753;background:linear-gradient(160deg,#131d33,#0e1426);color:#e9eeff;cursor:pointer;transition:transform .15s,border-color .15s}
 .wh-act:hover{transform:translateY(-2px);border-color:#7d76e9}
 .wh-act small{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
@@ -1055,7 +1055,7 @@ body.wdea-home #page>.page-back-button,body.wdea-home #page>.home-title{display:
 .wh-call .wh-ic{background:linear-gradient(135deg,#2fd28b,#139c86);box-shadow:0 6px 18px #2fd28b44}
 .wh-ai .wh-ic{background:linear-gradient(135deg,#c04cf0,#7d3cf0);box-shadow:0 6px 18px #a24cf055}
 .wh-video .wh-ic{background:linear-gradient(135deg,#ff5f8f,#e0336b);box-shadow:0 6px 18px #fa4e7955}
-.wh-earn .wh-ic{background:linear-gradient(135deg,#ffb74d,#f07c2c);box-shadow:0 6px 18px #f0a02c44}
+.wh-give .wh-ic{background:linear-gradient(135deg,#ff5f8f,#e0336b);box-shadow:0 6px 18px #fa4e7955}.wh-earn .wh-ic{background:linear-gradient(135deg,#ffb74d,#f07c2c);box-shadow:0 6px 18px #f0a02c44}
 .wh-people{margin-top:14px}
 .wh-lbl{display:flex;align-items:center;gap:6px;margin:0 0 8px;font-size:12.5px;font-weight:700;color:#aab3cc}
 .wh-lbl i{width:8px;height:8px;border-radius:50%;background:#2fd28b;box-shadow:0 0 8px #2fd28b}
@@ -1070,6 +1070,39 @@ body.wdea-home .home-module-card small{font-size:12px!important;margin:0!importa
 @media(max-width:380px){.wh-actions{gap:6px}.wh-ic{width:42px;height:42px}.wh-act small{font-size:11px}}
 @media(min-width:761px){.wm-shell{border-radius:22px 0 0 22px}}
 @media(prefers-reduced-motion:reduce){.wm-shell,#wdea-msg-toast,.wc-b.yes,#wdea-call .wm-av.xl{transition:none!important;animation:none!important}}
+/* ===== WDEA WORK · rendrakás v1: duplikált gombok, felesleges feliratok elrejtése (a funkciók megmaradnak) ===== */
+/* fejléc: Adomány és pontszámláló a menübe/főoldalra került */
+.topbar .mobile-help-row{display:none!important}
+/* „WDEA WORK · MUNKATERÜLET” felirat minden oldalon felesleges */
+.page-heading .eyebrow.wdea-x,.wdea-x{display:none!important}
+/* egy Vissza gomb oldalanként */
+body.video-route #page>.page-back-button,body.chat-route #page>.page-back-button{display:none!important}
+body.video-route .legal-footer,body.chat-route .legal-footer{display:none!important}
+.help-head .help-back,.legal-document-view>[data-route=home],.checkout-disabled [data-route=cart],[data-point-back],.wallet-page-heading [data-points-tab=feed]{display:none!important}
+body[data-wr=storeConnect] .page-heading [data-route=shopping]{display:none!important}
+/* segítség oldalak: a fejlécben már van logó és profil */
+.help-brand-line>img,.help-brand-line>.help-pipe,.help-brand-line>.avatar,.help-brand-line>.help-logo,.help-brand-line>svg{display:none!important}
+/* kosár: a fejléc kosárgombja elég */
+.page-heading .cart-open,.shopping-toolbar [data-action=open-cart],body[data-wr=store] .page-heading [data-route=cart],.store-toolbar [data-action=open-cart],.store-toolbar [data-store-editor-for]{display:none!important}
+/* profil: egy Szerkesztés és egy Beállítások */
+body[data-wr=profile] .page-heading [data-action=edit-profile],.profile-shortcut[data-route=settings]{display:none!important}
+/* keresőgomb ne törjön két sorba */
+.page-content form.global-search .button{white-space:nowrap;flex:0 0 auto}
+/* főoldal: a modulsáv húzható, a nyilak feleslegesek */
+body.wdea-home .home-rail-controls{display:none!important}
+/* oldalmenü: csoportosítva, ismétlés nélkül */
+#side-nav{display:flex!important;flex-direction:column;gap:6px}
+#side-nav .nav-item[data-route=help],#side-nav .nav-item[data-route=points]{display:none!important}
+#side-nav .wdea-nav-h{margin:12px 4px 2px;font:700 11px/1.2 Manrope,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8f9bbd}
+#side-nav [data-route=home]{order:1}#side-nav [data-route=video]{order:2}#side-nav [data-route=explore]{order:3}#side-nav [data-route=messages]{order:4}#side-nav [data-route=notifications]{order:5}#side-nav [data-route=groups]{order:6}
+#side-nav .wdea-nav-h.g2{order:10}#side-nav [data-route=shopping]{order:11}#side-nav [data-route=store]{order:12}#side-nav [data-route=saved]{order:13}
+#side-nav .wdea-nav-h.g3{order:20}#side-nav [data-route=business]{order:21}#side-nav [data-route=storeConnect]{order:22}#side-nav [data-route=studio]{order:23}
+#side-nav .wdea-nav-h.g4{order:30}#side-nav [data-route=profile]{order:31}#side-nav [data-route=settings]{order:32}#side-nav [data-route=support]{order:33}
+#side-nav>*{order:40}
+@media(max-width:760px){#page{padding-bottom:max(96px,env(safe-area-inset-bottom,0px) + 90px)!important}}
+/* széles nézet (asztal, VR-ablak): egy Üzenetek gomb, nincs „Helyi mód” felirat, tömörebb oldalmenü */
+.top-actions>.icon-button[data-route=messages]:not(.wdea-msg-btn),.top-actions>.online-pill{display:none!important}
+@media(min-width:761px){#side-nav{gap:2px}#side-nav .nav-item{min-height:40px;padding-top:7px!important;padding-bottom:7px!important}#side-nav .wdea-nav-h{margin:10px 12px 2px}}
 
 </style>
 </head>
@@ -2391,7 +2424,7 @@ function html(){var n=name(),M=window.WDEA_MSG,people=M?M.users().filter(functio
  var date=new Date().toLocaleDateString(['hu-HU','de-AT','en-GB','it-IT'][lang()],{weekday:'long',month:'long',day:'numeric'});
  var acts=[['msg','<svg viewBox="0 0 24 24"><path d="M12 3C6.9 3 3 6.6 3 11.1c0 2.5 1.2 4.7 3.2 6.2V21l3.3-1.8c.8.2 1.7.3 2.5.3 5.1 0 9-3.6 9-8.1S17.1 3 12 3Zm1 10.9-2.3-2.4-4.4 2.4 4.8-5.1 2.4 2.4 4.3-2.4-4.8 5.1Z"/></svg>',T('Üzenetek','Chats','Chats','Chat')],
   ['call','<svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>',T('Hívás','Anrufen','Call','Chiama')],
-  ['ai','<b>✦</b>','AI'],['video','<b>▶</b>',T('Videók','Videos','Videos','Video')],['earn','<b>✧</b>',T('Pontok','Punkte','Points','Punti')]];
+  ['ai','<b>✦</b>','AI'],['give','<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.3-9.2C1.5 8.6 3.6 5 7.1 5c2 0 3.4 1.1 4.9 2.8C13.5 6.1 14.9 5 16.9 5c3.5 0 5.6 3.6 4.4 6.8C19.5 16.4 12 21 12 21Z"/></svg>',T('Adomány','Spenden','Donate','Dona')]];
  return '<div class="wh-top"><div class="wh-greet"><small>'+esc(date)+'</small><h2>'+greet()+(n?', '+esc(n):'')+'! <span aria-hidden="true">👋</span></h2><p>'+T('Mi történik ma a közösségben?','Was passiert heute in der Community?','What\'s happening in the community today?','Cosa succede oggi nella community?')+'</p></div></div>'+
   '<div class="wh-actions" role="group">'+acts.map(function(a){return '<button type="button" class="wh-act wh-'+a[0]+'" data-wh="'+a[0]+'" aria-label="'+String(a[2]).replace(/<[^>]*>/g,'')+' – '+T('főoldali gyorsgomb','Schnellzugriff Startseite','home quick action','azione rapida home')+'"><span class="wh-ic">'+a[1]+(a[0]==='msg'?'<b class="wh-badge" data-wm-badge hidden>0</b>':'')+'</span><small>'+a[2]+'</small></button>'}).join('')+'</div>'+
   (people.length?'<div class="wh-people"><small class="wh-lbl"><i></i>'+T('Elérhetők most','Jetzt online','Online now','Online ora')+'</small><div class="wh-row">'+people.map(function(u){return '<button type="button" data-wh="chat" data-pid="'+esc(u.id)+'"><span class="wm-av lg" style="--h:'+hue(u.name)+'">'+esc(String(u.name).slice(0,1).toUpperCase())+'<i class="wm-dot"></i></span><span>'+esc(String(u.name).split(' ')[0])+'</span></button>'}).join('')+'</div></div>':'');}
@@ -2402,10 +2435,31 @@ function paint(){var page=document.getElementById('page');var isHome=!!(page&&pa
  var M=window.WDEA_MSG,n=M?M.unread():0;hero.querySelectorAll('[data-wm-badge]').forEach(function(b){b.hidden=!n;b.textContent=n>9?'9+':n})}finally{busy=false}}
 document.addEventListener('click',function(e){var b=e.target.closest('#wdea-home-hero [data-wh]');if(!b)return;var a=b.dataset.wh,M=window.WDEA_MSG;
  if(a==='msg'&&M)M.open();else if(a==='call'&&M){M.open()}else if(a==='chat'&&M)M.openChat(b.dataset.pid);
- else if(a==='ai'){try{window.WDEA_WORK_AI&&window.WDEA_WORK_AI.open()}catch(x){}}else if(a==='video')location.hash='#video';else if(a==='earn')location.hash='#points'});
+ else if(a==='ai'){try{window.WDEA_WORK_AI&&window.WDEA_WORK_AI.open()}catch(x){}}else if(a==='give')location.hash='#help'});
 function init(){var page=document.getElementById('page');if(!page)return;paint();new MutationObserver(function(){if(!busy)paint()}).observe(page,{childList:true});
  new MutationObserver(function(){hero&&(hero.__h='');paint()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});setInterval(paint,20000)}
 window.WDEA_HOME={paint:paint};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+/* ===== WDEA WORK · rendrakás v1 (csak megjelenés; útvonalak, gombok működése változatlan) ===== */
+(function(){'use strict';
+function lang(){var l=(document.documentElement.lang||'hu').slice(0,2);return {hu:0,de:1,en:2,it:3}[l]||0}
+function T(a){return a[lang()]||a[0]}
+var EYE=/(MUNKATER[ÜU]LET|ARBEITSBEREICH|WORKSPACE|AREA DI LAVORO|SPAZIO DI LAVORO)\s*$/i;
+var busy=false;
+function route(){var h=(location.hash||'').slice(1).split(/[?&]/)[0];return h||'home'}
+function tidy(){if(busy)return;busy=true;try{
+ document.body.setAttribute('data-wr',route());
+ var page=document.getElementById('page');
+ if(page){page.querySelectorAll('.page-heading .eyebrow').forEach(function(e){if(EYE.test(e.textContent.trim()))e.classList.add('wdea-x')});
+  page.querySelectorAll('.page-heading p').forEach(function(p){if(/^\s*(undefined|null)\s*$/.test(p.textContent))p.classList.add('wdea-x')})}
+ var nav=document.getElementById('side-nav');
+ if(nav&&!nav.querySelector('.wdea-nav-h')){[['g2',['Vásárlás','Einkaufen','Shopping','Acquisti']],['g3',['Vállalkozás','Unternehmen','Business','Attività']],['g4',['Fiók','Konto','Account','Account']]].forEach(function(g){var d=document.createElement('div');d.className='wdea-nav-h '+g[0];d.setAttribute('aria-hidden','true');d.textContent=T(g[1]);nav.appendChild(d)})}
+}finally{busy=false}}
+function init(){tidy();var page=document.getElementById('page'),nav=document.getElementById('side-nav');
+ var mo=new MutationObserver(function(){if(!busy)tidy()});if(page)mo.observe(page,{childList:true});if(nav)mo.observe(nav,{childList:true});
+ window.addEventListener('hashchange',function(){setTimeout(tidy,0)});
+ new MutationObserver(function(){var n=document.getElementById('side-nav');if(n)n.querySelectorAll('.wdea-nav-h').forEach(function(x){x.remove()});tidy()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 

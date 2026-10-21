@@ -2574,7 +2574,7 @@ document.body.appendChild(prof);document.body.appendChild(menu);
   hud(function(x){var e=x.querySelector('.cm');if(!e)return;e.classList.toggle('on',chatOn&&ms.length>0);e.innerHTML='';if(!chatOn)return;ms.forEach(function(m){var sp=document.createElement('span');if(m.classList.contains('me'))sp.className='me';var tx=m.textContent.trim();sp.textContent=tx.length>120?tx.slice(0,117)+'…':tx;e.appendChild(sp)})})}
  function chatSet(on){chatOn=!!on;chatRender(true)}
  function feed(){try{camApply()}catch(e){}if(G&&!G.paused&&!G.done&&(++fc%3===0))skRender();if(chatOn)chatRender();trackHand(Date.now())}
- function workCands(){return /\/dex\/[^\/]*$/.test(location.pathname)?['../work/index.html']:['./work/index.html','./work.html']}
+ function workCands(){return /\/dex\/[^\/]*$/.test(location.pathname)?['../work/index.html']:['./work.html','./work/index.html']} /* a csomagban szállított work.html az elsődleges; egy régi work/ mappa ne írja felül */
  var workSel=null;
  function workUrl(){return new URL(workSel||workCands()[0],location.href).href}
  var workChk=null;
