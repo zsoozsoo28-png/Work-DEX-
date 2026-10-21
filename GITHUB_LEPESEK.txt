@@ -165,3 +165,10 @@ v49
 - A gombok kék kiemelésének kapcsolója: "rámutatás ki/be" (a "kiemel" szó mostantól a térbe tétel).
 - Korlát: AR-ben még nincs kézkövetés (a kamerát az AR használja), ott nézéssel + koppintással és hanggal irányítasz.
 - "melyik verzió" -> v49.
+
+v50 (Quest 3 passthrough-stílus)
+- Fehér körvonalas kéz: a kezed széle vékony, világító fehér vonallal látszik (alapból bekapcsolva). "körvonal ki/be".
+- Fehér keretes kiemelés: amire mutatsz (kártya, gomb), fehér keretet kap és kicsit kiemelkedik.
+- Dokksáv az ablak alatt: óra, akku és a WORK oldalai (Főoldal, Webshop, Üzenetek, Felfedezés, Videó, Stúdió, AI, Értesítések, Profil, Beállítások). Rámutatva az ikon kiemelődik, csípésre odavált. "dokk ki/be".
+- Valódi térben (AR): nagyobb, ívelt ablak, alatta a dokksáv; nézz az ikonra és koppints.
+- "melyik verzió" -> v50.
