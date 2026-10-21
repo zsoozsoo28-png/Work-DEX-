@@ -208,3 +208,10 @@ WORK – nyelvek és telefonos hírfolyam (2026-10-21)
 - A WORK minden oldala most a kiválasztott nyelven jelenik meg (magyar, német, angol, olasz): menük, gombok, keresőmező, kategóriák, kosár, beállítások, segítség, admin, felugró üzenetek és hibaüzenetek is. Kb. 2300 szöveg lefordítva; a márka- és személynevek változatlanok.
 - Nyelvváltás: Beállítások → Nyelv és régió; azonnal átvált, újratöltés nélkül. Magyarra visszaváltva minden az eredeti.
 - Telefonon a hírfolyam egy oszlopban jelenik meg, a feliratok nem törnek szét ("DEMÓ · MINTATARTALOM", "Törlés").
+
+WORK – Üzenetek és hívás, új főoldal (2026-10-21)
+- Új 💬 Üzenetek gomb a fejlécben (a ☰ és az S mellett), olvasatlan-számmal. Beszélgetéslista, chat buborékokkal, hang- és videóhívás, felugró értesítés új üzenetnél.
+- Hangra: "üzenetek", "nyisd meg az üzenetet", "nézd meg", "vedd fel", "ne vedd fel", "tedd le", "hívd fel X-et", "írd meg neki, hogy ...", "próbahívás".
+- FONTOS: a GitHub Pages csak statikus oldal, ott DEMÓ módban fut (minta-ismerősök). Valódi üzenetküldés és hívás a saját WDEA szervereden megy (START_WDEA, https://...:8443/work/index.html) – ehhez a TELJES csomag kell.
+- Főoldal: köszöntés + gyorsgombok + elérhetők; a főoldalon nincs Vissza gomb és nagy cím (a többi oldalon a Vissza megmaradt).
+- DEX: beszéd közben a szája világít.

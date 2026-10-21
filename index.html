@@ -1604,7 +1604,7 @@ var QK='dex51_pubq';
  '.dfx>svg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}'+
  '.dfx .lid{fill:#02060f;transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);transition:transform .07s}.dfx.gblink .lid{transform:scaleY(1)}'+
  '.dfx .dglow{fill:url(#dfxD);opacity:0;mix-blend-mode:screen}'+
- '.dfx.gtalk .dglow{animation:dfxd .28s ease-in-out infinite alternate}'+
+ '.dfx.gtalk .dglow{animation:dfxd .28s ease-in-out infinite alternate}'+'.dfx .dmouth{fill:none;mix-blend-mode:screen}.dfx .dmouth .dm-in{fill:url(#dfxD);transform-box:fill-box;transform-origin:50% 0;transform:scaleY(.25)}'+'.dfx .dmouth .dm-ln{fill:none;stroke:#8ff0ff;stroke-width:2.6;stroke-linecap:round;filter:drop-shadow(0 0 4px #39d2ff) drop-shadow(0 0 9px #1aa8ff)}'+'.dfx.gtalk .dmouth{animation:dfxm .5s ease-in-out infinite alternate}.dfx.gtalk .dmouth .dm-in{animation:dfxmo .19s ease-in-out infinite alternate}'+'@keyframes dfxm{from{opacity:.55}to{opacity:1}}@keyframes dfxmo{from{transform:scaleY(.25)}to{transform:scaleY(1.35)}}'+
  '@keyframes dfxd{from{opacity:.25;transform:scale(.85)}to{opacity:1;transform:scale(1.25)}}'+
  '.dfx .dglow{transform-box:fill-box;transform-origin:50% 50%}'+
  '.dfx .hnd{fill:#0b2d5c;stroke:#6fe8ff;stroke-width:3;stroke-linejoin:round;opacity:0;transform-box:view-box}'+
@@ -1671,7 +1671,7 @@ var QK='dex51_pubq';
  var hl='<g class="hg l"><g class="hl"><g transform="translate(80 330) scale(1.3) rotate(28 30 80)" class="hnd">'+HAND+'</g></g><g class="hr"><g transform="translate(335 330) scale(-1.3 1.3) rotate(28 30 80)" class="hnd">'+HAND+'</g></g><g transform="translate(207 372) scale(1.45)"><path class="hrt" d="'+HEART+'"/></g></g>';
  s.innerHTML='<defs><linearGradient id="dfxHF" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f7bff"/><stop offset=".5" stop-color="#173f9a"/><stop offset="1" stop-color="#0a1c55"/></linearGradient><radialGradient id="dfxD"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#5fe3ff"/><stop offset="1" stop-color="#30c5ff" stop-opacity="0"/></radialGradient><radialGradient id="dfxH"><stop offset="0" stop-color="#ff9ac4"/><stop offset="1" stop-color="#ff2f7e"/></radialGradient></defs>'+
   '<ellipse class="lid" cx="141" cy="233" rx="37" ry="26"/><ellipse class="lid" cx="275" cy="233" rx="37" ry="26"/>'+
-  '<ellipse class="dglow" cx="208" cy="359" rx="34" ry="34"/>'+hw+hl;
+  '<g class="dglow dmouth"><path class="dm-in" d="M185.5 279 Q208 291 230.5 279 Q208 298 185.5 279Z"/><path class="dm-ln" d="M185.5 279 Q208 291 230.5 279"/></g>'+hw+hl;
  w.appendChild(s);
  var built=false;function layers(){if(built)return;built=true;[-30,-22,-14,-6,6,14,22,30].forEach(function(z,k){var l=el('div','sl');l.style.transform='translateZ('+z+'px)';var im=img.cloneNode();im.removeAttribute('class');im.style.opacity=String(.5+k*.05);l.appendChild(im);w.insertBefore(l,s)});for(var q=1;q<=10;q++){var dz=-q*5,rd=Math.sqrt(1-Math.pow(q*5/56,2))*.74,d=el('div','sd');d.style.cssText='transform:translateZ('+dz+'px);width:'+(rd*100)+'%;height:'+(rd*100)+'%;left:'+((1-rd)*50)+'%;top:'+((1-rd)*50-1)+'%';w.insertBefore(d,s)}}
  // a kéz-rajzokban a hnd csoportok SVG-ben vannak; a "hnd" osztály adja a stílust a gyerekekre
@@ -3545,6 +3545,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   return null}
  var Dx=window.DEX40;if(!Dx||typeof Dx.handle!=='function'||Dx.__workbridge)return;var old=Dx.handle;
  Dx.handle=function(raw){var s=String(raw||'').trim(),f=folded(s),vr=!!(window.DEX_VR&&window.DEX_VR.active());
+  try{var mfr=wkFrames(),mr0=null;for(var mi=0;mi<mfr.length;mi++){var MW=mfr[mi].contentWindow.WDEA_MSG;if(MW&&MW.voice){var mr=MW.voice(s,{dex:true});if(mr&&!mr0)mr0=mr}}if(mr0){var mw0=document.querySelector('#dyVR .wk');if(window.DEX_VR&&mw0&&mw0.hidden&&window.DEX_VR.work)try{window.DEX_VR.work(true)}catch(x){}return mr0}}catch(e){} /* WORK Üzenetek: hívás fogadása/bontása, „hívd fel X-et”, új üzenet megnyitása */
   try{if(window.DEX_XR&&window.DEX_XR.voice&&f.length<60){var xv=window.DEX_XR.voice(f);if(xv)return xv}}catch(e){}
   var WKR=/\b(?:work|vork|vurk|wurk|verk|woerk|word)\w{0,5}\b/,SHOWV=/(mutas|mutat|tedd|tegy|rakd|rakj|hozd|hozz|nyis|nyit|kinyit|jelenit|jelenj|kapcsold|indits|lassam|latni|szeretn|akar|kerek|kerem|nezzuk|nezd|elem\b|ele\b|elo\b|ide\b|vigy|menj|lepj|ugorj|toltsd|mehet|kell|kene)/;
   var BAREW=/^(?:(?:a|az|na|akkor|most|mar|megint|ujra|kerlek|legyszi) )*(?:work|vork|vurk|wurk|verk|woerk|word)\w{0,5}(?: (?:kerlek|legyszi|ide|elem|ele|fel|be|megint|ujra|mar|most))*$/;

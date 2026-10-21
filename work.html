@@ -941,6 +941,135 @@ body{font-family:Manrope,Inter,"Segoe UI",Roboto,"Helvetica Neue",Arial,system-u
 .demo-delete{white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important;font-size:10px!important;letter-spacing:.04em!important;padding:5px 9px!important}
 .demo-delete *{white-space:nowrap!important;overflow-wrap:normal!important}
 .post-head{flex-wrap:wrap;row-gap:6px}
+/* ===== WDEA WORK · Üzenetek + új főoldal-fej ===== */
+:root{--wm-bg:#0a0f1c;--wm-card:#111a2c;--wm-line:#2a3753;--wm-ink:#eef2ff;--wm-mut:#9aa6c4;--wm-acc:#7d76e9;--wm-cy:#7bdcff;--wm-pk:#fa4e79;--wm-ok:#2fd28b}
+/* fejléc gomb */
+.top-actions .wdea-msg-btn{position:relative;display:inline-grid;place-items:center;flex:0 0 auto;width:42px;height:42px;padding:0;border-radius:14px;color:#e9efff}
+.wdea-msg-btn svg{width:22px;height:22px;fill:currentColor}
+.wdea-msg-btn .wm-badge,.wh-badge{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:linear-gradient(135deg,#ff5f8f,#e0336b);color:#fff;font:800 11px/19px Manrope,system-ui,sans-serif;text-align:center;box-shadow:0 0 0 2px #0a0f1c,0 0 12px #fa4e7988}
+.wdea-msg-btn .wm-badge[hidden],.wh-badge[hidden]{display:none}
+@media(max-width:760px){.top-actions .wdea-msg-btn{grid-column:2;grid-row:1;justify-self:end;margin-right:51px;width:42px;height:42px}}
+@media(max-width:360px){.top-actions .wdea-msg-btn{width:38px;height:38px;margin-right:47px}}
+
+/* panel */
+.wm{position:fixed;inset:0;z-index:11000;display:flex;justify-content:flex-end;font-family:Manrope,Inter,system-ui,sans-serif;color:var(--wm-ink)}
+.wm[hidden]{display:none}
+.wm-back-drop{position:absolute;inset:0;background:#02050dcc;opacity:0;transition:opacity .2s;backdrop-filter:blur(3px)}
+.wm.in .wm-back-drop{opacity:1}
+.wm-shell{position:relative;display:flex;flex-direction:column;width:min(440px,100%);height:100%;background:radial-gradient(ellipse at 90% -10%,#6f3cc433,transparent 50%),radial-gradient(ellipse at 0% 110%,#1d6fd433,transparent 45%),linear-gradient(170deg,#0d1424,#080c17);border-left:1px solid var(--wm-line);box-shadow:-20px 0 60px #0008;transform:translateX(30px);opacity:0;transition:transform .22s ease,opacity .22s ease;padding-bottom:max(86px,env(safe-area-inset-bottom,0px) + 80px)}
+.wm.in .wm-shell{transform:none;opacity:1}
+.wm-head{display:flex;align-items:center;gap:8px;min-height:64px;padding:10px 12px;border-bottom:1px solid #1f2a43;background:#0b1222ee}
+.wm-title{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.wm-title b{font:700 21px/1.1 'Space Grotesk',Manrope,sans-serif;letter-spacing:-.01em}
+.wm-mode{align-self:flex-start;font-size:11px;font-weight:700;padding:2px 8px;border-radius:9px;letter-spacing:.02em}
+.wm-mode.on{background:#0f3b2c;color:#6ff0b6}.wm-mode.off{background:#3b2a0f;color:#ffcf74}.wm-mode.demo{background:#22224a;color:#b9b4ff}
+.wm-ib{flex:0 0 auto;display:inline-grid;place-items:center;width:40px;height:40px;border-radius:13px;border:1px solid #2f3d5c;background:linear-gradient(140deg,#14203a,#171831);color:#eaf0ff;font-size:18px;cursor:pointer}
+.wm-ib:hover{border-color:var(--wm-acc)}.wm-ib.sm{width:34px;height:34px;font-size:15px;border-radius:11px}
+.wm-peer{flex:1;display:flex;align-items:center;gap:10px;min-width:0}.wm-peer div{display:flex;flex-direction:column;min-width:0}.wm-peer b{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wm-peer small{font-size:12px;color:var(--wm-mut)}
+.wm-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:12px}
+.wm-av{position:relative;flex:0 0 auto;display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;background:linear-gradient(140deg,hsl(var(--h) 70% 55%),hsl(calc(var(--h) + 50) 70% 38%));color:#fff;font:700 18px 'Space Grotesk',Manrope,sans-serif;box-shadow:inset 0 0 0 2px #ffffff22}
+.wm-av.lg{width:54px;height:54px;font-size:21px}.wm-av.xl{width:104px;height:104px;font-size:42px;box-shadow:0 0 0 4px #ffffff14,0 0 40px #7d76e966}
+.wm-dot{position:absolute;right:0;bottom:1px;width:12px;height:12px;border-radius:50%;background:var(--wm-ok);box-shadow:0 0 0 2.5px #0b1222}
+.wm-searchbox{display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;margin-bottom:12px;border-radius:14px;border:1px solid #2a3753;background:#0e1628;color:var(--wm-mut)}
+.wm-search{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--wm-ink);font:inherit;font-size:15px}
+.wm-online{display:flex;gap:12px;overflow-x:auto;padding:2px 2px 12px;margin-bottom:6px;scrollbar-width:none}
+.wm-online button{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:58px;border:0;background:none;color:var(--wm-ink);font:600 12px Manrope,sans-serif;cursor:pointer}
+.wm-list{display:flex;flex-direction:column;gap:6px}
+.wm-row{display:flex;align-items:center;gap:11px;padding:10px;border-radius:16px;border:1px solid transparent;background:#0f172a99;cursor:pointer;transition:background .15s,border-color .15s}
+.wm-row:hover,.wm-row:focus-visible{background:#16213b;border-color:#2f3d5c;outline:0}
+.wm-row-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.wm-row-main b{font-size:15px}.wm-row-main span{font-size:13.5px;color:var(--wm-mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wm-row.unread .wm-row-main b,.wm-row.unread .wm-row-main span{color:#fff;font-weight:800}
+.wm-row-side{display:flex;align-items:center;gap:7px}.wm-row-side small{font-size:11.5px;color:var(--wm-mut)}
+.wm-row-side em{min-width:21px;height:21px;padding:0 6px;border-radius:11px;background:linear-gradient(135deg,var(--wm-acc),#4c8dff);color:#fff;font:800 11.5px/21px Manrope,sans-serif;font-style:normal;text-align:center}
+.wm-empty{margin:24px 8px;text-align:center;color:var(--wm-mut);font-size:14px;line-height:1.5}
+.wm-note{margin:16px 4px 4px;padding:10px 12px;border-radius:12px;background:#1a1a3a;color:#c3c0ff;font-size:12.5px;line-height:1.45}
+.wm-chat{display:flex;flex-direction:column;gap:6px;padding-bottom:6px}
+.wm-day{align-self:center;margin:8px 0 4px;padding:3px 10px;border-radius:9px;background:#151f36;color:var(--wm-mut);font-size:11.5px}
+.wm-msg{max-width:80%;display:flex;flex-direction:column}
+.wm-msg p{margin:0;padding:9px 13px;border-radius:19px;font-size:15px;line-height:1.38;overflow-wrap:anywhere}
+.wm-msg small{margin:2px 8px 0;font-size:10.5px;color:#7f8aa8}
+.wm-msg.them{align-self:flex-start}.wm-msg.them p{background:#1b2540;border-bottom-left-radius:6px}
+.wm-msg.me{align-self:flex-end;align-items:flex-end}.wm-msg.me p{background:linear-gradient(135deg,#6b5cf0,#3f7bff);color:#fff;border-bottom-right-radius:6px;box-shadow:0 6px 18px #4a5cff33}
+.wm-compose{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #1f2a43;background:#0b1222}
+.wm-compose[hidden]{display:none}
+.wm-input{flex:1;min-width:0;height:46px;padding:0 16px;border-radius:23px;border:1px solid #2f3d5c;background:#0f1729;color:var(--wm-ink);font:inherit;font-size:15.5px;outline:0}
+.wm-input:focus{border-color:var(--wm-acc);box-shadow:0 0 0 3px #7d76e933}
+.wm-send{flex:0 0 46px;height:46px;border-radius:50%;border:0;background:linear-gradient(135deg,#7d76e9,#3f7bff);color:#fff;font-size:18px;cursor:pointer;box-shadow:0 6px 18px #4a5cff44}
+.wm-setup{display:flex;flex-direction:column;align-items:center;gap:12px;padding:30px 10px;text-align:center}
+.wm-setup h3{margin:0;font:700 21px 'Space Grotesk',Manrope,sans-serif}.wm-setup p{margin:0;color:var(--wm-mut);font-size:14px;line-height:1.5}
+.wm-hero-ic{font-size:44px;filter:drop-shadow(0 0 18px #7d76e9)}
+.wm-name{width:100%;max-width:300px;height:48px;padding:0 14px;border-radius:14px;border:1px solid #2f3d5c;background:#0f1729;color:var(--wm-ink);font:inherit;font-size:16px;text-align:center}
+.wm-primary{min-width:160px;height:46px;border:0;border-radius:14px;background:linear-gradient(135deg,#7d76e9,#3f7bff);color:#fff;font:700 15px Manrope,sans-serif;cursor:pointer}
+.wm-err{color:#ff8fa8!important}
+body.wdea-msgr-open{overflow:hidden}
+body.wdea-msgr-open #wdea-companion{transform:translateY(-118px) scale(.62);transform-origin:100% 100%;transition:transform .25s}
+
+/* bejövő üzenet buborék */
+#wdea-msg-toast{position:fixed;left:50%;top:max(12px,env(safe-area-inset-top,0px) + 8px);z-index:11012;display:flex;align-items:center;gap:11px;width:min(420px,calc(100% - 24px));padding:10px 12px;border-radius:20px;border:1px solid #3a4a72;background:linear-gradient(140deg,#16213c,#1b1736);box-shadow:0 14px 40px #000a,0 0 0 1px #7d76e933;color:#eef2ff;font-family:Manrope,system-ui,sans-serif;transform:translate(-50%,-140%);opacity:0;transition:transform .3s cubic-bezier(.2,1.3,.4,1),opacity .2s;cursor:pointer}
+#wdea-msg-toast.show{transform:translate(-50%,0);opacity:1}
+#wdea-msg-toast>div{flex:1;min-width:0;display:flex;flex-direction:column}
+#wdea-msg-toast>div b{font-size:14.5px}#wdea-msg-toast>div span{font-size:13.5px;color:#c7cfe6;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+#wdea-msg-toast button{flex:0 0 auto;width:30px;height:30px;border:0;border-radius:50%;background:#ffffff12;color:#cfd6ee;cursor:pointer}
+
+/* hívás */
+#wdea-call{position:fixed;inset:0;z-index:11006;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:30px 20px 120px;background:radial-gradient(ellipse at 50% 20%,#3b2a8a,#0c1022 62%,#05070f);color:#fff;font-family:Manrope,system-ui,sans-serif;opacity:0;transition:opacity .25s}
+#wdea-call.in{opacity:1}#wdea-call[hidden]{display:none}
+#wdea-call .wc-info{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+#wdea-call .wc-info b{font:700 26px 'Space Grotesk',Manrope,sans-serif}
+#wdea-call .wc-st{font-size:15px;color:#c8cff0}.wc-time{font:600 15px ui-monospace,monospace;color:#9ff0d0}
+#wdea-call[data-state=incoming] .wm-av.xl,#wdea-call[data-state=outgoing] .wm-av.xl{animation:wcpulse 1.4s ease-in-out infinite}
+@keyframes wcpulse{0%,100%{box-shadow:0 0 0 0 #7d76e999,0 0 40px #7d76e966}50%{box-shadow:0 0 0 22px #7d76e900,0 0 60px #7d76e9aa}}
+#wdea-call .wc-btns{position:relative;z-index:2;display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.wc-b{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:68px;height:68px;border-radius:50%;border:1px solid #ffffff2a;background:#ffffff18;color:#fff;font-size:24px;cursor:pointer;backdrop-filter:blur(6px)}
+.wc-b small{font-size:10px;font-weight:700;opacity:.9}
+.wc-b.on{background:#fff;color:#111}
+.wc-b.yes{width:78px;height:78px;background:linear-gradient(135deg,#2fd28b,#12a86a);border:0;box-shadow:0 0 30px #2fd28b88;animation:wcjig 1.2s ease-in-out infinite}
+.wc-b.no{background:linear-gradient(135deg,#ff5d6c,#d9264a);border:0;box-shadow:0 0 24px #ff4d6a66}
+.wc-b.no{font-size:22px}.wc-hic{display:inline-block;transform:rotate(135deg)}
+#wdea-call.video .wc-info{text-shadow:0 1px 6px #000c}
+@keyframes wcjig{0%,100%{transform:rotate(0)}20%{transform:rotate(-12deg)}40%{transform:rotate(12deg)}60%{transform:rotate(0)}}
+.wc-remote,.wc-local{display:none;background:#000;object-fit:cover}
+#wdea-call.video .wc-remote{display:block;position:absolute;inset:0;width:100%;height:100%;z-index:0}
+#wdea-call.video .wc-local{display:block;position:absolute;right:14px;top:14px;width:30%;max-width:150px;aspect-ratio:3/4;border-radius:16px;z-index:3;border:2px solid #ffffff44;transform:scaleX(-1)}
+#wdea-call.video[data-state=active] .wc-info{position:absolute;top:18px;left:16px;align-items:flex-start}
+#wdea-call.video[data-state=active] .wm-av.xl{display:none}
+#wdea-call.video[data-state=active] .wc-btns{position:absolute;bottom:110px}
+body.wdea-call-open #wdea-companion{opacity:0;pointer-events:none}
+
+/* ===== új főoldal ===== */
+body.wdea-home #page>.page-back-button,body.wdea-home #page>.home-title{display:none!important}
+.wh{max-width:900px;margin:0 auto 16px;padding:0 2px}
+.wh-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 0 14px}
+.wh-greet small{display:block;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8fdcff}
+.wh-greet h2{margin:4px 0 2px;font:700 clamp(26px,6.5vw,38px)/1.1 'Space Grotesk',Manrope,sans-serif;letter-spacing:-.02em;background:linear-gradient(100deg,#fff 30%,#c9c2ff 70%,#ff9ec0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wh-greet h2 span{-webkit-text-fill-color:initial;color:initial}
+.wh-greet p{margin:0;color:#aab3cc;font-size:15px}
+.wh-actions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.wh-act{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 4px 10px;border-radius:18px;border:1px solid #2a3753;background:linear-gradient(160deg,#131d33,#0e1426);color:#e9eeff;cursor:pointer;transition:transform .15s,border-color .15s}
+.wh-act:hover{transform:translateY(-2px);border-color:#7d76e9}
+.wh-act small{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.wh-ic{position:relative;display:grid;place-items:center;width:46px;height:46px;border-radius:15px;font-size:20px;color:#fff}
+.wh-ic svg{width:23px;height:23px;fill:currentColor}.wh-ic>b{font-weight:400}
+.wh-msg .wh-ic{background:linear-gradient(135deg,#7d76e9,#3f7bff);box-shadow:0 6px 18px #4a5cff55}
+.wh-call .wh-ic{background:linear-gradient(135deg,#2fd28b,#139c86);box-shadow:0 6px 18px #2fd28b44}
+.wh-ai .wh-ic{background:linear-gradient(135deg,#c04cf0,#7d3cf0);box-shadow:0 6px 18px #a24cf055}
+.wh-video .wh-ic{background:linear-gradient(135deg,#ff5f8f,#e0336b);box-shadow:0 6px 18px #fa4e7955}
+.wh-earn .wh-ic{background:linear-gradient(135deg,#ffb74d,#f07c2c);box-shadow:0 6px 18px #f0a02c44}
+.wh-people{margin-top:14px}
+.wh-lbl{display:flex;align-items:center;gap:6px;margin:0 0 8px;font-size:12.5px;font-weight:700;color:#aab3cc}
+.wh-lbl i{width:8px;height:8px;border-radius:50%;background:#2fd28b;box-shadow:0 0 8px #2fd28b}
+.wh-row{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.wh-row button{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:58px;border:0;background:none;color:#e9eeff;font:600 12px Manrope,sans-serif;cursor:pointer}
+/* modulsáv: kompakt kártyák */
+body.wdea-home .home-module-section{margin-top:4px}
+body.wdea-home .home-module-card{min-height:0!important;height:auto!important;padding:12px 14px!important;flex-basis:190px!important;width:190px!important;min-width:190px!important;display:grid!important;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:11px;align-items:center;text-align:left}
+body.wdea-home .home-module-card .home-module-glyph{grid-row:1/3;position:static!important;margin:0!important;font-size:24px!important;line-height:1!important}
+body.wdea-home .home-module-card b{font-size:15px!important;margin:0!important}
+body.wdea-home .home-module-card small{font-size:12px!important;margin:0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:380px){.wh-actions{gap:6px}.wh-ic{width:42px;height:42px}.wh-act small{font-size:11px}}
+@media(min-width:761px){.wm-shell{border-radius:22px 0 0 22px}}
+@media(prefers-reduced-motion:reduce){.wm-shell,#wdea-msg-toast,.wc-b.yes,#wdea-call .wm-av.xl{transition:none!important;animation:none!important}}
 
 </style>
 </head>
@@ -1985,6 +2114,299 @@ window.__WDEA_I18N={"A menü és a megjelenés a sablonszerkesztőben módosíth
    .observe(document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['lang','placeholder','aria-label','title','alt']})}catch(e){}}
  window.WDEA_I18N={t:function(s,l){var i=IDX[l];return i===undefined?s:(translate(s,i)||s)},count:function(){return N},size:function(){return Object.keys(D).length},refresh:function(){lastL=null;later(document.body)}};
  if(document.body)start();else document.addEventListener('DOMContentLoaded',start);
+})();
+/* ===== WDEA WORK · ÜZENETEK (Messenger) v1 =====
+   Valós idejű csevegés és hívás a WDEA szerveren (/api/chat), szerver nélkül helyi demó.
+   Hang: „üzenetek”, „nyisd meg az üzenetet”, „nézd meg”, „vedd fel”, „tedd le”, „hívd fel Dórát”, „írd meg neki, hogy …”. */
+(function(){'use strict';
+if(window.WDEA_MSG)return;
+var LS='wdea_msgr_v1',LSD='wdea_msgr_demo_v1',STUN=[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}];
+var $=function(s,r){return (r||document).querySelector(s)};
+function lang(){var l=(document.documentElement.lang||'hu').slice(0,2);return {hu:0,de:1,en:2,it:3}[l]||0}
+function T(hu,de,en,it){return [hu,de,en,it][lang()]||hu}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function fold(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
+function load(k,d){try{var v=JSON.parse(localStorage.getItem(k)||'null');return v==null?d:v}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function hue(s){var h=0;s=String(s||'');for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
+function av(name,cls,online){var n=String(name||'?').trim(),h=hue(n);return '<span class="wm-av '+(cls||'')+'" style="--h:'+h+'">'+esc(n.slice(0,1).toUpperCase())+(online?'<i class="wm-dot"></i>':'')+'</span>'}
+function tm(at){var d=new Date(at),n=new Date();if(d.toDateString()===n.toDateString())return d.toLocaleTimeString(loc(),{hour:'2-digit',minute:'2-digit'});return d.toLocaleDateString(loc(),{month:'short',day:'numeric'})}
+function loc(){return ['hu-HU','de-AT','en-GB','it-IT'][lang()]}
+function profName(){try{var d=JSON.parse(localStorage.getItem('wdea_work_local_v1')||'{}');var n=d&&d.profile&&d.profile.name;if(n&&!/^saj[aá]t profil$/i.test(n))return String(n).slice(0,40)}catch(e){}return ''}
+
+/* ---------- állapot ---------- */
+var S={mode:'demo',me:null,users:{},threads:{},view:'list',peer:null,open:false,filter:'',es:null,lastIn:null,ready:false,err:''};
+var ID=load(LS,{});
+/* VR-ben a DEX két WORK-keretet tölt be (bal és jobb szem). Csak az első csatlakozik a szerverhez és szól; a második tükör: ugyanazt mutatja, hang és hálózat nélkül. */
+var MIRROR=false;
+function detectMirror(){try{var fe=window.frameElement;if(!fe)return false;var fr=[].slice.call(parent.document.querySelectorAll('#dyVR .wk iframe'));return fr.length>1&&fr.indexOf(fe)>0}catch(e){return false}}
+function sibs(){try{var fe=window.frameElement;if(!fe)return [];return [].slice.call(parent.document.querySelectorAll('#dyVR .wk iframe')).filter(function(f){return f!==fe&&f.contentWindow&&f.contentWindow.WDEA_MSG&&f.contentWindow.WDEA_MSG._mirror})}catch(e){return []}}
+function relay(ev){if(MIRROR)return;sibs().forEach(function(f){try{f.contentWindow.WDEA_MSG._mirror(JSON.parse(JSON.stringify(ev)))}catch(e){}})}
+function primary(){try{var fr=parent.document.querySelectorAll('#dyVR .wk iframe');var w=fr[0]&&fr[0].contentWindow;return w&&w!==window&&w.WDEA_MSG&&w.WDEA_MSG._snap?w.WDEA_MSG:null}catch(e){return null}}
+function copySnap(){var P=primary();if(!P)return false;var z=JSON.parse(JSON.stringify(P._snap()));if(!z.ready)return false;S.mode=z.mode;S.me=z.me;S.users=z.users;S.threads=z.threads;S.online=z.online;S.ready=true;if(S.view==='setup'&&S.me)S.view='list';paint();return true}
+function mirrorBoot(){var n=0;(function tryit(){if(copySnap())return;if(++n<100)setTimeout(tryit,300)})()}
+function mirrorEv(ev){if(!MIRROR)return;if(ev.type==='snap')copySnap();else if(ev.type==='add')addMsg(ev.pid,ev.m,ev.incoming);else if(ev.type==='mcall')CALL._sync(ev);else if(ev.type==='mring')CALL.demoRing(ev.pid,ev.video);else onEvent(ev)}
+var DEMO=[{id:'d-dora',name:'Dóra'},{id:'d-evelin',name:'Evelin'},{id:'d-tamas',name:'Tamás'},{id:'d-team',name:'WDEA csapat'}];
+var REPLIES=[[T('Szia! 😊 Örülök, hogy írtál.','Hallo! 😊 Schön, dass du schreibst.','Hi! 😊 Glad you wrote.','Ciao! 😊 Che bello sentirti.')],[T('Rendben, megnézem és szólok.','Alles klar, ich schaue nach.','Okay, I will check and let you know.','Va bene, controllo e ti dico.')],[T('Szuper, köszi! 👍','Super, danke! 👍','Great, thanks! 👍','Ottimo, grazie! 👍')]];
+
+function thread(pid){return S.threads[pid]||(S.threads[pid]={msgs:[],unread:0,loaded:false})}
+function unreadTotal(){var n=0;for(var k in S.threads)n+=S.threads[k].unread||0;return n}
+function userName(id){return (S.users[id]&&S.users[id].name)||'?'}
+
+/* ---------- hálózat ---------- */
+function api(m,path,body){if(MIRROR)return Promise.reject(new Error('mirror'));var h={'Content-Type':'application/json'};if(S.me&&S.me.token)h['X-WDEA-Chat']=S.me.token;
+ return fetch('/api/chat/'+path,{method:m,headers:h,body:body?JSON.stringify(body):undefined,credentials:'same-origin',cache:'no-store'}).then(function(r){return r.json().catch(function(){return {}}).then(function(j){if(!r.ok){var e=new Error(j.error||('HTTP '+r.status));e.status=r.status;throw e}return j})})}
+function probe(){if(!/^https?:$/.test(location.protocol))return Promise.resolve(false);
+ return fetch('/api/network/status',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){return !!(j&&j.online)}).catch(function(){return false})}
+
+function boot(){if(detectMirror()){MIRROR=true;mirrorBoot();return}probe().then(function(live){
+ if(live){S.mode='live';if(ID.token){S.me={id:ID.id,name:ID.name,token:ID.token};api('GET','me').then(function(m){S.me.name=m.name;afterJoin()}).catch(function(e){if(e.status===403){ID={};save(LS,ID);S.me=null;autoJoin()}else afterJoin()})}else autoJoin()}
+ else{S.mode='demo';demoInit()}
+ S.ready=true;paint()})}
+function autoJoin(){var n=profName();if(n)join(n);else{S.view='setup';paint()}}
+function join(name){return api('POST','join',{name:name,token:ID.token||''}).then(function(r){ID={id:r.id,name:r.name,token:r.token};save(LS,ID);S.me={id:r.id,name:r.name,token:r.token};S.view='list';S.err='';afterJoin()}).catch(function(e){S.err=e.message;S.view='setup';paint()})}
+function afterJoin(){refresh().then(function(){relay({type:'snap'})});stream();relay({type:'snap'})}
+function refresh(){if(S.mode!=='live'||!S.me)return Promise.resolve();
+ return Promise.all([api('GET','users'),api('GET','threads')]).then(function(a){a[0].users.forEach(function(u){S.users[u.id]=u});
+  a[1].threads.forEach(function(t){S.users[t.user.id]=t.user;var th=thread(t.user.id);th.unread=t.unread;th.last=t.last;if(!th.msgs.length||th.msgs[th.msgs.length-1].id!==t.last.id)th.loaded=false});paint()}).catch(function(){})}
+var seq=0,retryT=null;
+function stream(){if(MIRROR)return;if(S.es){try{S.es.close()}catch(e){}}if(!S.me||!window.EventSource)return;
+ var es=new EventSource('/api/chat/stream?t='+encodeURIComponent(S.me.token)+(seq?'&since='+seq:''));S.es=es;
+ es.onmessage=function(e){var ev;try{ev=JSON.parse(e.data)}catch(x){return}if(ev.seq)seq=ev.seq;onEvent(ev)};
+ es.addEventListener('hello',function(){S.online=true;paint()});
+ es.onerror=function(){S.online=false;paintMode();if(es.readyState===2){clearTimeout(retryT);retryT=setTimeout(stream,4000)}}}
+function onEvent(ev){if(ev.type!=='msg')relay(ev);
+ if(ev.type==='msg'){var m=ev.msg,pid=m.from===S.me.id?m.to:m.from;if(!S.users[pid])S.users[pid]={id:pid,name:ev.name||'?',online:true};
+  addMsg(pid,m,!ev.echo)}
+ else if(ev.type==='presence'){var u=S.users[ev.id]||(S.users[ev.id]={id:ev.id,name:ev.name});u.online=ev.online;paint()}
+ else if(ev.type==='read'){var th=S.threads[ev.by];if(th){th.msgs.forEach(function(x){if(x.from===S.me.id)x.read=true});if(S.peer===ev.by)paintChat()}}
+ else if(ev.type==='signal')CALL.signal(ev)}
+function addMsg(pid,m,incoming){var th=thread(pid);if(th.msgs.some(function(x){return x.id===m.id}))return;th.msgs.push(m);th.last=m;relay({type:'add',pid:pid,m:m,incoming:incoming});
+ if(incoming){var viewing=S.open&&S.view==='chat'&&S.peer===pid&&!document.hidden;
+  if(viewing)markRead(pid);else{th.unread=(th.unread||0)+1;S.lastIn={pid:pid,at:Date.now(),text:m.text};toast(pid,m.text);beep('msg')}}
+ paint()}
+function markRead(pid){var th=thread(pid);th.unread=0;if(MIRROR)return;if(S.mode==='live')api('POST','read',{with:pid}).catch(function(){});else demoSave()}
+function loadHistory(pid){var th=thread(pid);if(S.mode!=='live'||th.loaded)return;th.loaded=true;
+ api('GET','messages?with='+encodeURIComponent(pid)).then(function(r){var ids={};th.msgs.forEach(function(x){ids[x.id]=1});var all=r.messages.concat(th.msgs.filter(function(x){return !r.messages.some(function(y){return y.id===x.id})}));all.sort(function(a,b){return a.id-b.id});th.msgs=all;paintChat()}).catch(function(){th.loaded=false})}
+function sendText(pid,text){text=String(text||'').trim();if(!text||!pid)return Promise.resolve(false);if(MIRROR)return Promise.resolve(true);
+ if(S.mode==='live')return api('POST','send',{to:pid,text:text}).then(function(r){addMsg(pid,r.msg,false);return true}).catch(function(e){flash(e.message);return false});
+ var m={id:Date.now(),from:'me',to:pid,text:text,at:Date.now(),read:false};addMsg(pid,m,false);demoSave();demoReply(pid);return Promise.resolve(true)}
+
+/* ---------- demó ---------- */
+function demoInit(){S.me={id:'me',name:profName()||T('Én','Ich','Me','Io')};var st=load(LSD,null);
+ DEMO.forEach(function(u,i){S.users[u.id]={id:u.id,name:u.name,online:i!==2}});
+ if(st&&st.threads){S.threads=st.threads}else{var now=Date.now();
+  var seed=[['d-dora',T('Szia! Láttad az új kampányt a WORK-ön?','Hi! Hast du die neue Kampagne in WORK gesehen?','Hi! Did you see the new campaign on WORK?','Ciao! Hai visto la nuova campagna su WORK?'),36e5],['d-evelin',T('Holnap hívlak a bolt miatt 📞','Ich rufe dich morgen wegen des Shops an 📞','I will call you tomorrow about the shop 📞','Ti chiamo domani per il negozio 📞'),9e6],['d-team',T('Üdv a WDEA Üzenetekben! Itt tudsz írni és hívni.','Willkommen bei WDEA Nachrichten! Hier kannst du schreiben und anrufen.','Welcome to WDEA Messages! Chat and call here.','Benvenuto in WDEA Messaggi! Qui puoi scrivere e chiamare.'),2e7]];
+  seed.forEach(function(s,i){var th=thread(s[0]);var m={id:now-s[2],from:s[0],to:'me',text:s[1],at:now-s[2],read:false};th.msgs.push(m);th.last=m;th.unread=i<2?1:0})}
+ for(var k in S.threads)S.threads[k].loaded=true}
+function demoSave(){if(MIRROR)return;var o={};for(var k in S.threads)o[k]={msgs:S.threads[k].msgs.slice(-60),unread:S.threads[k].unread,last:S.threads[k].last};save(LSD,{threads:o})}
+var rN=0;function demoReply(pid){if(MIRROR)return;if(!S.users[pid]||!S.users[pid].online)return;setTimeout(function(){var t=REPLIES[(rN++)%REPLIES.length][0];addMsg(pid,{id:Date.now(),from:pid,to:'me',text:t,at:Date.now()},true);demoSave()},3800)}
+
+/* ---------- hangjelzés ---------- */
+var AC=null;function ac(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC}catch(e){return null}}
+function tone(f,d,v,t0){var a=ac();if(!a)return;var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,a.currentTime+t0);g.gain.linearRampToValueAtTime(v,a.currentTime+t0+.02);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+t0+d);o.connect(g);g.connect(a.destination);o.start(a.currentTime+t0);o.stop(a.currentTime+t0+d+.05)}
+var ringT=null;function beep(k){if(MIRROR)return;try{if(k==='msg'){tone(880,.16,.08,0);tone(1320,.22,.07,.12)}else if(k==='ring'){tone(660,.35,.09,0);tone(880,.35,.09,.4)}else if(k==='back'){tone(440,.9,.05,0)}else if(k==='end'){tone(520,.2,.07,0);tone(390,.3,.07,.2)}}catch(e){}}
+function ring(on,kind){clearInterval(ringT);ringT=null;if(MIRROR)return;if(on){beep(kind||'ring');ringT=setInterval(function(){beep(kind||'ring')},kind==='back'?2600:1800)}if(on&&kind!=='back'&&navigator.vibrate)try{navigator.vibrate([300,200,300])}catch(e){}}
+
+/* ---------- felület ---------- */
+var root,btn,toastEl,callEl;
+function build(){if(root)return;
+ root=document.createElement('div');root.id='wdea-msgr';root.className='wm';root.hidden=true;root.setAttribute('role','region');root.setAttribute('aria-label','Messenger');
+ root.innerHTML='<div class="wm-back-drop" data-wm="close"></div><section class="wm-shell"><header class="wm-head"></header><div class="wm-body"></div><form class="wm-compose" hidden><input class="wm-input" autocomplete="off" maxlength="2000"><button class="wm-send" type="submit" aria-label="Send">➤</button></form></section>';
+ document.body.appendChild(root);
+ toastEl=document.createElement('div');toastEl.id='wdea-msg-toast';toastEl.setAttribute('role','status');toastEl.setAttribute('aria-live','polite');document.body.appendChild(toastEl);
+ callEl=document.createElement('div');callEl.id='wdea-call';callEl.hidden=true;callEl.innerHTML='<video class="wc-remote" autoplay playsinline></video><video class="wc-local" autoplay playsinline muted></video><div class="wc-info"></div><div class="wc-btns"></div><audio class="wc-audio" autoplay></audio>';document.body.appendChild(callEl);
+ root.addEventListener('click',onClick);callEl.addEventListener('click',onClick);toastEl.addEventListener('click',function(e){var pid=toastEl.dataset.pid;hideToast();if(e.target.closest('[data-wm="x"]'))return;if(pid)openChat(pid)});
+ root.querySelector('.wm-compose').addEventListener('submit',function(e){e.preventDefault();var i=root.querySelector('.wm-input');var t=i.value;i.value='';sendText(S.peer,t);i.focus()});
+ root.addEventListener('input',function(e){if(e.target.classList.contains('wm-search')){S.filter=e.target.value;paintList(true)}});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&S.open&&!CALL.active())close()});
+ document.addEventListener('visibilitychange',function(){if(!document.hidden&&S.open&&S.view==='chat'&&S.peer&&thread(S.peer).unread)markRead(S.peer)})}
+function headerBtn(){var ta=$('.top-actions');if(!ta)return;if(btn&&ta.contains(btn))return;
+ btn=document.createElement('button');btn.type='button';btn.id='wdea-msg-btn';btn.className='icon-button wdea-msg-btn';
+ btn.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.9 3 3 6.6 3 11.1c0 2.5 1.2 4.7 3.2 6.2V21l3.3-1.8c.8.2 1.7.3 2.5.3 5.1 0 9-3.6 9-8.1S17.1 3 12 3Zm1 10.9-2.3-2.4-4.4 2.4 4.8-5.1 2.4 2.4 4.3-2.4-4.8 5.1Z"/></svg><b class="wm-badge" hidden>0</b>';
+ btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();S.open?close():open()});
+ var tog=ta.querySelector('.mobile-menu-toggle');ta.insertBefore(btn,tog||ta.firstChild);paintBadge()}
+function paintBadge(){var n=unreadTotal();if(btn){var b=btn.querySelector('.wm-badge');b.hidden=!n;b.textContent=n>9?'9+':n;btn.setAttribute('aria-label',T('Üzenetek','Nachrichten','Messages','Messaggi')+(n?' · '+n:''))}
+ document.querySelectorAll('[data-wm-badge]').forEach(function(b){b.hidden=!n;b.textContent=n>9?'9+':n})}
+function paintMode(){var c=root&&root.querySelector('.wm-mode');if(!c)return;c.className='wm-mode '+(S.mode==='live'?(S.online===false?'off':'on'):'demo');
+ c.textContent=S.mode==='live'?(S.online===false?T('Kapcsolódás…','Verbinde…','Connecting…','Connessione…'):T('Élő · WDEA szerver','Live · WDEA-Server','Live · WDEA server','Live · server WDEA')):T('Demó · helyi','Demo · lokal','Demo · local','Demo · locale')}
+function paint(){if(!root)return;paintBadge();if(window.WDEA_HOME)window.WDEA_HOME.paint();if(!S.open)return;if(S.view==='chat')paintChat();else if(S.view==='setup')paintSetup();else paintList()}
+function head(html){root.querySelector('.wm-head').innerHTML=html}
+function paintSetup(){root.querySelector('.wm-compose').hidden=true;
+ head('<div class="wm-title"><b>'+T('Üzenetek','Nachrichten','Messages','Messaggi')+'</b><span class="wm-mode"></span></div><button type="button" class="wm-ib" data-wm="close" aria-label="'+T('Bezárás','Schließen','Close','Chiudi')+'">✕</button>');paintMode();
+ root.querySelector('.wm-body').innerHTML='<form class="wm-setup" data-wm-setup><div class="wm-hero-ic">💬</div><h3>'+T('Hogyan lássanak a többiek?','Wie sollen dich andere sehen?','How should others see you?','Come ti vedranno gli altri?')+'</h3><p>'+T('Add meg a neved, és máris írhatsz vagy hívhatsz bárkit a WDEA-n.','Gib deinen Namen ein – dann kannst du allen in WDEA schreiben oder sie anrufen.','Enter your name to chat with or call anyone on WDEA.','Inserisci il tuo nome per scrivere o chiamare chiunque su WDEA.')+'</p><input class="wm-name" maxlength="40" value="'+esc(profName())+'" placeholder="'+T('Neved','Dein Name','Your name','Il tuo nome')+'"><button class="wm-primary" type="submit">'+T('Kezdés','Los geht\'s','Start','Inizia')+'</button>'+(S.err?'<p class="wm-err">'+esc(S.err)+'</p>':'')+'</form>';
+ var f=root.querySelector('[data-wm-setup]');f.onsubmit=function(e){e.preventDefault();var v=f.querySelector('.wm-name').value.trim();if(v.length<2){S.err=T('Legalább 2 betű kell.','Mindestens 2 Zeichen.','At least 2 characters.','Almeno 2 caratteri.');paintSetup();return}join(v)}}
+function rows(){var out=[],seen={},k;var q=fold(S.filter);
+ var ids=Object.keys(S.threads).filter(function(id){return S.threads[id].last}).sort(function(a,b){return (S.threads[b].last.at||0)-(S.threads[a].last.at||0)});
+ ids.forEach(function(id){seen[id]=1;out.push({id:id,th:S.threads[id]})});
+ for(k in S.users)if(!seen[k])out.push({id:k,th:null});
+ return out.filter(function(r){return !q||fold(userName(r.id)).indexOf(q)>=0})}
+function paintList(keepSearch){root.querySelector('.wm-compose').hidden=true;
+ head('<div class="wm-title"><b>'+T('Üzenetek','Nachrichten','Messages','Messaggi')+'</b><span class="wm-mode"></span></div><button type="button" class="wm-ib" data-wm="close" aria-label="'+T('Bezárás','Schließen','Close','Chiudi')+'">✕</button>');paintMode();
+ var body=root.querySelector('.wm-body');var online=Object.keys(S.users).filter(function(k){return S.users[k].online});
+ var list=rows().map(function(r){var u=S.users[r.id]||{name:'?'},th=r.th,last=th&&th.last;
+  return '<div class="wm-row'+(th&&th.unread?' unread':'')+'" role="button" tabindex="0" data-wm="open" data-pid="'+esc(r.id)+'">'+av(u.name,'',u.online)+'<div class="wm-row-main"><b>'+esc(u.name)+'</b><span>'+(last?(last.from===S.me.id?T('Te: ','Du: ','You: ','Tu: '):'')+esc(last.text):'<i>'+(u.online?T('Elérhető – írj neki!','Online – schreib!','Online – say hi!','Online – scrivi!'):T('Írj neki elsőként','Schreib als Erste/r','Be the first to write','Scrivi per primo'))+'</i>')+'</span></div><div class="wm-row-side">'+(last?'<small>'+tm(last.at)+'</small>':'')+(th&&th.unread?'<em>'+th.unread+'</em>':'')+'<button type="button" class="wm-ib sm" data-wm="call" data-pid="'+esc(r.id)+'" aria-label="'+T('Hívás','Anruf','Call','Chiama')+'">📞</button></div></div>'}).join('');
+ var html=(online.length?'<div class="wm-online">'+online.slice(0,14).map(function(id){var u=S.users[id];return '<button type="button" data-wm="open" data-pid="'+esc(id)+'">'+av(u.name,'lg',true)+'<span>'+esc(u.name.split(' ')[0])+'</span></button>'}).join('')+'</div>':'')+
+  '<div class="wm-list">'+(list||'<p class="wm-empty">'+(S.mode==='live'?T('Még senki más nincs fent. Küldd el a WORK címét egy ismerősnek, és amint belép, itt megjelenik.','Noch niemand sonst ist da. Teile die WORK-Adresse – sobald jemand beitritt, erscheint er hier.','Nobody else is here yet. Share the WORK address – people appear here as they join.','Non c\'è ancora nessuno. Condividi l\'indirizzo di WORK.'):T('Nincs találat.','Keine Treffer.','No results.','Nessun risultato.'))+'</p>')+'</div>';
+ if(keepSearch){body.querySelector('.wm-list-wrap').innerHTML=html;return}
+ body.innerHTML='<label class="wm-searchbox"><span aria-hidden="true">⌕</span><input class="wm-search" value="'+esc(S.filter)+'" placeholder="'+T('Keresés','Suchen','Search','Cerca')+'"></label><div class="wm-list-wrap">'+html+'</div>'+(S.mode==='demo'?'<p class="wm-note">'+T('Demó mód: a valódi üzenetek és hívások a WDEA szerveren keresztül mennek (START_WDEA). Próbahívás: mondd „próbahívás”.','Demo: Echte Nachrichten und Anrufe laufen über den WDEA-Server (START_WDEA).','Demo mode: real messages and calls run through the WDEA server (START_WDEA).','Modalità demo: messaggi e chiamate reali passano dal server WDEA (START_WDEA).')+'</p>':'')}
+function paintChat(){if(!S.open||S.view!=='chat')return;var pid=S.peer,u=S.users[pid]||{name:'?'},th=thread(pid);
+ root.querySelector('.wm-compose').hidden=false;var inp=root.querySelector('.wm-input');inp.placeholder=T('Üzenet…','Nachricht…','Message…','Messaggio…');
+ head('<button type="button" class="wm-ib" data-wm="back" aria-label="'+T('Vissza','Zurück','Back','Indietro')+'">‹</button><div class="wm-peer">'+av(u.name,'',u.online)+'<div><b>'+esc(u.name)+'</b><small>'+(u.online?T('Elérhető','Online','Online','Online'):T('Nem elérhető','Offline','Offline','Offline'))+'</small></div></div><button type="button" class="wm-ib" data-wm="call" data-pid="'+esc(pid)+'" aria-label="'+T('Hanghívás','Sprachanruf','Voice call','Chiamata')+'">📞</button><button type="button" class="wm-ib" data-wm="vcall" data-pid="'+esc(pid)+'" aria-label="'+T('Videóhívás','Videoanruf','Video call','Videochiamata')+'">🎥</button><button type="button" class="wm-ib" data-wm="close" aria-label="'+T('Bezárás','Schließen','Close','Chiudi')+'">✕</button>');
+ var body=root.querySelector('.wm-body'),last=null,html='';
+ th.msgs.forEach(function(m){var mine=m.from===S.me.id,day=new Date(m.at).toDateString();if(day!==last){html+='<div class="wm-day">'+esc(new Date(m.at).toLocaleDateString(loc(),{weekday:'short',month:'short',day:'numeric'}))+'</div>';last=day}
+  html+='<div class="wm-msg '+(mine?'me':'them')+'"><p>'+esc(m.text).replace(/\n/g,'<br>')+'</p><small>'+tm(m.at)+(mine?(m.read?' ✓✓':' ✓'):'')+'</small></div>'});
+ body.innerHTML='<div class="wm-chat">'+(html||'<p class="wm-empty">'+T('Kezdjétek el a beszélgetést! 👋','Startet eure Unterhaltung! 👋','Start your conversation! 👋','Iniziate la conversazione! 👋')+'</p>')+'</div>';
+ body.scrollTop=body.scrollHeight;if(th.unread&&!document.hidden)markRead(pid);paintBadge()}
+function onClick(e){var t=e.target.closest('[data-wm]');if(!t)return;var a=t.dataset.wm,pid=t.dataset.pid;
+ if(a==='close')close();else if(a==='back'){S.view='list';S.peer=null;paint()}
+ else if(a==='open')openChat(pid);else if(a==='call'||a==='vcall'){e.stopPropagation();CALL.start(pid,a==='vcall')}
+ else if(a==='accept')CALL.accept();else if(a==='decline')CALL.decline();else if(a==='hang')CALL.hang();else if(a==='mute')CALL.mute();else if(a==='cam')CALL.cam();else if(a==='chat'){var p=CALL.peer();if(p)openChat(p)}}
+var prevHash='',lastRoute=location.hash&&location.hash!=='#messages'?location.hash:'#home';
+function open(){build();S.open=true;root.hidden=false;document.body.classList.add('wdea-msgr-open');if(S.ready&&S.mode==='live'&&!S.me)S.view='setup';else if(S.view==='setup'&&S.me)S.view='list';
+ if(location.hash!=='#messages'){prevHash=location.hash||'#home';try{history.pushState(null,'','#messages')}catch(e){}}
+ refresh();paint();setTimeout(function(){root.classList.add('in')},10)}
+function close(){if(!root)return;S.open=false;root.classList.remove('in');document.body.classList.remove('wdea-msgr-open');setTimeout(function(){if(!S.open)root.hidden=true},220);
+ if(location.hash==='#messages'){var to=prevHash&&prevHash!=='#messages'?prevHash:lastRoute||'#home';prevHash='';location.hash=to}}
+function openChat(pid){if(!pid)return;build();if(!S.open)open();S.view='chat';S.peer=pid;hideToast();loadHistory(pid);paint();setTimeout(function(){var i=root.querySelector('.wm-input');if(i&&matchMedia('(pointer:fine)').matches)i.focus()},60)}
+var toastT=null;function toast(pid,text){build();var u=S.users[pid]||{name:'?'};toastEl.dataset.pid=pid;
+ toastEl.innerHTML=av(u.name,'',u.online)+'<div><b>'+esc(u.name)+'</b><span>'+esc(String(text).slice(0,120))+'</span></div><button type="button" data-wm="x" aria-label="'+T('Bezárás','Schließen','Close','Chiudi')+'">✕</button>';
+ toastEl.classList.add('show');clearTimeout(toastT);toastT=setTimeout(hideToast,7000)}
+function hideToast(){if(toastEl)toastEl.classList.remove('show');clearTimeout(toastT)}
+var flashT=null;function flash(msg){build();toastEl.dataset.pid='';toastEl.innerHTML='<div><span>'+esc(msg)+'</span></div>';toastEl.classList.add('show');clearTimeout(toastT);toastT=setTimeout(hideToast,3500)}
+
+/* ---------- hívás (WebRTC) ---------- */
+var CALL=(function(){var C=null;
+ function sig(kind,data){if(!C||MIRROR)return Promise.resolve();if(S.mode!=='live')return Promise.resolve();return api('POST','signal',{to:C.peer,kind:kind,data:data||null,call:C.id,video:C.video}).catch(function(){})}
+ function info(status){if(!C)return;var u=S.users[C.peer]||{name:C.name||'?'};var stEl=callEl.querySelector('.wc-info');
+  stEl.innerHTML=av(u.name,'xl')+'<b>'+esc(u.name)+'</b><span class="wc-st">'+esc(status||C.status||'')+'</span><span class="wc-time"></span>';
+  var b=callEl.querySelector('.wc-btns');
+  if(C.state==='incoming')b.innerHTML='<button type="button" class="wc-b no" data-wm="decline" aria-label="'+T('Elutasítás','Ablehnen','Decline','Rifiuta')+'">✕<small>'+T('Elutasít','Ablehnen','Decline','Rifiuta')+'</small></button><button type="button" class="wc-b yes" data-wm="accept" aria-label="'+T('Felvesz','Annehmen','Accept','Rispondi')+'">✆<small>'+T('Felvesz','Annehmen','Accept','Rispondi')+'</small></button>';
+  else b.innerHTML='<button type="button" class="wc-b'+(C.muted?' on':'')+'" data-wm="mute" aria-label="'+T('Némítás','Stumm','Mute','Muto')+'">'+(C.muted?'🔇':'🎙')+'<small>'+T('Némít','Stumm','Mute','Muto')+'</small></button>'+(C.video?'<button type="button" class="wc-b'+(C.camOff?' on':'')+'" data-wm="cam" aria-label="'+T('Kamera','Kamera','Camera','Fotocamera')+'">📷<small>'+T('Kamera','Kamera','Camera','Camera')+'</small></button>':'')+'<button type="button" class="wc-b" data-wm="chat" aria-label="Chat">💬<small>Chat</small></button><button type="button" class="wc-b no" data-wm="hang" aria-label="'+T('Hívás vége','Auflegen','Hang up','Riaggancia')+'"><span class="wc-hic">✆</span><small>'+T('Letesz','Auflegen','Hang up','Chiudi')+'</small></button>';
+  callEl.classList.toggle('video',!!C.video);callEl.dataset.state=C.state}
+ function show(){build();callEl.hidden=false;document.body.classList.add('wdea-call-open');setTimeout(function(){callEl.classList.add('in')},10)}
+ function tick(){if(!C||!C.t0)return;var s=Math.floor((Date.now()-C.t0)/1000),e=callEl.querySelector('.wc-time');if(e)e.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+ function media(video){if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)return Promise.reject(new Error(T('Ez a böngésző nem enged mikrofont (HTTPS szükséges).','Kein Mikrofonzugriff (HTTPS nötig).','No microphone access (HTTPS required).','Nessun accesso al microfono (serve HTTPS).')));
+  return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:video?{facingMode:'user',width:{ideal:640},height:{ideal:480}}:false})}
+ function pc(){var p=new RTCPeerConnection({iceServers:STUN});C.pc=p;C.iceQ=C.iceQ||[];
+  p.onicecandidate=function(e){if(e.candidate)sig('ice',e.candidate.toJSON?e.candidate.toJSON():e.candidate)};
+  p.ontrack=function(e){var st=e.streams&&e.streams[0];if(!st)return;var a=callEl.querySelector('.wc-audio'),v=callEl.querySelector('.wc-remote');if(C.video){v.srcObject=st;v.play&&v.play().catch(function(){})}else{a.srcObject=st;a.play&&a.play().catch(function(){})}};
+  p.onconnectionstatechange=function(){if(!C)return;var s=p.connectionState;if(s==='connected')connected();else if(s==='failed'){end(T('A kapcsolat nem jött létre (hálózat/NAT).','Verbindung fehlgeschlagen (Netzwerk/NAT).','Connection failed (network/NAT).','Connessione non riuscita (rete/NAT).'),true)}else if(s==='disconnected'){C.status=T('Kapcsolat megszakadt…','Verbindung unterbrochen…','Connection lost…','Connessione persa…');info()}};
+  if(C.stream)C.stream.getTracks().forEach(function(t){p.addTrack(t,C.stream)});return p}
+ function connected(){if(!C||C.state==='active')return;relay({type:'mcall',st:'active',status:C.status});ring(false);C.state='active';C.t0=Date.now();C.status=T('Kapcsolva','Verbunden','Connected','Connesso');clearTimeout(C.noAns);C.timer=setInterval(tick,1000);info();tick()}
+ function local(){var v=callEl.querySelector('.wc-local');if(C.stream&&C.video){v.srcObject=C.stream;v.play&&v.play().catch(function(){})}else v.srcObject=null}
+ function start(pid,video){if(!pid)return;if(C){flash(T('Már folyamatban van egy hívás.','Es läuft bereits ein Anruf.','A call is already in progress.','C\'è già una chiamata in corso.'));return}
+  var u=S.users[pid]||{name:'?'};C={id:Math.random().toString(36).slice(2,10),peer:pid,name:u.name,video:!!video,state:'outgoing',status:T('Hívás…','Anruf…','Calling…','Chiamata…'),out:true};show();info();ring(true,'back');
+  if(MIRROR)return;
+  if(S.mode!=='live'){C.noAns=setTimeout(function(){if(!C)return;if(u.online){connected();C.status=T('Kapcsolva (demó – valódi hang a WDEA szerverrel)','Verbunden (Demo)','Connected (demo)','Connesso (demo)');info()}else end(T('Nem elérhető.','Nicht erreichbar.','Unavailable.','Non disponibile.'),true)},2600);return}
+  media(video).then(function(st){if(!C)return st.getTracks().forEach(function(t){t.stop()});C.stream=st;local();var p=pc();return p.createOffer().then(function(o){return p.setLocalDescription(o)}).then(function(){return api('POST','signal',{to:pid,kind:'call-offer',data:{sdp:p.localDescription.sdp,type:p.localDescription.type},call:C.id,video:C.video})}).then(function(r){if(C&&r&&!r.online){C.status=T('Kicseng… (most nincs fent, értesítést kap)','Klingelt… (gerade offline)','Ringing… (currently offline)','Squilla… (offline)');info()}})})
+   .catch(function(e){end(e.message||String(e),true)});
+  C.noAns=setTimeout(function(){if(C&&C.state!=='active'){sig('call-end');end(T('Nem vette fel.','Keine Antwort.','No answer.','Nessuna risposta.'),true)}},45000)}
+ function signal(ev){var k=ev.kind;
+  if(k==='call-offer'){if(C&&C.id!==ev.call){api('POST','signal',{to:ev.from,kind:'busy',call:ev.call}).catch(function(){});return}
+   if(!S.users[ev.from])S.users[ev.from]={id:ev.from,name:ev.name,online:true};
+   C={id:ev.call,peer:ev.from,name:ev.name,video:!!ev.video,state:'incoming',offer:ev.data,status:ev.video?T('Videóhívás érkezik','Eingehender Videoanruf','Incoming video call','Videochiamata in arrivo'):T('Hívás érkezik','Eingehender Anruf','Incoming call','Chiamata in arrivo'),iceQ:[]};
+   show();info();ring(true);if(!MIRROR)C.noAns=setTimeout(function(){if(C&&C.state==='incoming'){end(T('Nem fogadott hívás','Verpasster Anruf','Missed call','Chiamata persa'),true)}},45000);return}
+  if(!C||(ev.call&&C.id&&ev.call!==C.id))return;
+  if(k==='call-answer'&&C.pc){C.pc.setRemoteDescription(ev.data).then(flushIce).catch(function(){});C.status=T('Kapcsolódás…','Verbinde…','Connecting…','Connessione…');ring(false);info()}
+  else if(k==='ice'){if(C.pc&&C.pc.remoteDescription)C.pc.addIceCandidate(ev.data).catch(function(){});else (C.iceQ=C.iceQ||[]).push(ev.data)}
+  else if(k==='call-end')end(T('A hívás véget ért.','Anruf beendet.','Call ended.','Chiamata terminata.'),true);
+  else if(k==='decline')end(T('Elutasította a hívást.','Anruf abgelehnt.','Call declined.','Chiamata rifiutata.'),true);
+  else if(k==='busy')end(T('Foglalt – épp másik hívásban van.','Besetzt.','Busy.','Occupato.'),true)}
+ function flushIce(){if(!C||!C.pc)return;var q=C.iceQ||[];C.iceQ=[];q.forEach(function(c){C.pc.addIceCandidate(c).catch(function(){})})}
+ function accept(){if(!C||C.state!=='incoming')return false;ring(false);clearTimeout(C.noAns);C.state='connecting';C.status=T('Kapcsolódás…','Verbinde…','Connecting…','Connessione…');info();if(MIRROR)return true;
+  if(S.mode!=='live'||C.demo){setTimeout(function(){connected();if(C){C.status=T('Kapcsolva (demó)','Verbunden (Demo)','Connected (demo)','Connesso (demo)');info()}},500);return true}
+  media(C.video).then(function(st){if(!C)return st.getTracks().forEach(function(t){t.stop()});C.stream=st;local();var p=pc();return p.setRemoteDescription(C.offer).then(function(){flushIce();return p.createAnswer()}).then(function(a){return p.setLocalDescription(a)}).then(function(){return sig('call-answer',{sdp:p.localDescription.sdp,type:p.localDescription.type})})})
+   .catch(function(e){sig('call-end');end(e.message||String(e),true)});return true}
+ function decline(){if(!C)return false;if(C.state==='incoming'){sig('decline');end(T('Elutasítva.','Abgelehnt.','Declined.','Rifiutata.'),true);return true}return hang()}
+ function hang(){if(!C)return false;sig('call-end');end(T('Hívás vége.','Anruf beendet.','Call ended.','Chiamata terminata.'),true);return true}
+ function end(msg,show2){if(!C)return;relay({type:'mcall',st:'end',msg:msg});var c=C;C=null;ring(false);beep('end');clearTimeout(c.noAns);clearInterval(c.timer);try{c.pc&&c.pc.close()}catch(e){}if(c.stream)c.stream.getTracks().forEach(function(t){t.stop()});
+  callEl.querySelector('.wc-remote').srcObject=null;callEl.querySelector('.wc-local').srcObject=null;callEl.querySelector('.wc-audio').srcObject=null;
+  if(show2){var st=callEl.querySelector('.wc-st');if(st)st.textContent=msg;callEl.querySelector('.wc-btns').innerHTML='';}
+  setTimeout(function(){if(C)return;callEl.classList.remove('in');document.body.classList.remove('wdea-call-open');setTimeout(function(){if(!C)callEl.hidden=true},250)},show2?1400:0)}
+ function mute(){if(!C)return false;C.muted=!C.muted;if(C.stream)C.stream.getAudioTracks().forEach(function(t){t.enabled=!C.muted});info();tick();return true}
+ function cam(){if(!C)return false;C.camOff=!C.camOff;if(C.stream)C.stream.getVideoTracks().forEach(function(t){t.enabled=!C.camOff});info();tick();return true}
+ function demoRing(pid,video){pid=pid||'d-dora';if(C)return false;relay({type:'mring',pid:pid,video:!!video});var u=S.users[pid]||{name:'Dóra'};C={id:'demo',peer:pid,name:u.name,video:!!video,state:'incoming',demo:true,status:T('Hívás érkezik (demó)','Eingehender Anruf (Demo)','Incoming call (demo)','Chiamata in arrivo (demo)')};show();info();ring(true);if(!MIRROR)C.noAns=setTimeout(function(){if(C&&C.state==='incoming')end(T('Nem fogadott hívás','Verpasster Anruf','Missed call','Chiamata persa'),true)},45000);return true}
+ function sync(ev){if(ev.st==='active'){if(C){connected();if(ev.status){C.status=ev.status;info()}}}else if(ev.st==='end'&&C)end(ev.msg,true)}
+ return {_sync:sync,start:start,signal:signal,accept:accept,decline:decline,hang:hang,mute:mute,cam:cam,demoRing:demoRing,active:function(){return !!C},ringing:function(){return !!(C&&C.state==='incoming')},state:function(){return C?C.state:null},peer:function(){return C&&C.peer}}})();
+
+/* ---------- hangvezérlés ---------- */
+function findUser(q){q=fold(q);if(!q)return null;var best=null,bs=0;
+ for(var k in S.users){var n=fold(S.users[k].name),f=n.split(' ')[0];var sc=0;if(n===q||f===q)sc=3;else if(q.indexOf(f)===0||f.indexOf(q)===0||(q.length>=3&&f.slice(0,3)===q.slice(0,3)))sc=2;else if(n.indexOf(q)>=0)sc=1;if(sc>bs){bs=sc;best=k}}return best}
+function voice(raw,opt){opt=opt||{};var f=fold(raw);if(!f)return null;var strict=!!opt.dex;
+ var MSGW=/\b(uzenet\w*|messenger\w*|nachricht\w*|messages?|messaggi\w*|inbox|postafiok\w*)\b/;
+ if(CALL.ringing()){
+  if(/\b(utasitsd el|ne vedd fel|elutasit\w*|nem veszem fel|tedd le|bontsd|nyomd ki|ablehnen|decline|reject|rifiuta)\b/.test(f)){CALL.decline();return T('Elutasítottam a hívást.','Abgelehnt.','Declined.','Rifiutata.')}
+  if(/\b(vedd fel|vegyed fel|vedd mar fel|fogadd|felveszem|vegyuk fel|valaszolj a hivasra|annehmen|nimm ab|abnehmen|answer|accept|pick up|rispondi)\b/.test(f)||/^(fel|halo|hallo|igen|jo)$/.test(f)){CALL.accept();return T('Felvettem.','Angenommen.','Answered.','Risposto.')}}
+ if(CALL.active()){
+  if(/\b(tedd le|bontsd|bontsuk|leteszem|tegyuk le|nyomd ki|hivas vege|vege a hivasnak|fejezd be a hivast|auflegen|hang up|end call|riaggancia)\b/.test(f)){CALL.hang();return T('Letettem.','Aufgelegt.','Hung up.','Chiusa.')}
+  if(/\b(nemits|nemitsd|mikrofon ki|mikrofont ki|mute|stumm)\b/.test(f)){CALL.mute();return T('Mikrofon átkapcsolva.','Mikrofon umgeschaltet.','Microphone toggled.','Microfono cambiato.')}}
+ if(/\b(probahivas|proba hivas|teszthivas|test call)\b/.test(f)){if(CALL.demoRing(S.mode==='live'?null:'d-dora'))return T('Próbahívás érkezik – mondd: vedd fel.','Testanruf – sag: annehmen.','Test call – say: answer.','Chiamata di prova – di\': rispondi.');return null}
+ var mCall=f.match(/\b(?:hivd fel|hivd|hivjuk fel|hivjad|tarcsazd|csorgesd meg|ruf|call|chiama)\s+(.+?)(?:\s+(?:videoval|videon|video|an|now))?$/);
+ if(mCall&&!/^(meg|fel)$/.test(mCall[1])){var who=findUser(mCall[1].replace(/\b(fel|meg|most|kerlek|video\w*)\b/g,'').trim());if(who){CALL.start(who,/video/.test(f));return T('Hívom: ','Ich rufe an: ','Calling ','Chiamo ')+userName(who)+'.'}if(MSGW.test(f)||!strict)return T('Nem találom ezt a nevet az üzenetekben.','Diesen Namen finde ich nicht.','I can\'t find that name.','Non trovo questo nome.');return null}
+ if(S.open&&S.view==='chat'&&S.peer){var mw=f.match(/^(?:ird|irjad|ird meg|ird be|kuldd|kuldd el|kuld|valaszold|valaszolj|irj neki|uzend)(?: meg| el| be)?(?: neki)?(?: azt)?(?: hogy)?\s+(.+)$/);
+  if(mw){var txt=String(raw).trim().split(/\s+/).slice(String(raw).trim().split(/\s+/).length-mw[1].split(' ').length).join(' ');txt=txt.charAt(0).toUpperCase()+txt.slice(1);sendText(S.peer,txt);return T('Elküldtem: ','Gesendet: ','Sent: ','Inviato: ')+txt}}
+ var mOpen=f.match(/\b(?:irj|irjunk|uzenj|nyisd meg a beszelgetest|beszelgetes)\s+(\w+)(?:nak|nek)?\b/);
+ if(mOpen&&!MSGW.test(mOpen[1])&&!(strict&&!/(nak|nek)$/.test(mOpen[1]))){var w2=findUser(mOpen[1]);if(w2){openChat(w2);return T('Megnyitottam a beszélgetést: ','Unterhaltung geöffnet: ','Opened chat with ','Chat aperta con ')+userName(w2)+'.'}}
+ var fresh=S.lastIn&&Date.now()-S.lastIn.at<120000&&thread(S.lastIn.pid).unread>0;
+ if(/\b(nyisd meg az uzenet(?!ek)\w*|nyisd meg az uj uzenet\w*|mutasd az uj uzenet\w*|olvasd el\w*|olvasd fel\w*|mit irt\w*|uj uzenet\w*)\b/.test(f)||(/^(?:na |akkor |jo |most )?(nezd meg|nezzuk meg|nyisd meg|mutasd|mutasd meg|lassuk)(?: azt| ezt| kerlek| legyszi)?$/.test(f)&&(fresh||toastEl&&toastEl.classList.contains('show')))){
+  var pid=S.lastIn&&thread(S.lastIn.pid).unread?S.lastIn.pid:null;if(!pid){for(var k in S.threads)if(S.threads[k].unread){pid=k;break}}
+  if(pid){openChat(pid);var lm=thread(pid).msgs.filter(function(m){return m.from===pid}).pop();return userName(pid)+T(' írta: ',' schrieb: ',' wrote: ',' ha scritto: ')+(lm?lm.text:'')}
+  if(MSGW.test(f)){open();return T('Nincs új üzenet. Megnyitottam az üzeneteket.','Keine neuen Nachrichten.','No new messages.','Nessun nuovo messaggio.')}
+  return strict?null:null}
+ if(strict)return null;
+ if(S.open&&/^(?:zard be|csukd be|bezar\w*|zarj be|tuntesd el|schliessen|close|chiudi)(?: az uzenet\w*| a messenger\w*)?$/.test(f)){close();return T('Bezártam az üzeneteket.','Geschlossen.','Closed.','Chiuso.')}
+ if(MSGW.test(f)&&/\b(zard be|csukd be|bezar\w*)\b/.test(f)){close();return T('Bezártam az üzeneteket.','Geschlossen.','Closed.','Chiuso.')}
+ if(MSGW.test(f)&&f.split(' ').length<=6&&!/\b(torol\w*|torold|kuld\w* el)\b/.test(f)){open();S.view=S.me||S.mode==='demo'?'list':'setup';paint();var n=unreadTotal();return T('Megnyitottam az üzeneteket.','Nachrichten geöffnet.','Messages opened.','Messaggi aperti.')+(n?T(' '+n+' olvasatlan.',' '+n+' ungelesen.',' '+n+' unread.',' '+n+' non letti.'):'')}
+ return null}
+
+/* ---------- bekötés ---------- */
+function hookAI(){var A=window.WDEA_WORK_AI;if(!A)return false;if(A.__msg)return true;var o=A.send;
+ A.send=function(q){var r=null;try{r=voice(q)}catch(e){}if(r){try{var qs=document.getElementById('wdea-quick-status');if(qs){qs.textContent=r;qs.classList.add('visible');setTimeout(function(){qs.classList.remove('visible')},2900)}}catch(e){}try{var c=document.getElementById('wdea-companion');if(c)c.dataset.state='idle'}catch(e){}try{A.say&&A.say(r)}catch(e){}return}return o.apply(this,arguments)};A.__msg=1;return true}
+function onHash(){if(location.hash!=='#messages')lastRoute=location.hash||'#home';if(location.hash==='#messages'){if(!S.open)open()}else if(S.open&&!CALL.active())close()}
+function init(){build();headerBtn();var n=0,iv=setInterval(function(){headerBtn();if(hookAI()&&btn||++n>60)clearInterval(iv)},500);
+ var ta=$('.topbar');if(ta&&window.MutationObserver)new MutationObserver(function(){if(!btn||!document.contains(btn))headerBtn()}).observe(ta,{childList:true,subtree:true});
+ window.addEventListener('hashchange',onHash);if(location.hash==='#messages')setTimeout(onHash,300);
+ new MutationObserver(function(){if(S.open)paint();else paintBadge()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ boot()}
+window.WDEA_MSG={open:open,close:close,openChat:openChat,send:function(t,pid){return sendText(pid||S.peer,t)},voice:voice,call:function(pid,v){CALL.start(pid,v)},accept:CALL.accept,decline:CALL.decline,hang:CALL.hang,demoRing:CALL.demoRing,
+ _mirror:mirrorEv,_snap:function(){return {mode:S.mode,me:S.me,users:S.users,threads:S.threads,online:S.online,ready:S.ready}},mirror:function(){return MIRROR},
+ unread:unreadTotal,users:function(){return Object.keys(S.users).map(function(k){return S.users[k]})},threads:function(){return S.threads},
+ state:function(){return {mode:S.mode,me:S.me&&{id:S.me.id,name:S.me.name},open:S.open,view:S.view,peer:S.peer,ringing:CALL.ringing(),call:CALL.state(),unread:unreadTotal(),online:S.online}},
+ _inject:function(pid,text,name){if(!S.users[pid])S.users[pid]={id:pid,name:name||pid,online:true};addMsg(pid,{id:Date.now(),from:pid,to:S.me&&S.me.id,text:text,at:Date.now()},true);if(S.mode==='demo')demoSave()}};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+/* ===== WDEA WORK · új főoldal-fej v1: köszöntés, gyorsműveletek (Üzenetek, Hívás, AI…), elérhető ismerősök.
+   A főoldalon nincs Vissza gomb és nagy cím; a többi oldal változatlan. ===== */
+(function(){'use strict';
+if(window.WDEA_HOME)return;
+function lang(){var l=(document.documentElement.lang||'hu').slice(0,2);return {hu:0,de:1,en:2,it:3}[l]||0}
+function T(hu,de,en,it){return [hu,de,en,it][lang()]||hu}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function name(){try{var d=JSON.parse(localStorage.getItem('wdea_work_local_v1')||'{}');var n=d&&d.profile&&d.profile.name;if(n&&!/^saj[aá]t profil$/i.test(n))return String(n).split(' ')[0]}catch(e){}return ''}
+function hue(s){var h=0;s=String(s||'');for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
+function greet(){var h=new Date().getHours();return h<10?T('Jó reggelt','Guten Morgen','Good morning','Buongiorno'):h<18?T('Szia','Hallo','Hi','Ciao'):T('Jó estét','Guten Abend','Good evening','Buonasera')}
+var hero=null,busy=false;
+function html(){var n=name(),M=window.WDEA_MSG,people=M?M.users().filter(function(u){return u.online}).slice(0,10):[];
+ var date=new Date().toLocaleDateString(['hu-HU','de-AT','en-GB','it-IT'][lang()],{weekday:'long',month:'long',day:'numeric'});
+ var acts=[['msg','<svg viewBox="0 0 24 24"><path d="M12 3C6.9 3 3 6.6 3 11.1c0 2.5 1.2 4.7 3.2 6.2V21l3.3-1.8c.8.2 1.7.3 2.5.3 5.1 0 9-3.6 9-8.1S17.1 3 12 3Zm1 10.9-2.3-2.4-4.4 2.4 4.8-5.1 2.4 2.4 4.3-2.4-4.8 5.1Z"/></svg>',T('Üzenetek','Chats','Chats','Chat')],
+  ['call','<svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>',T('Hívás','Anrufen','Call','Chiama')],
+  ['ai','<b>✦</b>','AI'],['video','<b>▶</b>',T('Videók','Videos','Videos','Video')],['earn','<b>✧</b>',T('Pontok','Punkte','Points','Punti')]];
+ return '<div class="wh-top"><div class="wh-greet"><small>'+esc(date)+'</small><h2>'+greet()+(n?', '+esc(n):'')+'! <span aria-hidden="true">👋</span></h2><p>'+T('Mi történik ma a közösségben?','Was passiert heute in der Community?','What\'s happening in the community today?','Cosa succede oggi nella community?')+'</p></div></div>'+
+  '<div class="wh-actions" role="group">'+acts.map(function(a){return '<button type="button" class="wh-act wh-'+a[0]+'" data-wh="'+a[0]+'" aria-label="'+String(a[2]).replace(/<[^>]*>/g,'')+' – '+T('főoldali gyorsgomb','Schnellzugriff Startseite','home quick action','azione rapida home')+'"><span class="wh-ic">'+a[1]+(a[0]==='msg'?'<b class="wh-badge" data-wm-badge hidden>0</b>':'')+'</span><small>'+a[2]+'</small></button>'}).join('')+'</div>'+
+  (people.length?'<div class="wh-people"><small class="wh-lbl"><i></i>'+T('Elérhetők most','Jetzt online','Online now','Online ora')+'</small><div class="wh-row">'+people.map(function(u){return '<button type="button" data-wh="chat" data-pid="'+esc(u.id)+'"><span class="wm-av lg" style="--h:'+hue(u.name)+'">'+esc(String(u.name).slice(0,1).toUpperCase())+'<i class="wm-dot"></i></span><span>'+esc(String(u.name).split(' ')[0])+'</span></button>'}).join('')+'</div></div>':'');}
+function paint(){var page=document.getElementById('page');var isHome=!!(page&&page.querySelector('.home-title'));document.body.classList.toggle('wdea-home',isHome);
+ if(!isHome)return;if(busy)return;busy=true;try{
+ hero=page.querySelector('#wdea-home-hero');if(!hero){hero=document.createElement('section');hero.id='wdea-home-hero';hero.className='wh';var t=page.querySelector('.home-title');t.parentNode.insertBefore(hero,t.nextSibling)}
+ var h=html();if(hero.__h!==h){hero.innerHTML=h;hero.__h=h}
+ var M=window.WDEA_MSG,n=M?M.unread():0;hero.querySelectorAll('[data-wm-badge]').forEach(function(b){b.hidden=!n;b.textContent=n>9?'9+':n})}finally{busy=false}}
+document.addEventListener('click',function(e){var b=e.target.closest('#wdea-home-hero [data-wh]');if(!b)return;var a=b.dataset.wh,M=window.WDEA_MSG;
+ if(a==='msg'&&M)M.open();else if(a==='call'&&M){M.open()}else if(a==='chat'&&M)M.openChat(b.dataset.pid);
+ else if(a==='ai'){try{window.WDEA_WORK_AI&&window.WDEA_WORK_AI.open()}catch(x){}}else if(a==='video')location.hash='#video';else if(a==='earn')location.hash='#points'});
+function init(){var page=document.getElementById('page');if(!page)return;paint();new MutationObserver(function(){if(!busy)paint()}).observe(page,{childList:true});
+ new MutationObserver(function(){hero&&(hero.__h='');paint()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});setInterval(paint,20000)}
+window.WDEA_HOME={paint:paint};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 
 </script>
