@@ -45,6 +45,11 @@
  function menu(act){var b=menuBtn();if(!b||!vis(b))return 'A menü ezen a kijelzőméreten mindig látszik.';var o=menuOpen();if(act==='open'&&o)return 'A menü már nyitva van.';if(act==='close'&&!o)return 'A menü már be van zárva.';b.click();return o?'Becsuktam a menüt.':'Kihoztam a menüt.'}
  function openDex(){var c=document.getElementById('wdea-companion');if(c){c.click();return 'Megnyitottam a DEX csevegőt a WORK-ben.'}try{if(window.WDEA_WORK_AI&&window.WDEA_WORK_AI.open){window.WDEA_WORK_AI.open();return 'Megnyitottam a DEX csevegőt a WORK-ben.'}}catch(e){}return 'Nem találom a DEX-et ezen a WORK-oldalon.'}
  function voiceBtn(){var q=document.getElementById('wdea-quick-voice');if(!q)return 'Nem találom a hang gombját ezen az oldalon.';(q.querySelector('button')||q).click();return 'Megnyomtam a hang gombot.'}
+ /* v55: csípve húzott görgetés a valódi térben (XR): a csípés helyén lévő görgethető részt görgeti, beágyazott oldalban is */
+ function scrollAt(fx,fy,df){var W=window,D=document,x=fx*W.innerWidth,y=fy*W.innerHeight,dy=df*W.innerHeight,n=0;
+  while(n++<3){var el=D.elementFromPoint(x,y);if(el&&el.tagName==='IFRAME'){try{var r=el.getBoundingClientRect(),cd=el.contentDocument;if(cd){x-=r.left;y-=r.top;D=cd;W=el.contentWindow;continue}}catch(e){}}
+   while(el&&el!==D.body&&el!==D.documentElement){var cs=W.getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowY)&&el.scrollHeight>el.clientHeight+2){el.scrollBy(0,dy);return ''}el=el.parentElement}
+   W.scrollBy(0,dy);return ''}return ''}
  var EG=null;
  function egPick(el){var W=innerWidth,H=innerHeight,best=null,n=0;while(el&&el!==document.body&&el!==document.documentElement&&n++<12){var r=el.getBoundingClientRect(),tg=el.tagName,cl=(el.className&&el.className.baseVal===undefined?String(el.className):'')+' '+(el.id||'');
    var okSize=r.width>=44&&r.height>=30&&r.width<W*.85&&r.height<H*.85;if(okSize){var cardish=/^(ARTICLE|LI|FIGURE|ASIDE|FORM)$/.test(tg)||/card|post|tile|item|panel|story|widget|box|block|product|chip|tab|btn/i.test(cl);if(cardish)return el;if(!best&&/^(SECTION|DIV|BUTTON|A|IMG|VIDEO)$/.test(tg))best=el}el=el.parentElement}return best}
@@ -58,6 +63,7 @@
  function run(raw,id){var t=String(raw||'').trim(),n=fold(t),m,c;
   if((m=/^@nav ([a-z]+)$/.exec(t)))return nav(m[1]);
   if((m=/^@scroll (up|down|top|bottom|left|right) ([0-9.]+)$/.exec(t)))return scrl(m[1],+m[2]||.6);
+  if((m=/^@scrollby ([0-9.\-]+) ([0-9.\-]+) ([0-9.\-]+)$/.exec(t)))return scrollAt(+m[1],+m[2],+m[3]);
   if(t==='@back'){history.back();return 'Visszaléptem.'}
   if((m=/^@menu (open|close|toggle)$/.exec(t)))return menu(m[1]);
   if(t==='@admin')return adminOpen();
