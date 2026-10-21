@@ -172,3 +172,14 @@ v50 (Quest 3 passthrough-stílus)
 - Dokksáv az ablak alatt: óra, akku és a WORK oldalai (Főoldal, Webshop, Üzenetek, Felfedezés, Videó, Stúdió, AI, Értesítések, Profil, Beállítások). Rámutatva az ikon kiemelődik, csípésre odavált. "dokk ki/be".
 - Valódi térben (AR): nagyobb, ívelt ablak, alatta a dokksáv; nézz az ikonra és koppints.
 - "melyik verzió" -> v50.
+
+v51
+- Profil-menü: új "XR tér" pont a "VR mód" alatt (Valódi tér). Koppintásra azonnal indul a valódi, körbejárható tér, VR nélkül is; kilépéskor visszajön a DEX főoldala.
+- Hang: "XR", "XR tér", "VR tér", "tér", "valódi tér", "XR mód", "nyisd meg az XR-t" -> XR tér (egy koppintás kell az induláshoz, a böngésző hangra nem engedi). A "VR" szó továbbra is a sima VR módot nyitja.
+- Kilépés: "tér vége" vagy "XR vége".
+- "melyik verzió" -> v52 (lásd lent).
+
+v52
+- XR tér szemüvegben: ha a telefon fekszik (szemüvegben), a két szem képe a hosszanti tengely mentén válik szét, mindkettő egyenes, fekvő kép. Álló telefonnál (kézben) a régi nézet marad. Ezt a telefon helyzetéből magától dönti el.
+- Az XR-ablak alapból kisebb, hogy a dokksávval együtt beférjen egy szem képébe ("nagyobb", "közelebb" nagyít).
+- "melyik verzió" -> v52.
