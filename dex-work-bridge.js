@@ -54,7 +54,7 @@
  function egDrag(dx,dy){if(!EG)return '';var x=EG.x0+dx*innerWidth,y=EG.y0+dy*innerHeight;EG.el.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)';return ''}
  function egDrop(){if(EG){EG.el.style.outline='';EG.el.style.outlineOffset='';EG.el.style.zIndex='9999';EG=null}return ''}
  function egAll(){EG=null;[].forEach.call(document.querySelectorAll('[data-dex-move]'),function(e){e.style.transform='';e.style.outline='';e.style.zIndex='';e.style.position='';e.removeAttribute('data-dex-move')});return 'Visszaraktam az elemeket.'}
- function tap(fx,fy){var x=Math.round(fx*innerWidth),y=Math.round(fy*innerHeight),el=document.elementFromPoint(x,y);if(!el)return 'Oda nem tudok kattintani.';var t=el.closest('button,a,[role=button],[data-route],[data-action],input,select,textarea,summary,label,[onclick]')||el;try{if(t.focus&&/INPUT|TEXTAREA|SELECT/.test(t.tagName))t.focus()}catch(e){}t.click();return 'Rákattintottam.'}
+ function tap(fx,fy){hvClear();var x=Math.round(fx*innerWidth),y=Math.round(fy*innerHeight),el=document.elementFromPoint(x,y);if(!el)return 'Oda nem tudok kattintani.';var t=el.closest('button,a,[role=button],[data-route],[data-action],input,select,textarea,summary,label,[onclick]')||el;try{if(t.focus&&/INPUT|TEXTAREA|SELECT/.test(t.tagName))t.focus()}catch(e){}t.click();return 'Rákattintottam.'}
  function run(raw,id){var t=String(raw||'').trim(),n=fold(t),m,c;
   if((m=/^@nav ([a-z]+)$/.exec(t)))return nav(m[1]);
   if((m=/^@scroll (up|down|top|bottom|left|right) ([0-9.]+)$/.exec(t)))return scrl(m[1],+m[2]||.6);
@@ -75,6 +75,10 @@
   if((m=/^(?:nyisd meg|nyisd ki|valaszd ki|nyisd)\s+(?:a\s+|az\s+)?(.+)$/i.exec(n)))return click(m[1]);
   if(/^visszavonas|vond vissza a modositasokat|helyi modositasok torlese$/.test(n)){if(!save([]))return 'Nem sikerült törölni a helyi módosításokat.';if(watcher){watcher.stop();watcher=null}return 'Eltávolítottam a DEX által mentett helyi felületi módosításokat.'}
   return 'A WORK megnyílt. Helyi parancsok: „keresd meg …”, „nyisd meg …”, „írd át … erre …”, „színezd át … kékre”, „vond vissza a módosításokat”.'}
+ var HV=null;
+ function hvClear(){if(HV){HV.style.outline=HV.getAttribute('data-dex-ho')||'';HV.style.boxShadow=HV.getAttribute('data-dex-hs')||'';HV.removeAttribute('data-dex-ho');HV.removeAttribute('data-dex-hs');HV.removeAttribute('data-dex-hover');HV=null}}
+ window.__dexHover=function(fx,fy){try{if(!(fx>=0&&fy>=0&&fx<=1&&fy<=1)){hvClear();return ''}var el=document.elementFromPoint(Math.round(fx*innerWidth),Math.round(fy*innerHeight)),t=el&&el.closest('button,a,[role=button],[data-route],[data-action],input,select,textarea,summary,label,[onclick]');
+  if(t===HV)return '';hvClear();if(!t)return '';HV=t;t.setAttribute('data-dex-ho',t.style.outline||'');t.setAttribute('data-dex-hs',t.style.boxShadow||'');t.setAttribute('data-dex-hover','1');t.style.outline='3px solid #8ce7ff';t.style.boxShadow='0 0 14px #8ce7ffcc';return ''}catch(e){return ''}};
  function onMessage(e){var d=e.data||{};if(d.type==='command'&&typeof d.text==='string'){var answer;try{answer=run(d.text,d.requestId)}catch(err){answer='Nem sikerült végrehajtani a WORK-parancsot.'}say(answer,d.requestId)}else if(d.type==='reset'){try{localStorage.removeItem(STORE)}catch(e){}if(watcher){watcher.stop();watcher=null}}}
  try{channel=new BroadcastChannel(CHANNEL);channel.addEventListener('message',onMessage)}catch(e){}
  if(window.parent!==window){window.addEventListener('message',function(e){if(e.source!==window.parent||!e.data||e.data.channel!==CHANNEL)return;onMessage({data:e.data})});try{window.parent.postMessage({channel:CHANNEL,type:'ready'},location.origin)}catch(e){}}

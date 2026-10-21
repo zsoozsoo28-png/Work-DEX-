@@ -137,3 +137,22 @@ v46
 - Átlátszó ablak (ha a kezed fölötte van): kicsit sötétebb háttér + élesebb kontraszt.
 - Térbe tétel újraírva: valódi 360 fokos forgáskövetés (giroszkóp + gravitáció + kamera látószöge). Elfordulsz: az ablak kimegy a képből; visszafordulsz: ott van. Függőleges nézés is követve. Telefon-tartás (álló/fekvő) automatikusan.
 - Korlát: csak forgást követ (nézés körbe), a telefon helyzetváltozását (odébb sétálás) nem. "melyik verzió" -> v46.
+
+v47 (tartalmazza a v46.1 hangparancs-bővítéseket is)
+- Hangparancsok: több szinonima görgetésre, lapozásra, nagyításra, kicsinyítésre és mozgatásra (v46.1). Javítva: a "görgess jobbra/balra" és a "lapozz balra" most jó irányba megy; a "teljes képernyő", "töltsd ki" és "maximum" kitölti a WORK-ablakot; a sima "alaphelyzet" visszaállítja.
+- Térbe tétel tengely-javítás: az ablak helyét a telefon tájolásából számolom (a hátsó kamera nézési iránya). Fel-le bólintásra az ablak csak függőlegesen mozog, oldalra fordulásra csak vízszintesen, álló és fekvő telefonnál is. Ha nincs tájolás-adat, a régi giroszkópos út fut.
+- "tér kalibrálás" (vagy "tér középre"): az ablak oda kerül, amerre most nézel.
+- "tér állapot": megmondja, be van-e kapcsolva, melyik érzékelő fut, és hány fokot fordultál.
+- "melyik verzió" -> v47.
+
+v48
+- Megnyitáskor a WORK-ablak hologramszerűen kibontakozik, bezáráskor összezáródik.
+- Rámutatás-kiemelés: ami a mutatóujjad hegye alatt van (gomb, link, menüpont), kéken világít. "kiemelés ki/be".
+- Szélfogás: a jobb/bal szélét csipesszel megfogva szélesíted, a tetejét/alját megfogva magasítod, a sarkát fogva mindkettő. Középen fogva továbbra is viszed.
+- Két kézzel két átlós sarkot megfogva a sarkok a kezed alatt maradnak.
+- Kétujjas nyitás: ha a WORK zárva van, két csipeszt széthúzva kinyílik ott, ahol a kezed van.
+- Döntés: két kézzel fogva az egyik kezed közelebb hozod -> az ablak 3D-ben megdől. Hangra: "döntsd balra/jobbra/hátra/előre", "ablak egyenesen".
+- Szálas kéz: "szálak be" -> a hüvelyk- és mutatóujj (vagy két kéz) között fehér szálak, közöttük szürke üveglap. "szálak ki".
+- Második ablak: "nyiss egy második ablakot" (pl. "második ablak webshop"), külön mozgatható és kattintható; "második ablak bezár".
+- WebXR-próba: "xr próba" -> megmondja, hogy a telefon tudja-e a körbejárható AR-módot.
+- "melyik verzió" -> v48.

@@ -2504,7 +2504,7 @@ document.body.appendChild(prof);document.body.appendChild(menu);
   '#dyVR .vm .me{color:#9fe1ff;font-size:3.4vh}'+
   '#dyVR .warn{position:absolute;left:6%;right:6%;top:42%;transform:translateY(-50%);padding:1.6vh 2vh;border-radius:2vh;background:#000000b0;border:1px solid #ffd27a88;color:#ffe7b3;font:600 3.6vh/1.3 system-ui,sans-serif;text-align:center}'+
   '#dyVR .foot{position:absolute;left:0;right:0;bottom:1.2%;text-align:center;white-space:nowrap;overflow:hidden;font:600 2vh system-ui,sans-serif;color:#ffd27acc;text-shadow:0 1px 3px #000}'+
-  '#dyVR .wk iframe{transition:opacity .18s,filter .18s}#dyVR .wk{transition:background .18s}#dyVR .wk.hov{background:#050e1f5c}#dyVR .wk.hov iframe{opacity:.46;filter:contrast(1.14) brightness(.94)}#dyVR .wk{pointer-events:auto;touch-action:none;position:absolute;right:5%;top:13%;width:42%;height:74%;border:1px solid #8ce7ff77;border-radius:2vh;overflow:hidden;background:#06142a2e;box-shadow:0 0 18px #49c8ff66,inset 0 0 14px #49c8ff22}#dyVR .wk iframe{width:300%;height:300%;border:0;transform:scale(.3334);transform-origin:0 0;pointer-events:none;background:transparent;opacity:.97}'+
+  '#dyVR .wk,#dyVR .wk2{transform-origin:50% 50%}#dyVR .wk.wkin,#dyVR .wk2.wkin{animation:wkIn .6s cubic-bezier(.2,.9,.3,1.15)}@keyframes wkIn{0%{transform:scale(.3,.02);opacity:0;filter:brightness(3)}40%{transform:scale(1,.05);opacity:1;filter:brightness(2.2)}100%{transform:none;opacity:1;filter:none}}#dyVR .wkghost{position:absolute;border:1px solid #8ce7ff;border-radius:2vh;background:#49c8ff33;box-shadow:0 0 3vh #49c8ffaa;pointer-events:none;z-index:4;animation:wkOut .42s ease-in forwards}@keyframes wkOut{0%{transform:none;opacity:1}55%{transform:scale(1,.05);opacity:1;filter:brightness(2.4)}100%{transform:scale(.08,.02);opacity:0}}#dyVR .wk2{pointer-events:auto;touch-action:none;position:absolute;border:1px solid #c9a7ff88;border-radius:2vh;overflow:hidden;background:#140a2a2e;box-shadow:0 0 18px #a77bff66,inset 0 0 14px #a77bff22;transition:background .18s}#dyVR .wk2 iframe{width:300%;height:300%;border:0;transform:scale(.3334);transform-origin:0 0;pointer-events:none;background:transparent;opacity:.97;transition:opacity .18s}#dyVR .wk2.hov{background:#050e1f5c}#dyVR .wk2.hov iframe{opacity:.46}#dyVR .thr{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:5}#dyVR .wk iframe{transition:opacity .18s,filter .18s}#dyVR .wk{transition:background .18s}#dyVR .wk.hov{background:#050e1f5c}#dyVR .wk.hov iframe{opacity:.46;filter:contrast(1.14) brightness(.94)}#dyVR .wk{pointer-events:auto;touch-action:none;position:absolute;right:5%;top:13%;width:42%;height:74%;border:1px solid #8ce7ff77;border-radius:2vh;overflow:hidden;background:#06142a2e;box-shadow:0 0 18px #49c8ff66,inset 0 0 14px #49c8ff22}#dyVR .wk iframe{width:300%;height:300%;border:0;transform:scale(.3334);transform-origin:0 0;pointer-events:none;background:transparent;opacity:.97}'+
   '#dyVR .sk{position:absolute;left:5%;top:16%;display:none;gap:2.4vh;align-items:flex-start;padding:1.2vh 1.5vh;border-radius:1.5vh;background:#04123d62;border:1px solid #5fe3ff55;box-shadow:0 0 14px #3d7bff40;backdrop-filter:blur(1.5px);transform-origin:0 0;transform:scale(var(--skz,1))}#dyVR .sk.on{display:flex}'+
   '#dyVR .sk table{border-collapse:separate;border-spacing:.5vh}#dyVR .sk td{width:4.7vh;height:4.7vh;text-align:center;font:700 3.5vh/4.7vh system-ui,sans-serif;color:#eaf6ff;text-shadow:0 1px 5px #000,0 0 8px #001;border-radius:.7vh;background:#06162b35}#dyVR .sk td.f{background:#2fd5ff66;color:#fff;box-shadow:0 0 10px #2fd5ff;text-decoration:line-through;text-decoration-thickness:.5vh}#dyVR .sk td.h{outline:.5vh solid #ffd27a;animation:skh 1s infinite}@keyframes skh{50%{outline-color:transparent}}'+
   '#dyVR .sk .wl{font:600 2.9vh/1.3 system-ui,sans-serif;color:#cfeaff;text-shadow:0 0 6px #000;min-width:14vh}#dyVR .sk .wl b{display:block;color:#ffd27a;font-size:2.6vh;letter-spacing:.08em;margin-bottom:.6vh}#dyVR .sk .wl i{display:block;font-style:normal}#dyVR .sk .wl i.d{color:#7fe8ff;text-decoration:line-through}#dyVR .sk .tm{margin-top:1vh;color:#9bb7d8;font-size:2.4vh}#dyVR .sk.p{opacity:.5}'+
@@ -2583,7 +2583,7 @@ document.body.appendChild(prof);document.body.appendChild(menu);
   if(on&&workChk!==true){
    probeWork(workCands(),0,function(sel,missing){if(missing){workChk=false;workOn=false;setWork2(false);try{if(window.DEX_UI)window.DEX_UI.reply('A WORK oldal nincs a tárhelyen: a work/index.html (vagy a work.html) hiányzik a DEX mellől. Töltsd fel ugyanoda, ahol a DEX van, vagy használd a PC-s szervert.')}catch(e){}}else{workChk=true;workSel=sel;setWork2(true)}});return}
   setWork2(on)}
- function setWork2(on){workOn=!!on;hud(function(x){var w=x.querySelector('.wk');w.hidden=!workOn;if(workOn){w.style.right=er()+'%';w.style.top=et()+'%';w.style.width=WKB.w+'%';w.style.height=WKB.h+'%'}if(workOn&&!w.firstChild){var f=document.createElement('iframe');f.src=workUrl();f.setAttribute('loading','eager');f.onload=function(){try{var d=f.contentDocument;if(d){var st=d.createElement('style');st.textContent='html,body{background:transparent!important}.app,.app-shell{background:transparent!important}';d.head.appendChild(st)}}catch(e){}};w.appendChild(f)}else if(!workOn){w.innerHTML=''}})}
+ function setWork2(on){var wasOn=workOn;workOn=!!on;hud(function(x){var w=x.querySelector('.wk');if(wasOn&&!workOn&&!w.hidden)ghostAt(x,w);if(!wasOn&&workOn){w.classList.remove('wkin');void w.offsetWidth;w.classList.add('wkin');setTimeout(function(){w.classList.remove('wkin')},650)}w.hidden=!workOn;w.style.transform=workOn?tiltCss():'';if(!workOn){try{hoverSend(-1,-1)}catch(e){}}if(workOn){w.style.right=er()+'%';w.style.top=et()+'%';w.style.width=WKB.w+'%';w.style.height=WKB.h+'%'}if(workOn&&!w.firstChild){var f=document.createElement('iframe');f.src=workUrl();f.setAttribute('loading','eager');f.onload=function(){try{var d=f.contentDocument;if(d){var st=d.createElement('style');st.textContent='html,body{background:transparent!important}.app,.app-shell{background:transparent!important}';d.head.appendChild(st)}}catch(e){}};w.appendChild(f)}else if(!workOn){w.innerHTML=''}})}
  function setWorkRoute(route){setWork(true);var tries=0;function apply(){var frames=root?root.querySelectorAll('.wk iframe'):[];if(frames.length){try{frames.forEach(function(f){f.contentWindow.location.hash='#'+route})}catch(e){}return}if(tries++<24)setTimeout(apply,250)}setTimeout(apply,180)}
  function sendWorkCommand(text){setWork(true);var tries=0;function send(){var frames=root?root.querySelectorAll('.wk iframe'):[];if(frames.length){frames.forEach(function(f){try{f.contentWindow.postMessage({channel:'wdea-dex-command-v1',text:String(text||'')},location.origin)}catch(e){}});return}if(tries++<24)setTimeout(send,250)}setTimeout(send,220)}
  function warn(t,ms){hud(function(x){var w=x.querySelector('.warn');w.textContent=t;w.hidden=false});timers.push(setTimeout(function(){hud(function(x){x.querySelector('.warn').hidden=true})},ms||6000))}
@@ -2659,8 +2659,8 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   if(/\b(szunet|megallj|pihenj)\b/.test(f)){if(!G.paused){G.paused=true;G.pa=Date.now();skRender()}return 'Szünet. Ha folytatjuk, mondd: folytasd.'}
   if(/\b(folytasd|folytassuk|mehet|tovabb)\b/.test(f)&&G.paused){G.paused=false;G.tp+=Date.now()-G.pa;skRender();return 'Folytatjuk.'}
   if(G.paused)return null;
-  if(/\b(nagyits\w*|nagyobb\w*)\b/.test(f)){G.zoom=Math.min(1.7,Math.round((G.zoom+.2)*10)/10);skRender();return 'Nagyítottam.'}
-  if(/\b(kicsinyit\w*|kisebb\w*)\b/.test(f)){G.zoom=Math.max(.6,Math.round((G.zoom-.2)*10)/10);skRender();return 'Kicsinyítettem.'}
+  if(/\b(nagyits\w*|nagyitot|nagyobb\w*|kozelits\w*|zoomol\w*)\b/.test(f)){G.zoom=Math.min(1.7,Math.round((G.zoom+.2)*10)/10);skRender();return 'Nagyítottam.'}
+  if(/\b(kicsinyit\w*|kicsinyitot|kisebb\w*|tavolits\w*|zoomolj ki)\b/.test(f)){G.zoom=Math.max(.6,Math.round((G.zoom-.2)*10)/10);skRender();return 'Kicsinyítettem.'}
   if(/\b(tipp\w*|segits\w*|segitsegre|nem talalom)\b/.test(f)){var un=G.words.filter(function(w){return !G.found[w]});if(!un.length)return null;var w=un[rnd(un.length)],c=G.cells[w][0];G.hint=c;skRender();setTimeout(function(){if(G&&G.hint&&G.hint[0]===c[0]&&G.hint[1]===c[1]){G.hint=null;skRender()}},6000);return 'Tipp: a(z) '+w+' kezdőbetűje be van jelölve a rácsban.'}
   var m=/^(?:megvan|megtalaltam|ez az|itt van|talaltam)\W+(.+)$/.exec(f)||/^(?:megvan|megtalaltam)\s+(.+)$/.exec(f);
   var cand=m?m[1]:(f.split(' ').length<=2?f:null);
@@ -2712,8 +2712,8 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function wkSave(){try{localStorage.setItem('dex_wkb',JSON.stringify({r:WKB.r,t:WKB.t,w:WKB.w,h:WKB.h}))}catch(e){}}
  var CS={on:false,page:0,fl:{}},CSP=[
   {t:'WORK oldalak',c:[['vásárlások','a WORK Vásárlás oldala','shopping'],['termékek','bemutatóbolt','store'],['kosár','kosár oldal','cart'],['rendelések','rendeléseid','orders'],['üzenetek','WORK üzenetek','messages'],['főoldal','kezdőlap','home'],['értesítések','értesítések','notifications'],['profil','profil oldal','profile'],['beállítások','beállítások','settings'],['segítség','súgó oldal','help']]},
-  {t:'Görgetés és lapozás',c:[['görgess lejjebb','le','down'],['görgess feljebb','fel','up'],['kicsit lejjebb','kis lépés','down'],['sokat lejjebb','nagy lépés','down'],['lapozz jobbra','jobbra','right'],['lapozz balra','balra','left'],['az aljára','oldal vége','bottom'],['a tetejére','oldal teteje','top']]},
-  {t:'WORK-ablak',c:[['WORK nagyobb','nagyít','big'],['WORK kisebb','kisebbít','small'],['told a WORK-öt balra / jobbra / fel / le','mozgat','move'],['szélesítsd ki a WORK-öt','szélesebb','big'],['✋ csípd meg és húzd','kézzel mozgatás','move'],['✋✋ két kézzel csípj, tágítsd','kézzel nagyítás','big'],['✋ rövid csipesz = katt','kattintás az ujjad alatt','tap'],['✋ csipesz + kéz közelebb/távolabb','kitolás, behúzás','big'],['tedd le a térbe','ablak a térben marad','move'],['elem mozgatás be / ki','kártyák külön','move'],['kéz a kép előtt ki / be','kézkivágás','hf'],['WORK középre','középre','mid'],['WORK alaphelyzet','visszaállít','reset'],['WORK el','elrejt','hide']]},
+  {t:'Görgetés és lapozás',c:[['görgess lejjebb / menj le','le · lentebb · lefelé','down'],['görgess feljebb / menj fel','fel · fentebb · fölfelé','up'],['kicsit lejjebb','kis lépés','down'],['sokat lejjebb','nagy lépés','down'],['lapozz jobbra / tovább','következő · jobbra','right'],['lapozz balra / vissza','előző · balra','left'],['az aljára','oldal vége','bottom'],['a tetejére','oldal teteje','top']]},
+  {t:'WORK-ablak',c:[['WORK nagyobb','nagyíts · nagyítsál · közelíts','big'],['WORK kisebb','kicsinyíts · távolíts','small'],['told a WORK-öt balra / jobbra / fel / le','mozgat','move'],['szélesítsd ki a WORK-öt','szélesebb','big'],['✋ csípd meg és húzd','kézzel mozgatás','move'],['✋✋ két kézzel csípj, tágítsd','kézzel nagyítás','big'],['✋ rövid csipesz = katt','kattintás az ujjad alatt','tap'],['✋ csipesz + kéz közelebb/távolabb','kitolás, behúzás','big'],['tedd le a térbe','ablak a térben marad','move'],['elem mozgatás be / ki','kártyák külön','move'],['kéz a kép előtt ki / be','kézkivágás','hf'],['WORK középre','középre','mid'],['WORK alaphelyzet','visszaállít','reset'],['WORK el','elrejt','hide']]},
   {t:'DEX és játékok',c:[['játékok','játékmenü','games'],['mutasd a csevegéseket','DEX-csevegés','chat'],['csevegés vissza','csevegés el','chatoff'],['gesztus mód ki / be','kézvezérlés','ges'],['szalag tovább','következő lap','next'],['szalag el','szalag rejt','hide2'],['VR vége','kilépés','exit']]}];
  function csRender(){hud(function(x){var e=x.querySelector('.cs');if(!e)return;e.classList.toggle('on',CS.on);if(!CS.on){e.innerHTML='';return}
   var P=CSP[CS.page%CSP.length],h='<h6>IRÁNYÍTÓ SZALAG · '+P.t+' · '+(CS.page%CSP.length+1)+'/'+CSP.length+' · kéz: <em>'+(GES.on?('BE'+(HD.mode==='mp'?' · pontos':(HD.loading?' · töltődik':' · mozgás'))):'KI')+'</em></h6>';
@@ -2725,7 +2725,24 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  var SP={on:0,dx:0,dy:0,yaw:0,pitch:0,sg:1,ev:0,t:0};
  function er(){return WKB.r+SP.dx}
  function et(){return WKB.t+SP.dy}
- function wkApply(){hud(function(x){var w=x.querySelector('.wk');if(!w)return;w.style.right=er()+'%';w.style.top=et()+'%';w.style.width=WKB.w+'%';w.style.height=WKB.h+'%'})}
+ function wkApply(){hud(function(x){var w=x.querySelector('.wk');if(!w)return;w.style.right=er()+'%';w.style.top=et()+'%';w.style.width=WKB.w+'%';w.style.height=WKB.h+'%';w.style.transform=tiltCss();var w2=x.querySelector('.wk2');if(w2&&W2.on){w2.style.right=(W2.r+SP.dx)+'%';w2.style.top=(W2.t+SP.dy)+'%';w2.style.width=W2.w+'%';w2.style.height=W2.h+'%'}})}
+ /* v48: döntés (3D-s perspektíva) */
+ var TILT={x:0,y:0};try{var tl0=JSON.parse(localStorage.getItem('dex_wktilt')||'null');if(tl0&&typeof tl0.x==='number'){TILT.x=tl0.x;TILT.y=tl0.y}}catch(e){}
+ function tiltCss(){return (TILT.x||TILT.y)?'perspective(90vh) rotateY('+TILT.y.toFixed(1)+'deg) rotateX('+TILT.x.toFixed(1)+'deg)':''}
+ function tiltSave(){TILT.x=Math.max(-45,Math.min(45,TILT.x));TILT.y=Math.max(-45,Math.min(45,TILT.y));try{localStorage.setItem('dex_wktilt',JSON.stringify(TILT))}catch(e){}}
+ /* v48: második ablak a térben */
+ var W2={on:0,r:52,t:13,w:38,h:70,route:''};try{var w20=JSON.parse(localStorage.getItem('dex_wk2b')||'null');if(w20&&typeof w20.r==='number'){W2.r=w20.r;W2.t=w20.t;W2.w=w20.w;W2.h=w20.h}}catch(e){}
+ function w2Save(){try{localStorage.setItem('dex_wk2b',JSON.stringify({r:W2.r,t:W2.t,w:W2.w,h:W2.h}))}catch(e){}}
+ function w2Fit(){W2.w=Math.max(20,Math.min(96,W2.w));W2.h=Math.max(30,Math.min(94,W2.h));W2.r=Math.max(-60,Math.min(100-W2.w+60,W2.r));W2.t=Math.max(-30,Math.min(100-W2.h+30,W2.t))}
+ function w2Set(on,route){var was=W2.on;W2.on=on?1:0;if(route!==undefined)W2.route=route||'';
+  hud(function(x){if(!x)return;var w=x.querySelector('.wk2');
+   if(!W2.on){if(w){if(was)ghostAt(x,w);w.remove()}return}
+   if(!w){w=document.createElement('div');w.className='wk2';x.appendChild(w)}
+   var src=workUrl().split('#')[0]+(W2.route?'#'+W2.route:''),f=w.querySelector('iframe');
+   if(!f){f=document.createElement('iframe');f.setAttribute('loading','eager');f.src=src;w.appendChild(f)}else{try{f.contentWindow.location.hash='#'+W2.route}catch(e){f.src=src}}
+   if(!was){w.classList.add('wkin');setTimeout(function(){w.classList.remove('wkin')},650)}});wkApply()}
+ function w2Post(text){var fr=root?[].slice.call(root.querySelectorAll('.wk2 iframe')):[];fr.forEach(function(f){try{f.contentWindow.postMessage({channel:'wdea-dex-work-v1',type:'command',requestId:'g2-'+Date.now(),text:text},location.origin)}catch(e){}});return fr.length}
+ function ghostAt(x,w){try{var g=document.createElement('div');g.className='wkghost';g.style.right=w.style.right;g.style.top=w.style.top;g.style.width=w.style.width;g.style.height=w.style.height;x.appendChild(g);setTimeout(function(){try{g.remove()}catch(e){}},480)}catch(e){}}
  function wkPost(text){var fr=root?[].slice.call(root.querySelectorAll('.wk iframe')):[];fr.forEach(function(f){try{f.contentWindow.postMessage({channel:'wdea-dex-work-v1',type:'command',requestId:'g-'+Date.now(),text:text},location.origin)}catch(e){}});return fr.length}
  function gesDo(dir){if(MG&&MG.state!=='over'){mgGesture(dir);return}csFlash(dir);var k={up:'@scroll up .6',down:'@scroll down .6',left:'@scroll left .7',right:'@scroll right .7'}[dir];wkPost(k)}
 
@@ -2739,7 +2756,10 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function gripTap(fx,fy){if(fx<0||fx>1||fy<0||fy>1)return false;wkPost('@tap '+fx.toFixed(4)+' '+fy.toFixed(4));csFlash('tap');
   hud(function(x){var r=document.createElement('i');r.style.cssText='position:absolute;left:'+((100-er()-WKB.w)+fx*WKB.w)+'%;top:'+(et()+fy*WKB.h)+'%;width:6vh;height:6vh;margin:-3vh 0 0 -3vh;border-radius:50%;border:.5vh solid #ffe27a;box-shadow:0 0 2vh #ffe27a;pointer-events:none;z-index:7;transition:transform .45s,opacity .45s;transform:scale(.3);opacity:1';x.appendChild(r);setTimeout(function(){r.style.transform='scale(1.5)';r.style.opacity='0'},20);setTimeout(function(){try{r.remove()}catch(e){}},520)});TAPN++;return true}
  var TAPN=0;
- function gripEnd(now){if(GRIP.m){if(GRIP.eg){wkPost('@drop');GRIP.eg=0}var tap=GRIP.m===1&&!GRIP.moved&&workOn&&now-GRIP.ts<1100&&GRIP.rel;GRIP.m=0;GRIP.rel=0;wkBoxFit();wkSave();GRIP.lock=now+(tap?350:800);gripGlow(false);
+ function gripEnd(now){if(GRIP.m&&GRIP.w2){var tp2=!GRIP.moved&&now-GRIP.ts<1100&&GRIP.rel;GRIP.m=0;GRIP.w2=0;GRIP.rel=0;w2Fit();w2Save();wkApply();GRIP.lock=now+(tp2?350:800);gripGlow(false);
+   if(tp2){var L2=100-W2.r-SP.dx-W2.w,T2=W2.t+SP.dy,gx=(GRIP.tx*100-L2)/W2.w,gy=(GRIP.ty*100-T2)/W2.h;if(gx>=0&&gx<=1&&gy>=0&&gy<=1){w2Post('@tap '+gx.toFixed(4)+' '+gy.toFixed(4));TAPN++;csFlash('tap')}}return}
+  if(GRIP.m&&(GRIP.cm||GRIP.ez||GRIP.tl))tiltSave();
+  if(GRIP.m){if(GRIP.eg){wkPost('@drop');GRIP.eg=0}var tap=GRIP.m===1&&!GRIP.moved&&!GRIP.ez&&workOn&&now-GRIP.ts<1100&&GRIP.rel;GRIP.m=0;GRIP.rel=0;GRIP.ez='';GRIP.cm=0;GRIP.tl=0;wkBoxFit();wkSave();GRIP.lock=now+(tap?350:800);gripGlow(false);
   if(tap){var fx=(GRIP.tx*100-(100-er()-WKB.w))/WKB.w,fy=(GRIP.ty*100-et())/WKB.h;gripTap(fx,fy)}}}
  function gripTrack(now,HS){
   var pin=HS.filter(function(h){return h.pinchR<(GRIP.m?.5:.32)}).map(function(h){return {x:h.px/h.ew,y:h.py/h.eh,ew:h.ew,eh:h.eh,sz:h.size}});
@@ -2747,24 +2767,71 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   GRIP.lost=0;
   if(pin.length>=2){pin.sort(function(a,b){return a.x-b.x});var A=pin[0],B=pin[pin.length-1];
    var d=Math.sqrt(Math.pow((A.x-B.x)*A.ew,2)+Math.pow((A.y-B.y)*A.eh,2)),mx=(A.x+B.x)/2,my=(A.y+B.y)/2;
-   if(GRIP.m!==2){GRIP.m=2;GRIP.d0=d;GRIP.w0=WKB.w;GRIP.h0=WKB.h;GRIP.cx0=100-WKB.r-WKB.w/2;GRIP.cy0=WKB.t+WKB.h/2;GRIP.mx0=mx;GRIP.my0=my;setWork(true);gripGlow(true);csFlash('big')}
-   else if(GRIP.d0>8){var k=Math.max(.45,Math.min(3,d/GRIP.d0));WKB.w=GRIP.w0*k;WKB.h=GRIP.h0*k;var cx=GRIP.cx0+(mx-GRIP.mx0)*100,cy=GRIP.cy0+(my-GRIP.my0)*100;WKB.r=100-cx-WKB.w/2;WKB.t=cy-WKB.h/2;wkBoxFit();wkApply()}
+   if(GRIP.w2)return true;
+   if(GRIP.m!==2){GRIP.m=2;GRIP.d0=d;GRIP.w0=WKB.w;GRIP.h0=WKB.h;GRIP.cx0=100-WKB.r-WKB.w/2;GRIP.cy0=WKB.t+WKB.h/2;GRIP.mx0=mx;GRIP.my0=my;setWork(true);gripGlow(true);csFlash('big');
+    GRIP.cm=workOn&&nearCorner(A)&&nearCorner(B)&&Math.abs(A.x-B.x)*100>WKB.w*.5&&Math.abs(A.y-B.y)*100>WKB.h*.5?1:0;GRIP.ra=(A.sz&&B.sz)?B.sz/A.sz:0;GRIP.ty0=TILT.y;GRIP.tl=0}
+   else if(GRIP.cm){var x0=Math.min(A.x,B.x)*100,x1=Math.max(A.x,B.x)*100,y0=Math.min(A.y,B.y)*100,y1=Math.max(A.y,B.y)*100;WKB.w=Math.max(24,x1-x0);WKB.h=Math.max(40,y1-y0);WKB.r=100-x1-SP.dx;WKB.t=y0-SP.dy;wkBoxFit();wkApply()}
+   else if(GRIP.d0>8){if(GRIP.ra&&A.sz&&B.sz){var rq=(B.sz/A.sz)/GRIP.ra;if(GRIP.tl||Math.abs(rq-1)>.22){GRIP.tl=1;TILT.y=Math.max(-45,Math.min(45,GRIP.ty0+(rq-1)*75))}}var k=Math.max(.45,Math.min(3,d/GRIP.d0));WKB.w=GRIP.w0*k;WKB.h=GRIP.h0*k;var cx=GRIP.cx0+(mx-GRIP.mx0)*100,cy=GRIP.cy0+(my-GRIP.my0)*100;WKB.r=100-cx-WKB.w/2;WKB.t=cy-WKB.h/2;wkBoxFit();wkApply()}
    return true}
   var P=pin[0];
-  if(GRIP.m===2){return true}  /* az egyik kéz elengedte: a másik elengedéséig nem történik semmi, nincs ugrás */
+  if(GRIP.m===2){return true}
+  if(GRIP.m===1&&GRIP.w2){var dmv=Math.sqrt(Math.pow((P.x-GRIP.px0)*P.ew,2)+Math.pow((P.y-GRIP.py0)*P.eh,2));if(!GRIP.moved&&dmv<.045*P.ew)return true;GRIP.moved=1;W2.r=GRIP.r0-(P.x-GRIP.px0)*100;W2.t=GRIP.t0+(P.y-GRIP.py0)*100;w2Fit();wkApply();return true}  /* az egyik kéz elengedte: a másik elengedéséig nem történik semmi, nincs ugrás */
   if(GRIP.m!==1){var L=100-er()-WKB.w,R=100-er(),px=P.x*100,py=P.y*100,ET=et();
-   if(workOn&&now>=GRIP.lock&&px>L-6&&px<R+6&&py>ET-6&&py<ET+WKB.h+6){GRIP.el=ELEM.on&&px>L+WKB.w*.07&&px<R-WKB.w*.07&&py>ET+WKB.h*.07&&py<ET+WKB.h-WKB.h*.04?1:0;GRIP.eg=0;GRIP.s0=P.sz||0;GRIP.sm=P.sz||0;GRIP.w0=WKB.w;GRIP.h0=WKB.h;GRIP.dep=0;GRIP.m=1;GRIP.px0=P.x;GRIP.py0=P.y;GRIP.r0=WKB.r;GRIP.t0=WKB.t;GRIP.moved=0;GRIP.ts=now;GRIP.tx=P.x;GRIP.ty=P.y;GRIP.rel=0;GRIP.ew=P.ew;GRIP.eh=P.eh;gripGlow(true)}
+   if(W2.on&&now>=GRIP.lock&&!(workOn&&px>L&&px<R&&py>ET&&py<ET+WKB.h)){var L2=100-W2.r-SP.dx-W2.w,T2=W2.t+SP.dy;if(px>L2-3&&px<L2+W2.w+3&&py>T2-3&&py<T2+W2.h+3){GRIP.m=1;GRIP.w2=1;GRIP.px0=P.x;GRIP.py0=P.y;GRIP.r0=W2.r;GRIP.t0=W2.t;GRIP.moved=0;GRIP.ts=now;GRIP.tx=P.x;GRIP.ty=P.y;GRIP.rel=0;GRIP.el=0;GRIP.eg=0;GRIP.ez='';gripGlow(true);return true}}
+   if(workOn&&now>=GRIP.lock&&px>L-6&&px<R+6&&py>ET-6&&py<ET+WKB.h+6){var EB=WKB.w*.045,ez='';if(py>ET-6&&py<ET+WKB.h+6){if(px<L+Math.min(EB,2.2))ez+='l';else if(px>R-Math.min(EB,2.2))ez+='r'}if(px>L-6&&px<R+6){if(py<ET+Math.min(WKB.h*.04,2.6))ez+='t';else if(py>ET+WKB.h-Math.min(WKB.h*.04,2.6))ez+='b'}GRIP.ez=ez;GRIP.el=ELEM.on&&px>L+WKB.w*.07&&px<R-WKB.w*.07&&py>ET+WKB.h*.07&&py<ET+WKB.h-WKB.h*.04&&!ez?1:0;GRIP.eg=0;GRIP.s0=P.sz||0;GRIP.sm=P.sz||0;GRIP.w0=WKB.w;GRIP.h0=WKB.h;GRIP.dep=0;GRIP.m=1;GRIP.px0=P.x;GRIP.py0=P.y;GRIP.r0=WKB.r;GRIP.t0=WKB.t;GRIP.moved=0;GRIP.ts=now;GRIP.tx=P.x;GRIP.ty=P.y;GRIP.rel=0;GRIP.ew=P.ew;GRIP.eh=P.eh;gripGlow(true)}
    return GRIP.m===1||now<GRIP.lock}
-  if(P.sz&&GRIP.s0){GRIP.sm=GRIP.sm*.6+P.sz*.4;if(!GRIP.dep&&Math.abs(GRIP.sm/GRIP.s0-1)>.16){GRIP.dep=1;GRIP.moved=1;GRIP.s0=GRIP.sm;GRIP.px0=P.x;GRIP.py0=P.y;GRIP.r0=WKB.r;GRIP.t0=WKB.t;gripGlow(true);csFlash('big')}}
-  if(!GRIP.moved){if(Math.sqrt(Math.pow((P.x-GRIP.px0)*P.ew,2)+Math.pow((P.y-GRIP.py0)*P.eh,2))<.045*P.ew)return true;GRIP.moved=1;gripGlow(true);csFlash('move');
+  if(P.sz&&GRIP.s0&&!GRIP.ez){GRIP.sm=GRIP.sm*.6+P.sz*.4;if(!GRIP.dep&&Math.abs(GRIP.sm/GRIP.s0-1)>.16){GRIP.dep=1;GRIP.moved=1;GRIP.s0=GRIP.sm;GRIP.px0=P.x;GRIP.py0=P.y;GRIP.r0=WKB.r;GRIP.t0=WKB.t;gripGlow(true);csFlash('big')}}
+  if(!GRIP.moved){if(Math.sqrt(Math.pow((P.x-GRIP.px0)*P.ew,2)+Math.pow((P.y-GRIP.py0)*P.eh,2))<(GRIP.ez?.028:.045)*P.ew)return true;GRIP.moved=1;gripGlow(true);csFlash('move');
    if(GRIP.el){var gx=(GRIP.tx*100-(100-er()-WKB.w))/WKB.w,gy=(GRIP.ty*100-et())/WKB.h;wkPost('@grab '+gx.toFixed(4)+' '+gy.toFixed(4));GRIP.eg=1}}
+  if(GRIP.ez){var dxp=(P.x-GRIP.px0)*100,dyp=(P.y-GRIP.py0)*100,z=GRIP.ez;
+   if(z.indexOf('l')>=0)WKB.w=Math.max(24,Math.min(100-GRIP.r0,GRIP.w0-dxp));
+   if(z.indexOf('r')>=0){var nw=Math.max(24,Math.min(GRIP.w0+GRIP.r0,GRIP.w0+dxp));WKB.r=GRIP.r0-(nw-GRIP.w0);WKB.w=nw}
+   if(z.indexOf('t')>=0){var nh=Math.max(40,Math.min(GRIP.h0+GRIP.t0,GRIP.h0-dyp));WKB.t=GRIP.t0+(GRIP.h0-nh);WKB.h=nh}
+   if(z.indexOf('b')>=0)WKB.h=Math.max(40,Math.min(100-GRIP.t0,GRIP.h0+dyp));
+   wkBoxFit();wkApply();return true}
   if(GRIP.eg){wkPost('@drag '+(((P.x-GRIP.tx)*100)/WKB.w).toFixed(4)+' '+(((P.y-GRIP.ty)*100)/WKB.h).toFixed(4));return true}
   if(GRIP.dep&&GRIP.s0){var kk=Math.max(.45,Math.min(3,1+(GRIP.sm/GRIP.s0-1)*1.4));WKB.w=GRIP.w0*kk;WKB.h=GRIP.h0*kk;var cx2=100-GRIP.r0-GRIP.w0/2-(P.x-GRIP.px0)*100,cy2=GRIP.t0+GRIP.h0/2+(P.y-GRIP.py0)*100;WKB.r=100-cx2-WKB.w/2;WKB.t=cy2-WKB.h/2;wkBoxFit();wkApply();return true}
   WKB.r=GRIP.r0-(P.x-GRIP.px0)*100;WKB.t=GRIP.t0+(P.y-GRIP.py0)*100;wkBoxFit();wkApply();return true}
+ function nearCorner(A){var L=100-er()-WKB.w,R=100-er(),T=et(),B=T+WKB.h,x=A.x*100,y=A.y*100,tx=Math.max(5,WKB.w*.16),ty=Math.max(6,WKB.h*.14);return (Math.abs(x-L)<tx||Math.abs(x-R)<tx)&&(Math.abs(y-T)<ty||Math.abs(y-B)<ty)}
+ /* v48: kétujjas nyitás – zárt WORK mellett két csipesz széthúzása megnyitja az ablakot */
+ var OPN={t:0,d0:0,n:0};
+ function openTrack(now,HS){var pin=HS.filter(function(h){return h.pinchR<.32}).map(function(h){return {x:h.px/h.ew,y:h.py/h.eh,ew:h.ew,eh:h.eh,sz:h.size}});
+  if(pin.length<2){if(OPN.t&&now-OPN.t>400)OPN.t=0;return}pin.sort(function(a,b){return a.x-b.x});var A=pin[0],B=pin[pin.length-1],d=Math.sqrt(Math.pow((A.x-B.x)*A.ew,2)+Math.pow((A.y-B.y)*A.eh,2))/A.ew;
+  if(!OPN.t){OPN.t=now;OPN.d0=d;return}OPN.t=now;
+  if(d-OPN.d0>.1){var x0=A.x*100,x1=B.x*100,cx=(x0+x1)/2,cy=(A.y+B.y)*50,w=Math.max(24,x1-x0),h=Math.max(40,Math.min(94,w*1.6));WKB.w=w;WKB.h=h;WKB.r=100-cx-w/2-SP.dx;WKB.t=cy-h/2-SP.dy;wkBoxFit();OPN.t=0;OPN.n++;
+   setWork(true);GRIP.m=2;GRIP.d0=d*A.ew;GRIP.w0=WKB.w;GRIP.h0=WKB.h;GRIP.cx0=100-WKB.r-WKB.w/2;GRIP.cy0=WKB.t+WKB.h/2;GRIP.mx0=(A.x+B.x)/2;GRIP.my0=(A.y+B.y)/2;GRIP.cm=0;GRIP.ra=0;GRIP.tl=0;gripGlow(true);csFlash('big');wkApply()}}
+ /* v48: „szálas” kéz – fehér szálak a csípő ujjak / a két kéz között, közöttük szürke üveg */
+ var THR={on:false,raf:0,n:0,vis:0};try{if(localStorage.getItem('dex_thr')==='1')THR.on=true}catch(e){}
+ function thrSet(on){THR.on=!!on;try{localStorage.setItem('dex_thr',on?'1':'0')}catch(e){}if(on){if(!THR.raf)THR.raf=requestAnimationFrame(thrDraw)}else hud(function(x){var c=x&&x.querySelector('.thr');if(c)c.style.display='none'});return on}
+ function thrPairs(HS){var o=[],pins=[];HS.forEach(function(h){var P=h.P;if(!P)return;var a=P[4],b=P[8],dd=Math.sqrt(Math.pow(a[0]-b[0],2)+Math.pow(a[1]-b[1],2));if(h.pinchR<.32)pins.push([h.px,h.py]);else if(h.pinchR<2.4&&dd>h.size*.12)o.push([a,b,h.size])});
+  if(pins.length>=2)o.unshift([pins[0],pins[1],HS[0].size||60,1]);return o}
+ function thrDraw(){THR.raf=0;if(!THR.on||!root)return;var now=Date.now(),HS=HF.hs,pr=(now-HF.t<450&&HS.length)?thrPairs(HS):[];THR.vis=pr.length;
+  eyes.forEach(function(e){var x=e.querySelector('.hud'),c=x&&x.querySelector('.thr');if(!x)return;if(!pr.length){if(c)c.style.display='none';return}
+   var ew=e.clientWidth||1,eh=e.clientHeight||1,v=e.querySelector('video');if(!c){c=document.createElement('canvas');c.className='thr';x.appendChild(c)}c.style.display='block';if(c.width!==ew||c.height!==eh){c.width=ew;c.height=eh}
+   var g=c.getContext('2d');g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,ew,eh);var t=now/260;
+   pr.forEach(function(q){var a=q[0],b=q[1],dx=b[0]-a[0],dy=b[1]-a[1],L=Math.sqrt(dx*dx+dy*dy)||1,nx=-dy/L,ny=dx/L,sp=Math.max(3,Math.min(14,L*.06)),
+     x0=Math.min(a[0],b[0]),y0=Math.min(a[1],b[1]),w=Math.abs(dx),h=Math.abs(dy);
+    if(w>8&&h>8&&v&&v.videoWidth){g.save();g.beginPath();g.rect(x0,y0,w,h);g.clip();g.globalAlpha=.62;g.filter='grayscale(1) contrast(1.25) blur(1.5px)';
+     var vw=v.videoWidth,vh=v.videoHeight,odd=CAM.r%2===1,bw=odd?eh:ew,bh=odd?ew:eh,sc=Math.max(bw/vw,bh/vh);g.translate(ew/2,eh/2);g.rotate(CAM.r*Math.PI/2);if(CAM.m)g.scale(-1,1);g.drawImage(v,-vw*sc/2,-vh*sc/2,vw*sc,vh*sc);g.restore();
+     g.fillStyle='rgba(235,240,245,.10)';g.fillRect(x0,y0,w,h)}
+    g.lineCap='round';g.shadowColor='#fff';g.shadowBlur=6;
+    for(var i=-4;i<=4;i++){var o=i*sp,wb=Math.sin(t+i*1.7)*sp*1.4,mx=(a[0]+b[0])/2+nx*(o+wb),my=(a[1]+b[1])/2+ny*(o+wb);g.strokeStyle='rgba(255,255,255,'+(.9-Math.abs(i)*.13)+')';g.lineWidth=i===0?2.2:1.2;
+     g.beginPath();g.moveTo(a[0]+nx*o*.15,a[1]+ny*o*.15);g.quadraticCurveTo(mx,my,b[0]+nx*o*.15,b[1]+ny*o*.15);g.stroke()}
+    g.shadowBlur=0;g.fillStyle='#fff';[a,b].forEach(function(p){g.beginPath();g.arc(p[0],p[1],3.2,0,7);g.fill()})})});
+  THR.n++;if(THR.on&&(pr.length||now-HF.t<1500))THR.raf=requestAnimationFrame(thrDraw)}
  var ELEM={on:false};
  function spFov(){var e=eyes[0],ew=(e&&e.clientWidth)||1,eh=(e&&e.clientHeight)||1,v=e&&e.querySelector('video');if(!v||!v.videoWidth)return {h:45,v:45*eh/ew};
   var rw=CAM.r%2?v.videoHeight:v.videoWidth,rh=CAM.r%2?v.videoWidth:v.videoHeight,sc=Math.max(ew/rw,eh/rh),dpp=66/Math.max(v.videoWidth,v.videoHeight)/sc;return {h:Math.max(15,ew*dpp),v:Math.max(12,eh*dpp)}}
- function spOnMotion(e){if(!SP.on)return;var r=e.rotationRate;if(!r)return;SP.n=(SP.n||0)+1;var iv=(e.interval||16);if(iv>2)iv=iv/1000;var f=iv>0&&iv<1?iv:.016,yr,pr;
+ function spApply(){var fv=spFov(),P=360/fv.h*100,x=-(SP.yaw/fv.h*100);x=((x%P)+P)%P;if(x>P/2)x-=P;
+  SP.dx=x;SP.dy=Math.max(-300,Math.min(300,SP.pitch/fv.v*100));var n=Date.now();if(n-SP.t>25){SP.t=n;wkApply()}}
+ /* v47: abszolút tájolásból számolt irány – a hátsó kamera nézési iránya (eszköz −z) a világban; független attól, hogyan áll a telefon a szemüvegben, és a rotationRate tengelyeitől */
+ function spOnOrient(e){if(!SP.on||!e||e.alpha==null||e.beta==null||e.gamma==null)return;SP.n=(SP.n||0)+1;SP.on2=(SP.on2||0)+1;SP.ot=Date.now();
+  var d=Math.PI/180,a=e.alpha*d,b=e.beta*d,g=e.gamma*d,ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(b),sb=Math.sin(b),cg=Math.cos(g),sg=Math.sin(g);
+  var fx=-(ca*sg+sa*sb*cg),fy=-(sa*sg-ca*sb*cg),fz=-(cb*cg);
+  var yaw=Math.atan2(fy,fx)/d,pit=Math.asin(Math.max(-1,Math.min(1,fz)))/d;
+  if(SP.y0==null){SP.y0=yaw;SP.p0=pit}var dy=yaw-SP.y0;dy=((dy+540)%360)-180;
+  SP.yaw=dy*SP.sg;SP.pitch=Math.max(-85,Math.min(85,(pit-SP.p0)*SP.sg));spApply()}
+ function spOnMotion(e){if(!SP.on)return;var r=e.rotationRate;if(!r)return;if(SP.ot&&Date.now()-SP.ot<600){SP.n=(SP.n||0)+1;return}SP.n=(SP.n||0)+1;var iv=(e.interval||16);if(iv>2)iv=iv/1000;var f=iv>0&&iv<1?iv:.016,yr,pr;
   var a=e.accelerationIncludingGravity;
   if(a&&typeof a.x==='number'&&typeof a.y==='number'&&typeof a.z==='number'){var m=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z)||1,u=[a.x/m,a.y/m,a.z/m];
    if(SP.up){for(var k=0;k<3;k++)SP.up[k]=SP.up[k]*.9+u[k]*.1}else SP.up=u;var U=SP.up,ul=Math.sqrt(U[0]*U[0]+U[1]*U[1]+U[2]*U[2])||1;U=[U[0]/ul,U[1]/ul,U[2]/ul];
@@ -2773,7 +2840,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   SP.yaw+=yr*f*SP.sg;SP.pitch+=pr*f*SP.sg;SP.pitch=Math.max(-85,Math.min(85,SP.pitch));
   var fv=spFov(),P=360/fv.h*100,x=-(SP.yaw/fv.h*100);x=((x%P)+P)%P;if(x>P/2)x-=P;
   SP.dx=x;SP.dy=Math.max(-300,Math.min(300,SP.pitch/fv.v*100));var n=Date.now();if(n-SP.t>25){SP.t=n;wkApply()}}
- function spSet(on,flip){if(flip)SP.sg=-SP.sg;SP.on=on?1:0;SP.up=null;SP.yaw=0;SP.pitch=0;SP.dx=0;SP.dy=0;if(on&&!SP.ev){SP.ev=1;try{window.addEventListener('devicemotion',spOnMotion)}catch(e){}
+ function spSet(on,flip){if(flip)SP.sg=-SP.sg;SP.on=on?1:0;SP.up=null;SP.y0=null;SP.ot=0;SP.yaw=0;SP.pitch=0;SP.dx=0;SP.dy=0;if(on&&!SP.ev){SP.ev=1;try{window.addEventListener('devicemotion',spOnMotion)}catch(e){}try{window.addEventListener('deviceorientation',spOnOrient)}catch(e){}
    try{if(window.DeviceMotionEvent&&DeviceMotionEvent.requestPermission)DeviceMotionEvent.requestPermission().catch(function(){})}catch(e){}}
   SP.n=0;if(on)setTimeout(function(){if(SP.on&&!SP.n){try{window.DEX_UI&&window.DEX_UI.reply('Nem érkezik giroszkóp-adat a telefonról, ezért a térbe tétel nem tud működni. Ellenőrizd a böngésző beállításaiban a mozgás- és tájolásérzékelőket (Webhelybeállítások → Mozgás- vagy fényérzékelők), és hogy az oldal https címről fut.')}catch(e){}}},3500);wkApply()}
 
@@ -2797,9 +2864,16 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
    g.globalCompositeOperation='source-over'});
   HF.n++;HF.raf=requestAnimationFrame(hfDraw)}
  function hudVis(){var c=root&&root.querySelectorAll('.hfront');return c?[].filter.call(c,function(q){return q.style.display==='block'}).length:0}
- function hfFeed(HS){HF.hs=(HS||[]).filter(function(h){return h&&h.P});if(HF.hs.length){HF.t=Date.now();if(!HF.raf&&HF.on)HF.raf=requestAnimationFrame(hfDraw)}}
+ function hfFeed(HS){HF.hs=(HS||[]).filter(function(h){return h&&h.P});if(HF.hs.length){HF.t=Date.now();if(!HF.raf&&HF.on)HF.raf=requestAnimationFrame(hfDraw);if(!THR.raf&&THR.on)THR.raf=requestAnimationFrame(thrDraw)}}
  var HOV=0;
- function hovCheck(HS){var on=0;if(workOn&&HS&&HS.length){var L=100-er()-WKB.w,R=100-er(),T=et(),B=T+WKB.h;HS.forEach(function(h){[[h.tx,h.ty],[h.x,h.y]].forEach(function(p){var px=p[0]/h.ew*100,py=p[1]/h.eh*100;if(px>L&&px<R&&py>T&&py<B)on=1})})}
+ var HVL={on:true,t:0,k:'',n:0};try{if(localStorage.getItem('dex_hvl')==='0')HVL.on=false}catch(e){}
+ function hoverSend(fx,fy){var k=fx<0?'off':fx.toFixed(3)+','+fy.toFixed(3);if(k===HVL.k)return;HVL.k=k;HVL.n++;var fr=root?[].slice.call(root.querySelectorAll('.wk iframe')):[];fr.forEach(function(f){try{var cw=f.contentWindow;if(cw&&typeof cw.__dexHover==='function')cw.__dexHover(fx,fy)}catch(e){}})}
+ function hoverTrack(HS){var now=Date.now();if(!HVL.on||!workOn||GRIP.m||!HS||!HS.length){if(HVL.k&&HVL.k!=='off')hoverSend(-1,-1);return}if(now-HVL.t<90)return;HVL.t=now;
+  var L=100-er()-WKB.w,T=et(),h=HS[0],fx=(h.tx/h.ew*100-L)/WKB.w,fy=(h.ty/h.eh*100-T)/WKB.h;if(TILT.x||TILT.y||fx<0||fx>1||fy<0||fy>1||h.pinchR<.5){hoverSend(-1,-1);return}hoverSend(fx,fy)}
+ var HOV2=0;
+ function hovCheck(HS){try{hoverTrack(HS)}catch(e){}var on2=0;if(W2.on&&HS&&HS.length){HS.forEach(function(h){var px=h.tx/h.ew*100,py=h.ty/h.eh*100,L2=100-W2.r-SP.dx-W2.w,T2=W2.t+SP.dy;if(px>L2&&px<L2+W2.w&&py>T2&&py<T2+W2.h)on2=1})}
+  if(on2!==HOV2){HOV2=on2;hud(function(x){var w=x&&x.querySelector('.wk2');if(w)w.classList.toggle('hov',!!on2)})}
+  var on=0;if(workOn&&HS&&HS.length){var L=100-er()-WKB.w,R=100-er(),T=et(),B=T+WKB.h;HS.forEach(function(h){[[h.tx,h.ty],[h.x,h.y]].forEach(function(p){var px=p[0]/h.ew*100,py=p[1]/h.eh*100;if(px>L&&px<R&&py>T&&py<B)on=1})})}
   if(on!==HOV){HOV=on;hud(function(x){var w=x&&x.querySelector('.wk');if(w)w.classList.toggle('hov',!!on)})}}
  function hfSet(on){HF.on=!!on;try{localStorage.setItem('dex_hf2',on?'1':'0')}catch(e){}if(on){if(HF.hs.length&&!HF.raf)HF.raf=requestAnimationFrame(hfDraw)}else hud(function(x){var c=x&&x.querySelector('.hfront');if(c)c.style.display='none'});return on}
  /* Látható visszajelzés: pont a kezeden (cián = nyitott, sárga = csipesz). Ha a pont megjelenik, a rendszer lát. */
@@ -2824,7 +2898,9 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   setTimeout(function(){try{window.DEX_UI&&window.DEX_UI.reply(handStatus())}catch(e){}},4500);
   return (HD.eng?'A kézkövetés be van kapcsolva.':'Elindítom a kézkövetést, töltöm a kézmodellt.')+' Ha a kezed látom, egy pont jelenik meg rajta: cián, ha nyitott, sárga, ha csipeszben van. Pár másodperc múlva elmondom, hogyan megy.'}
  function trackHand(now){
-  var mgOn=!!(MG&&MG.state==='play'&&!MG.paused);if((!mgOn&&(!GES.on||!workOn))||U||G||M||RIDE||DN||now<GES.lock){if(GRIP.m)gripEnd(now);if(GES.dots){GES.dots=0;handDots(null);hfFeed([]);hovCheck([])}return}
+  var mgOn=!!(MG&&MG.state==='play'&&!MG.paused);
+  if(!mgOn&&GES.on&&!workOn&&!U&&!G&&!M&&!RIDE&&!DN&&root&&root.classList.contains('on')&&(HD.mode==='mp'||typeof window.__handsLm==='function')){var HSo=handsList(now);if(GRIP.m===2){gripTrack(now,HSo);return}openTrack(now,HSo);if(GES.dots||HSo.length){GES.dots=HSo.length?1:0;handDots(HSo.length?HSo:null)}return}
+  if((!mgOn&&(!GES.on||!workOn))||U||G||M||RIDE||DN||now<GES.lock){if(GRIP.m)gripEnd(now);if(GES.dots){GES.dots=0;handDots(null);hfFeed([]);hovCheck([])}return}
   /* 1) pontos kézkövetés (MediaPipe, a kéz 21 pontja) – ez az elsődleges; közben a modell betöltődik */
   if(!mgOn&&(HD.mode==='mp'||typeof window.__handLm==='function'||typeof window.__handsLm==='function')){var hh=dnHand();
    var HS=handsList(now);GES.dots=1;handDots(HS);hfFeed(HS);hovCheck(HS);var gr0=gripTrack(now,HS);if(gr0){GES.samples=[];return}
@@ -2852,14 +2928,14 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function wkBoxCmd(f){
   /* a WORK-ablak mérete/helye. Mondhatod névvel (work, vörköt, webshop) vagy, ha a WORK kint van, „az ablakot”. */
   if(workOn&&/\b(rogzit\w*|mentsd el|mentsd|maradjon igy|igy maradjon|tartsd igy|igy jo|igy marad)\b/.test(f)){wkBoxFit();wkSave();csFlash('move');return 'Rögzítettem a WORK-ablak helyét és méretét. Így marad, akkor is, ha elengeded, vagy újraindítod a DEX-et. Az „alaphelyzet” visszaállítja.'}
-  if(!(WKW.test(f)||(workOn&&(/\b(ablak\w*|kijelzo\w*|felulet\w*)\b/.test(f)||/^(?:(?:egy )?kicsit |meg |kerlek )*(szelesebb|keskenyebb|magasabb|alacsonyabb|tagabb|szukebb)\b/.test(f)))))return null;
+  if(!(WKW.test(f)||(workOn&&(/\b(ablak\w*|kijelzo\w*|felulet\w*)\b/.test(f)||/^(?:(?:egy )?kicsit |meg |kerlek )*(szelesebb|keskenyebb|magasabb|alacsonyabb|tagabb|szukebb)\b/.test(f)||/\b(nagyit\w*|nagyitot|nagyobb\w*|kozelit\w*|zoomol\w*|kicsinyit\w*|kisebb\w*|tavolit\w*)\b/.test(f)||/\b(told\w*|tolj\w*|mozdit\w*|mozgasd|vidd|huzd\w*|csusztasd)\b.*\b(balra|jobbra|feljebb|lejjebb|fel|le)\b/.test(f)))))return null;
   var mv=/\b(told\w*|tolj\w*|mozdit\w*|mozgasd|mozgass\w*|vidd|vigyed|tedd|rakd|rakjad|huzd\w*|csusztasd|lepj)\b/.test(f);
   if(/\b(alaphelyzet\w*|eredeti\w*|visszaall\w*|normal meret|normalis meret)\b/.test(f)){WKB={r:WKB0.r,t:WKB0.t,w:WKB0.w,h:WKB0.h};return wkBoxDone('reset','Visszaállítottam a WORK-ablak helyét és méretét.')}
   if(/\b(kozepre|kozepen|kozepere|kozepet|kozeprol|kozepebe)\b/.test(f)){WKB.r=Math.round((100-WKB.w)/2);WKB.t=Math.round((100-WKB.h)/2);return wkBoxDone('mid','A WORK-ablak középen van.')}
   if(/\b(teljes\w*|egesz kepernyo\w*|kepernyo(?:t|re)? kitolt\w*|kitolt\w*|toltsd ki|kitoltse|maximum\w*|maxra|legnagyobb\w*|full\b)/.test(f)){WKB.w=96;WKB.h=94;WKB.r=2;WKB.t=3;return wkBoxDone('big','A WORK-ablak most kitölti a képet.')}
   var dir=/\b(balra|bal)\b/.test(f)?'l':/\b(jobbra|jobb)\b/.test(f)?'r':/\b(feljebb|fel|folfele|felfele|fentebb|fennebb|foljebb)\b/.test(f)?'u':/\b(lejjebb|le|lefele|lentebb)\b/.test(f)?'d':'';
-  var grow=/\b(nagyobb\w*|nagyit\w*|megnagyit\w*|noveld|novel\w*|megnoveld|bovits\w*|bovebb\w*|tagit\w*|tagabb\w*)\b/.test(f),
-      shrink=/\b(kisebb\w*|kicsinyit\w*|kicsit\w*kisebb|csokkent\w*|szukit\w*|megszukit\w*|apro\w*|zsugorit\w*)\b/.test(f)&&!/\b(szelesebb\w*|keskenyebb)\b/.test(f),
+  var grow=/\b(nagyobb\w*|nagyit\w*|nagyitot|megnagyit\w*|kozelit\w*|zoomol\w*|noveld|novel\w*|megnoveld|bovits\w*|bovebb\w*|tagit\w*|tagabb\w*)\b/.test(f),
+      shrink=/\b(kisebb\w*|kicsinyit\w*|kicsit\w*kisebb|tavolit\w*|zoomolj ki|csokkent\w*|szukit\w*|megszukit\w*|apro\w*|zsugorit\w*)\b/.test(f)&&!/\b(szelesebb\w*|keskenyebb)\b/.test(f),
       wide=/\b(szeles\w*|kiszeles\w*|szelesit\w*|szelesre|oldalra nyujt\w*|tagulj\w*|kiterj\w*|kihuz\w*)\b/.test(f),
       narrow=/\b(keskeny\w*|szukebb\w*|osszebb|osszehuz\w*|keskenyit\w*|keskenyre)\b/.test(f),
       tall=/\b(magasabb\w*|magasit\w*|hosszabb\w*|magasra|nyujtsd fel|fuggolegesen nagyobb\w*)\b/.test(f),
@@ -2901,16 +2977,38 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
    try{window.DEX_UI&&window.DEX_UI.reply('Lefényképeztem, és mentettem a Letöltések közé'+(hasWork?'':' (a WORK-ablak tartalma nélkül, mert azt nem tudtam lerajzolni)')+'.')}catch(e){}},'image/png')})}
  var SHOT={n:0,last:0,work:false};
  function shotCmd(f){if(/\b(screenshot\w*|skrinsot\w*|szkrinsot\w*|kepernyokep\w*|kepernyofoto\w*|fenykepezd\w*|fotozd\w*|fotozz\w*|keszits\w* (egy )?(kepet|fotot|screenshotot)|kepet? rolam|mentsd el a kepet)\b/.test(f)&&f.split(' ').length<=7&&!/\b(fenykepezz|fotozz)\b/.test(f)){setTimeout(shotSave,200);return 'Fényképezek. A kép pár másodperc múlva mentődik a Letöltések közé.'}return null}
+ function v48Cmd(f,n){
+  var BE=/\b(be|bekapcsol\w*|kapcsold be|mutasd|legyen|kerem|indits\w*|on)\b/,KI=/\b(ki|kikapcsol\w*|kapcsold ki|tuntesd el|ne legyen|eltuntet\w*|off|vege)\b/;
+  if(/\b(szalak|szalas\w*|szalakat|szal effekt\w*|szalhatas\w*)\b/.test(f)&&n<=6){if(KI.test(f)){thrSet(false);return 'Kikapcsoltam a szálas kéz-effektust.'}thrSet(true);if(!GES.on||!HD.eng){GES.on=true;try{dnLoadMP()}catch(e){}}return 'Bekapcsoltam a szálas kéz-effektust: ha a hüvelyk- és mutatóujjad távolítod, fehér szálak feszülnek köztük, közöttük szürke üveglap. Két kézzel csípve a két kezed között feszülnek. Kikapcsolás: szálak ki.'}
+  if(/\b(kiemeles\w*|ramutatas\w*|rámutatás)\b/.test(f)&&n<=6){var on=!KI.test(f);HVL.on=on;try{localStorage.setItem('dex_hvl',on?'1':'0')}catch(e){}if(!on)hoverSend(-1,-1);return on?'Bekapcsoltam a rámutatás-kiemelést: ami az ujjhegyed alatt van, világít.':'Kikapcsoltam a rámutatás-kiemelést.'}
+  if((/\b(dont\w*|billent\w*|dolts\w*)\b/.test(f)||/\b(egyenesit\w*|egyenesbe|egyenesen)\b/.test(f))&&n<=8&&(workOn||/\bwork\w*|ablak\w*/.test(f))){
+   if(/\b(egyenes\w*|alaphelyzet\w*|vissza|ne legyen)\b/.test(f)||KI.test(f)){TILT.x=0;TILT.y=0;tiltSave();wkApply();return 'Kiegyenesítettem az ablakot.'}
+   var st=/\b(nagyon|jobban|meg)\b/.test(f)?20:12,ok=0;if(/\b(balra|bal)\b/.test(f)){TILT.y-=st;ok=1}if(/\b(jobbra|jobb)\b/.test(f)){TILT.y+=st;ok=1}if(/\b(hatra|hatrafele|fel|felfele|tolem)\b/.test(f)){TILT.x+=st;ok=1}if(/\b(elore|elorefele|le|lefele|felem|magam fele)\b/.test(f)){TILT.x-=st;ok=1}
+   if(!ok){TILT.y+=st}tiltSave();wkApply();return 'Megdöntöttem az ablakot. Kiegyenesítés: ablak egyenesen. Kézzel: két kézzel fogd meg, és az egyik kezed hozd közelebb.'}
+  if(/\b(masodik|uj|meg egy|kulon|tovabbi|ket)\b.{0,12}\b(ablak\w*|work\w*)\b/.test(f)&&n<=9){
+   if(KI.test(f)||/\b(zard|bezar\w*|csukd|el)\b/.test(f)){if(!W2.on)return 'Nincs nyitva második ablak.';w2Set(false);return 'Bezártam a második ablakot.'}
+   var rt='',nm='';try{var nv=window.WDEA_HU_VOICE&&window.WDEA_HU_VOICE.resolve(f.replace(/\b(masodik|uj|meg egy|kulon|tovabbi|ket)\b|\b(ablak\w*)\b/g,' '));if(nv&&nv.route){rt=nv.route;nm=nv.label||rt}}catch(e){}
+   if(!workOn)try{setWork(true)}catch(e){}w2Set(true,rt);return 'Megnyitottam egy második ablakot'+(nm?': '+nm:'')+'. Csipesszel külön mozgathatod; a térbe tétel mindkettőre vonatkozik. Bezárás: második ablak bezár.'}
+  if(/\b(web ?xr|xr|ar mod\w*|korbejar\w*)\b/.test(f)&&/\b(proba\w*|probald|teszt\w*|tamogat\w*|mukodik|megy|ellenoriz\w*|tudja)\b/.test(f)){xrProbe();return 'Ellenőrzöm, hogy a telefonod böngészője támogatja-e a WebXR-t (a körbejárható térhez). Pár másodperc.'}
+  return null}
+ var XR={done:0,ar:null,vr:null,why:''};
+ function xrProbe(){var x=navigator.xr;function say(t){XR.done=1;try{window.DEX_UI&&window.DEX_UI.reply(t)}catch(e){}}
+  if(!window.isSecureContext){XR.why='nem https';say('A WebXR csak https címen működik; ez az oldal nem az.');return}
+  if(!x||!x.isSessionSupported){XR.ar=false;XR.vr=false;XR.why='nincs navigator.xr';say('Ez a böngésző nem ismeri a WebXR-t, ezért körbejárható teret most nem tudok csinálni. Androidon a Chrome friss változata és a Google Play-szolgáltatások AR-hez (ARCore) kell hozzá.');return}
+  Promise.all([x.isSessionSupported('immersive-ar').catch(function(){return false}),x.isSessionSupported('immersive-vr').catch(function(){return false})]).then(function(r){XR.ar=!!r[0];XR.vr=!!r[1];
+   say(XR.ar?'Jó hír: a telefonod támogatja a WebXR AR-módot (immersive-ar). Ezzel megcsinálható a valódi, körbejárható tér, ahol az ablak a szobában marad. Ez a következő nagy lépés.':'A telefonod böngészője ismeri a WebXR-t, de AR-módot nem támogat'+(XR.vr?' (csak VR-módot)':'')+'. Valószínűleg hiányzik a Google Play-szolgáltatások AR-hez (ARCore) alkalmazás, vagy a telefon nincs a támogatott listán. Telepítsd a Play áruházból, majd mondd újra: xr próba.')})}
  function spaceCmd(f){
-  var n=f.split(' ').length;
+  var n=f.split(' ').length;var v8=v48Cmd(f,n);if(v8)return v8;
   var place=/^(?:(?:tedd|tegyed|tegyel|rakd|rakjad|engedd|hagyd|helyezd)(?: (?:le|oda|ott|itt|ide|el|ezt|a terbe|a terben|az asztalra|az ablakot|a workot|a vorkot))*|(?:marad(?:j|jon)|lebegj|lebegjen) (?:ott|itt|a terben)|(?:ott|itt) marad|(?:tedd|tegyed|rakd) (?:le )?(?:a )?(?:terbe|terben|asztalra|levegobe|levegoben)|terbe tedd|terben hagyd|(?:rogzitsd|rogzitse|rogzits) (?:a )?(?:terben|terbe))$/;
   var inSpace=/\b(terben|terbe|asztalra|levegoben|levegobe|terrogzit\w*)\b/.test(f);
   if(n<=7&&place.test(f)&&!/\b(ki|vedd fel)\b/.test(f)&&(workOn||inSpace)){if(!workOn)try{setWork(true)}catch(e){}spSet(true,false);return 'Letettem a térbe: a WORK-ablak ott marad, ahol hagytad, akkor is, ha elfordítod a fejed. Ha ellenkező irányba megy, mondd: tér fordítva. Felvétel: vedd fel az ablakot.'}
+  if(/\b(ter|terben|terbe)\b/.test(f)&&/\b(kalibral\w*|kozep\w*|kozepre|elem|nullaz\w*|ujrakezd\w*)\b/.test(f)&&n<=5){if(!SP.on){if(!workOn)try{setWork(true)}catch(e){}spSet(true,false)}else{SP.y0=null;SP.up=null;SP.yaw=0;SP.pitch=0;spApply()}return 'Kalibráltam: a WORK-ablak most ott van, amerre nézel, és innen marad a helyén.'}
+  if(/\b(ter|terben)\b/.test(f)&&/\b(allapot\w*|info\w*|adat\w*|mukodik|megy)\b/.test(f)&&n<=5){var src=SP.ot&&Date.now()-SP.ot<1500?'tájolás (iránytű-alapú, pontos)':(SP.n?'forgássebesség (giroszkóp)':'nincs adat');return 'Tér: '+(SP.on?'bekapcsolva':'kikapcsolva')+'. Érzékelő: '+src+'. Elfordulás '+Math.round(SP.yaw)+' fok, bólintás '+Math.round(SP.pitch)+' fok. Irány: '+(SP.sg>0?'normál':'fordított')+'.'}
   if(/\b(ter|terrogzit\w*|terben|terre?gzit\w*)\b/.test(f)&&/\b(fordit\w*|fordva)\b/.test(f)&&n<=5){spSet(true,true);return 'Megfordítottam a tér irányát.'}
   if(/\b(vedd fel|vedd le|szedd le|oldd fel|terrogzites ki|terrogzit\w* ki|terben ki|ne maradjon (a )?terben)\b/.test(f)&&/\b(ablak\w*|work\w*|vork\w*|terrogzit\w*|ter)\b/.test(f)&&n<=6){spSet(false,false);return 'Felvettem: az ablak újra a nézeteddel együtt mozog.'}
   return null}
  function verCmd(f){if(/\b(verzio\w*|melyik verzio\w*|milyen verzio\w*)\b/.test(f)&&f.split(' ').length<=5)return 'A VR-rész verziója: '+VRVER+'.';return null}
- var VRVER='v46';
+ var VRVER='v48';
  function stripCmd(f){
   var spr=spaceCmd(f)||verCmd(f);if(spr)return spr
   /* elemenkénti mozgatás */
@@ -3011,7 +3109,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function rideStop(){if(!RIDE)return null;RIDE=null;cancelAnimationFrame(RIDE_FRAME);RIDE_FRAME=0;if(root)root.classList.remove('ride-on','zoomed');hud(function(x){var e=x.querySelector('.ride-hud span');if(e)e.textContent=''});return 'Kiléptem a Csillagvasútból.'}
  function rideCommand(f){if(!RIDE)return null;
   if(/\b(jatek vege|csillagvasut vege|kilep\w*|hagyjuk|allj|allj meg)\b/.test(f))return rideStop();
-  if(/\b(teljes kepernyo|teljes kijelzo|full ?screen|nagyit\w*|nagyitas)\b/.test(f)){root.classList.add('zoomed');return voiceFullscreen(false)}
+  if(/\b(teljes kepernyo|teljes kijelzo|full ?screen)\b/.test(f)||(/\b(nagyit\w*|nagyitot|nagyobb\w*|nagyitas|kozelit\w*|zoomol\w*)\b/.test(f)&&!workOn)){root.classList.add('zoomed');return voiceFullscreen(false)}
   if(/\b(kicsinyit\w*|normal meret|eredeti meret)\b/.test(f)){root.classList.remove('zoomed');return 'Visszaállítottam az eredeti méretet.'}
   if(/\b(szu net|szunet|pause|pihenj)\b/.test(f)){RIDE.paused=!RIDE.paused;rideStatus(RIDE.paused?'Szünet':'Folytatódik · mondd: balra vagy jobbra');return RIDE.paused?'Szüneteltettem a Csillagvasutat.':'Folytatódik a Csillagvasút.'}
   if(RIDE.paused&&/\b(folytasd|mehet|indulj|tovabb)\b/.test(f)){RIDE.paused=false;rideStatus('Folytatódik · mondd: balra vagy jobbra');return 'Folytatom.'}
@@ -3300,7 +3398,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  var h0=Dx.handle;
  Dx.handle=function(raw){
   var f=fold(raw),self=this,args=arguments,vr=!!(root&&root.classList.contains('on'));
-  if(/teljes kepernyo|teljes kijelzo|full ?screen/.test(f)||(/nagyit\w*|nagyitas/.test(f)&&!(G&&!G.done))){if(vr&&RIDE)root.classList.add('zoomed');return voiceFullscreen(/\b(ki|ablakos|kilep\w*|vege|kicsinyit\w*|normal meret)\b/.test(f))}
+  if(/teljes kepernyo|teljes kijelzo|full ?screen/.test(f)||(/(nagyit\w*|nagyitot|nagyitas|nagyobb\w*|kozelit\w*|zoomol\w*)/.test(f)&&!(G&&!G.done)&&!workOn)){if(vr&&RIDE)root.classList.add('zoomed');return voiceFullscreen(/\b(ki|ablakos|kilep\w*|vege|kicsinyit\w*|normal meret)\b/.test(f))}
   if(vr&&f.length<120&&!(RIDE&&/\b(balra|jobbra)\b/.test(f)&&!/\b(gesztus\w*|szalag\w*)\b/.test(f))){var sc=stripCmd(f);if(sc!==null)return sc;var wb=wkBoxCmd(f);if(wb!==null)return wb}
   if(vr&&RIDE){var rideReply=rideCommand(f);if(rideReply!==null)return rideReply}
   if(vr&&MG){var mgr=mgCmd(f);if(mgr!==null)return mgr}
@@ -3334,7 +3432,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function netChip(){var off=navigator.onLine===false;of.style.display=off?'block':'none';return off}
  window.addEventListener('offline',function(){netChip();try{if(window.DEX_UI)window.DEX_UI.reply('Offline módban vagyok. A helyi parancsok, a jegyzetek, a VR és a szókereső működnek; az okos mód és a WORK a számítógépre vár.')}catch(e){}});
  window.addEventListener('online',function(){netChip()});netChip();
- Dx.__vr=1;window.DEX_VR={fov:function(){return spFov()},spaceCmd:spaceCmd,ver:function(){return VRVER},space:function(){return {on:SP.on,dx:SP.dx,dy:SP.dy,sg:SP.sg}},elem:function(){return ELEM.on},spMotion:spOnMotion,shotCmd:shotCmd,shot:function(){return new Promise(function(res){shotMake(function(c,w){res(c?{w:c.width,h:c.height,work:!!w,url:c.toDataURL('image/png')}:null)})})},shotInfo:function(){return SHOT},cam:function(){return {r:CAM.r,m:CAM.m,mode:camMode()}},camSet:function(r,m){camSet(r,m,false)},wkCmd:function(f){return wkBoxCmd(f)},handFront:function(){return {on:HF.on,frames:HF.n,vis:hudVis(),taps:TAPN}},handFrontSet:hfSet,handInfo:function(){return {mode:HD.mode,err:HD.err,loading:HD.loading,base:MPBASE,swipes:GES.seen,grip:GRIP.m,hands:(handsList(Date.now())||[]).map(function(h){return [Math.round(h.px/h.ew*100),Math.round(h.py/h.eh*100),+h.pinchR.toFixed(2)]})}},game:function(){return G},startGame:startGame,enter:function(g){return enter(!!g).then(function(t){if(window.DEX_UI)window.DEX_UI.reply(t);return t})},leave:leave,uStart:uStart,uCells:function(f){var ew=eyes[0]?eyes[0].clientWidth||1:1,eh=eyes[0]?eyes[0].clientHeight||1:1,H=(14+58*f.z)/100,W=H*.62*eh/ew,y1=1-f.b/100,y0=y1-H,a=e2v(f.x-W/2,y0),b=e2v(f.x+W/2,y1),o=[],x,y;if(!a||!b)return o;for(y=Math.max(0,Math.floor(Math.min(a[1],b[1])*36));y<Math.min(36,Math.ceil(Math.max(a[1],b[1])*36));y++)for(x=Math.max(0,Math.floor(Math.min(a[0],b[0])*64));x<Math.min(64,Math.ceil(Math.max(a[0],b[0])*64));x++)o.push(y*64+x);return o},uStop:uStop,ugame:function(){return U},uSpawn:uSpawn,uStep:uStep,uHit:uHit,holds:function(){return !!(M||(G&&G.paused)||(U&&U.paused))},quiet:function(t){var f=fold(t);return !!(U&&U.state==='play'&&!U.paused&&f.split(' ').length<=4&&/\b(uss|utes\w*|utom|ut|bumm|bum|bam|nyomd|nyomas|csap\w*|pofozd|kapd|rajta)\b/.test(f))},chat:chatSet,chatState:function(){return chatOn},menu:function(){return menuOpen()},menuState:function(){return M},addGame:function(id,name,start,say){GAMES.push({id:id,name:name,say:say||name,start:start})},active:function(){return !!(root&&root.classList.contains('on'))},work:setWork,mag:function(){return !!(MG&&MG.state!=='over')},mgState:function(){return MG},mgStep:mgStep,mgSpawn:mgSpawn,gesture:function(on){if(on===undefined)return GES.on;GES.on=!!on;GES.samples=[];csRender();return GES.on},gestureState:function(){return {on:GES.on,seen:GES.seen}},strip:function(on){return on===undefined?CS.on:csSet(on)},stripState:function(){return {on:CS.on,page:CS.page}},stripFlash:csFlash,wkBox:function(){return {r:WKB.r,t:WKB.t,w:WKB.w,h:WKB.h}},ride:function(){return !!RIDE},dino:function(){return !!DN},dnState:function(){return DN},dnStep:dnStep,dnFire:dnFire,dnSpawn:dnSpawn,dnHandFromLm:dnHandFromLm,workOn:function(){return !!workOn}};
+ Dx.__vr=1;window.DEX_VR={fov:function(){return spFov()},spaceCmd:spaceCmd,ver:function(){return VRVER},space:function(){return {on:SP.on,dx:SP.dx,dy:SP.dy,sg:SP.sg}},elem:function(){return ELEM.on},spMotion:spOnMotion,spOrient:spOnOrient,tilt:function(){return {x:TILT.x,y:TILT.y}},win2:function(){return {on:W2.on,r:W2.r,t:W2.t,w:W2.w,h:W2.h,route:W2.route}},threads:function(){return {on:THR.on,n:THR.n,vis:THR.vis}},hover:function(){return {on:HVL.on,k:HVL.k,n:HVL.n}},opens:function(){return OPN.n},xr:function(){return XR},shotCmd:shotCmd,shot:function(){return new Promise(function(res){shotMake(function(c,w){res(c?{w:c.width,h:c.height,work:!!w,url:c.toDataURL('image/png')}:null)})})},shotInfo:function(){return SHOT},cam:function(){return {r:CAM.r,m:CAM.m,mode:camMode()}},camSet:function(r,m){camSet(r,m,false)},wkCmd:function(f){return wkBoxCmd(f)},handFront:function(){return {on:HF.on,frames:HF.n,vis:hudVis(),taps:TAPN}},handFrontSet:hfSet,handInfo:function(){return {mode:HD.mode,err:HD.err,loading:HD.loading,base:MPBASE,swipes:GES.seen,grip:GRIP.m,hands:(handsList(Date.now())||[]).map(function(h){return [Math.round(h.px/h.ew*100),Math.round(h.py/h.eh*100),+h.pinchR.toFixed(2)]})}},game:function(){return G},startGame:startGame,enter:function(g){return enter(!!g).then(function(t){if(window.DEX_UI)window.DEX_UI.reply(t);return t})},leave:leave,uStart:uStart,uCells:function(f){var ew=eyes[0]?eyes[0].clientWidth||1:1,eh=eyes[0]?eyes[0].clientHeight||1:1,H=(14+58*f.z)/100,W=H*.62*eh/ew,y1=1-f.b/100,y0=y1-H,a=e2v(f.x-W/2,y0),b=e2v(f.x+W/2,y1),o=[],x,y;if(!a||!b)return o;for(y=Math.max(0,Math.floor(Math.min(a[1],b[1])*36));y<Math.min(36,Math.ceil(Math.max(a[1],b[1])*36));y++)for(x=Math.max(0,Math.floor(Math.min(a[0],b[0])*64));x<Math.min(64,Math.ceil(Math.max(a[0],b[0])*64));x++)o.push(y*64+x);return o},uStop:uStop,ugame:function(){return U},uSpawn:uSpawn,uStep:uStep,uHit:uHit,holds:function(){return !!(M||(G&&G.paused)||(U&&U.paused))},quiet:function(t){var f=fold(t);return !!(U&&U.state==='play'&&!U.paused&&f.split(' ').length<=4&&/\b(uss|utes\w*|utom|ut|bumm|bum|bam|nyomd|nyomas|csap\w*|pofozd|kapd|rajta)\b/.test(f))},chat:chatSet,chatState:function(){return chatOn},menu:function(){return menuOpen()},menuState:function(){return M},addGame:function(id,name,start,say){GAMES.push({id:id,name:name,say:say||name,start:start})},active:function(){return !!(root&&root.classList.contains('on'))},work:setWork,mag:function(){return !!(MG&&MG.state!=='over')},mgState:function(){return MG},mgStep:mgStep,mgSpawn:mgSpawn,gesture:function(on){if(on===undefined)return GES.on;GES.on=!!on;GES.samples=[];csRender();return GES.on},gestureState:function(){return {on:GES.on,seen:GES.seen}},strip:function(on){return on===undefined?CS.on:csSet(on)},stripState:function(){return {on:CS.on,page:CS.page}},stripFlash:csFlash,wkBox:function(){return {r:WKB.r,t:WKB.t,w:WKB.w,h:WKB.h}},ride:function(){return !!RIDE},dino:function(){return !!DN},dnState:function(){return DN},dnStep:dnStep,dnFire:dnFire,dnSpawn:dnSpawn,dnHandFromLm:dnHandFromLm,workOn:function(){return !!workOn}};
 })();
 
 </script><script>
@@ -3363,7 +3461,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   var vis=wkVisible(),ctx=hasWork||vis;
   if(vr&&busy()&&!hasWork)return null;
   /* görgetés */
-  var SV=/(gorg\w*|gordit\w*|csusz\w*|lapoz\w*|uli?ts\w*|menj|ugorj|lepj|huzd|vigyel|gorbits\w*)/,DN=/\b(le|lejjebb|lefele|lentebb|alabb|lejebb|lennebb)\b/,UP=/\b(fel|feljebb|folfele|felfele|fentebb|fennebb|foljebb|follebb|fojebb)\b|\bf[eo]ljebb\b/;
+  var SV=/(gorg\w*|gorget\w*|gordit\w*|csusz\w*|lapoz\w*|uli?ts\w*|menj\w*|ugorj\w*|lepj\w*|huzd\w*|vigy\w*|mozdit\w*|mozgasd|told\w*|gorbits\w*)/,DN=/\b(le|lejjebb|lefele|lefelebb|lentebb|alabb|lejebb|lennebb|lefele iranyba|lefelebb)\b/,UP=/\b(fel|feljebb|folfele|felfele|felfelebb|fentebb|fennebb|foljebb|follebb|fojebb|fel iranyba)\b|\bf[eo]ljebb\b/;
   var small=/\b(kicsit|picit|kicsivel|keveset|aprot|egy kicsit)\b/.test(f),big=/\b(sokat|nagyot|nagyon|jo sokat|oldalnyit|egesz oldalt)\b/.test(f);
   var amt=small?.25:(big?1.2:.6);
   if(ctx&&(vr||hasWork)){
@@ -3378,14 +3476,14 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   /* rövid, mindennapi görgető / lapozó szavak */
   if(ctx&&(vr||hasWork)&&!/\b(jatek\w*|szokereso|utos|dino\w*|szalag\w*|csillag\w*|zene|dal|szam)\b/.test(f)){
    var PRE='^(?:(?:na|akkor|most|mar|kerlek|legyszi|meg|hat|ja|jo|igen|aha|ok|oke|rendben) )*',POST='(?: (?:kerlek|legyszi|egy kicsit|kicsit|picit|egy picit|most|mar|megint))*$';
-   var DWN=new RegExp(PRE+'(?:gorgess|gorgesd|gorgetj|gorgetes|gorgessuk|gorgess tovabb|gorgesd tovabb|tovabb gorgess|tovabb gorgesd|tovabb|tovabb lefele|nezzuk tovabb|mutass tobbet|mutass meg|mutass meg tobbet|mutasd tovabb|tobbet|meg tobbet|lenn|lent|lefele nezz|nezzuk lejjebb|hadd lassam tovabb|mi van lejjebb|mi van lentebb|lapozz lefele|lapozz le)'+POST),
-       UPW=new RegExp(PRE+'(?:gorgess vissza|gorgesd vissza|gorgess visszafele|gorgesd visszafele|visszafele gorgess|vissza fel|vissza felfele|vissza a tetejere|nezzuk feljebb|mi van feljebb|mi van fentebb|lapozz felfele|nezz feljebb|nezz fel)'+POST),
-       NXT=new RegExp(PRE+'(?:lapozz|lapozz tovabb|tovabb lapozz|kovetkezo|a kovetkezo|kovetkezo oldal|a kovetkezo oldal|lapozz kovetkezore|mutasd a kovetkezot|mutasd a kovetkezo oldalt|tovabb jobbra|jobbra tovabb|jobbra mutass|mutass jobbra)'+POST),
-       PRV=new RegExp(PRE+'(?:lapozz vissza|vissza lapozz|elozo|az elozo|elozo oldal|az elozo oldal|lapozz elozore|mutasd az elozot|mutasd az elozo oldalt|balra vissza|vissza balra|balra mutass|mutass balra)'+POST);
+   var DWN=new RegExp(PRE+'(?:gorg\\w*|gorget\\w*|gordit\\w* le|menj\\w* le|ugorj\\w* le|lepj\\w* le|mozdit\\w* le|mozgasd le|told\\w* le|huzd\\w* le|tovabb lefele|nezzuk tovabb|mutass tobbet|mutass meg|mutass meg tobbet|mutasd tovabb|tobbet|meg tobbet|lenn|lent|lefele nezz|nezzuk lejjebb|hadd lassam tovabb|mi van lejjebb|mi van lentebb|lapoz\\w* lefele|lapoz\\w* le)'+POST),
+       UPW=new RegExp(PRE+'(?:gorg\\w* vissza|gorgesd\\w* vissza|gorg\\w* visszafele|gorgesd\\w* visszafele|visszafele gorg\\w*|vissza fel|vissza felfele|vissza a tetejere|nezzuk feljebb|mi van feljebb|mi van fentebb|menj\\w* fel|ugorj\\w* fel|lepj\\w* fel|mozdit\\w* fel|told\\w* fel|huzd\\w* fel|lapoz\\w* felfele|lapoz\\w* fel|nezz feljebb|nezz fel)'+POST),
+       NXT=new RegExp(PRE+'(?:lapoz\\w*|lapoz\\w* tovabb|tovabb lapoz\\w*|kovetkez\\w*|a kovetkez\\w*|kovetkezo oldal|a kovetkezo oldal|mutasd a kovetkezot|mutasd a kovetkezo oldalt|tovabb jobbra|jobbra tovabb|jobbra mutass|mutass jobbra)'+POST),
+       PRV=new RegExp(PRE+'(?:lapoz\\w* vissza|vissza lapoz\\w*|elozo|az elozo|elozo oldal|az elozo oldal|mutasd az elozot|mutasd az elozo oldalt|balra vissza|vissza balra|balra mutass|mutass balra)'+POST);
    if(DWN.test(f))return {scroll:['down',amt]};
    if(UPW.test(f))return {scroll:['up',amt]};
    if(NXT.test(f))return {scroll:['right',.7]};
-   if(PRV.test(f))return {scroll:['left',.7]}}
+   if(PRV.test(f))return {scroll:['left',.7]};var DIRW=/\b(jobbra\w*|balra\w*|jobb oldalra|bal oldalra|fel\w*|le|lefele|lejjebb|lentebb|vissza\w*)\b/;if(!DIRW.test(f)&&/\b(lapoz\w*|kovetkez\w*|tovabb)\b/.test(f))return {scroll:['right',.7]};if(!DIRW.test(f)&&/\b(gorg\w*|gorget\w*)\b/.test(f))return {scroll:['down',amt]}}
   var RT=/\b(jobbra|jobbrafele|jobb oldalra)\b/,LT=/\b(balra|balrafele|bal oldalra)\b/,MV=/\b(told|tolj|mozdit\w*|mozgasd|vidd|tedd|huzd|csusztasd|nagyobb\w*|kisebb\w*|kozepre)\b/;
   if(ctx&&(vr||hasWork)&&!MV.test(f)&&!/\b(jatek\w*|szokereso|utos|csillag\w*)\b/.test(f)){
    var hz=/(gorg\w*|gordit\w*|lapoz\w*|csusz\w*)/.test(f)||f.split(' ').filter(function(x){return x&&x!=='work'&&x!=='egy'&&x!=='kicsit'&&x!=='meg'&&x!=='picit'}).length<=1;
@@ -3405,9 +3503,12 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   var BAREW=/^(?:(?:a|az|na|akkor|most|mar|megint|ujra|kerlek|legyszi) )*(?:work|vork|vurk|wurk|verk|woerk|word)\w{0,5}(?: (?:kerlek|legyszi|ide|elem|ele|fel|be|megint|ujra|mar|most))*$/;
   var isShow=(WKR.test(f)&&SHOWV.test(f)&&!/\b(told|tolj|mozdit\w*|mozgasd|vidd|csusztasd|nagyobb\w*|kisebb\w*|kozepre|alaphelyzet\w*)\b/.test(f))||BAREW.test(f);
   var isHide=/\b(?:work|vork|vurk|wurk|verk|woerk|word)\w{0,5}\b.{0,20}\b(el|le|zar|rejtsd|tuntesd)\b/.test(f)&&!/\b(kapcsold|nyisd|mutasd|tedd elem)\b/.test(f)&&!/\b(told|tolj|mozdit\w*|mozgasd|vidd|csusztasd)\b/.test(f);
+  var isZoomIn=/\b(nagyit\w*|nagyitot|nagyobb\w*|kozelit\w*|zoomol\w*)\b/.test(f),isZoomOut=/\b(kicsinyit\w*|kisebb\w*|tavolit\w*|zoomolj ki)\b/.test(f);
   var isWorkCmd=/^(keresd meg|keresd|kutass|talald meg|nyisd meg|nyisd ki|valaszd ki|ird at|nevezd at|csereld le|szinezd at|szinezd|valtoztasd meg|visszavonas|vond vissza a modositasokat|helyi modositasok torlese)\b/.test(f);
   /* Védelem: a meglévő DEX-parancsok (pl. „nyisd meg…”, „keresd…”) VR-en kívül ugyanúgy működnek tovább; csak VR-ben, vagy ha a parancs kimondja a „WORK” szót, megy a WORK felé. */
   var hasW=WKR.test(f),wv=wkVisible();
+  if(vr&&wv&&!busy()&&(isZoomIn||isZoomOut)&&window.DEX_VR&&window.DEX_VR.wkCmd){var zr=window.DEX_VR.wkCmd('work '+(isZoomOut?'kisebb':'nagyobb'));if(zr!==null)return zr}
+  if(vr&&wv&&!busy()&&f.length<50&&window.DEX_VR&&window.DEX_VR.wkCmd&&(/\b(teljes kepernyo\w*|teljes kijelzo\w*|teljes nezet\w*|toltsd ki|kitolt\w*|maximum\w*|maxra)\b/.test(f)||/^(?:(?:az?|kerlek|most) )*(alaphelyzet\w*|eredeti meret\w*|eredetire)$/.test(f))&&!/\b(kilep\w*|ablakos|normal meret|vege)\b|(kepernyo|kijelzo|nezet)\w* ki$/.test(f)){var fz=window.DEX_VR.wkCmd('work '+f);if(fz!==null)return fz}
   if(vr&&f.length<60&&window.DEX_VR&&window.DEX_VR.spaceCmd){var spc=window.DEX_VR.spaceCmd(f);if(spc)return spc}
   if(vr&&f.length<60&&window.DEX_VR&&window.DEX_VR.shotCmd){var sh=window.DEX_VR.shotCmd(f);if(sh)return sh}
   if(vr&&wv&&f.length<60&&window.DEX_VR&&window.DEX_VR.wkCmd&&/\b(rogzit\w*|mentsd el|mentsd|maradjon igy|igy maradjon|tartsd igy|igy jo|igy marad)\b/.test(f)){var rg=window.DEX_VR.wkCmd(f);if(rg!==null)return rg}
