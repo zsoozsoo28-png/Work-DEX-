@@ -156,3 +156,12 @@ v48
 - Második ablak: "nyiss egy második ablakot" (pl. "második ablak webshop"), külön mozgatható és kattintható; "második ablak bezár".
 - WebXR-próba: "xr próba" -> megmondja, hogy a telefon tudja-e a körbejárható AR-módot.
 - "melyik verzió" -> v48.
+
+v49
+- VALÓDI, KÖRBEJÁRHATÓ TÉR (WebXR AR + ARCore): "tedd le" (vagy kiemel, emeld ki, tedd ki, tedd oda, rakd le, hagyd ott, marad, maradj, "valódi tér") után egyszer koppints a képernyőre vagy nyomd meg a szemüveg gombját. Az ablak a szobában marad: odébb sétálhatsz, közelebb mehetsz, körbejárhatod, hátulról is látszik. Két szemre bontva (ha a telefon ad kamera-hozzáférést).
+- AR-ben kattintás: nézz a gombra, hogy a középső pont sárga legyen, és koppints / nyomd meg a szemüveg gombját. A gomb kéken kiemelődik, amire nézel.
+- AR-ben hang: "hozd ide", "közelebb", "távolabb", "nagyobb", "kisebb", "kép fordítva" (ha fejjel lefelé lenne a kamerakép), "tér vége" / "vedd fel az ablakot" (kilépés). Görgetés, lapozás, oldalak ugyanúgy mennek.
+- A döntés kézzel most a jó irányba megy: a jobb kezed magad felé húzva az ablak jobb oldala feléd jön.
+- A gombok kék kiemelésének kapcsolója: "rámutatás ki/be" (a "kiemel" szó mostantól a térbe tétel).
+- Korlát: AR-ben még nincs kézkövetés (a kamerát az AR használja), ott nézéssel + koppintással és hanggal irányítasz.
+- "melyik verzió" -> v49.
