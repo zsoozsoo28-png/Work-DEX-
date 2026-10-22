@@ -233,3 +233,7 @@ Közbeszólás és DEX betanítás
 
 XR: gombok kipakolása
 - Csípd meg a kijelzőn a gombot és tartsd (vagy húzd magad felé): kijön a térbe, ott is működik. Hangra: "vedd ki a menü gombot", "hozd ide a vissza gombot", "tedd vissza a menüt", "tegyél vissza mindent". A helyüket megjegyzi.
+
+VR: gombok kipakolása körben (360°)
+- WORK-gombot csípd és tartsd 1 mp-ig: kijön, viheted (akár magad mögé). Hangra: "tedd balra/jobbra/mögém a menüt", "hozd ide a vissza gombot", "tegyél vissza mindent".
+Bemutató: a hang "Vé-Dé-E-Á Stúdió"-t mond (nem "DEA"-t).
