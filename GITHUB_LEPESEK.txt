@@ -225,3 +225,11 @@ v55 (valódi tér / XR, mint a Questben)
 
 Gyerekjáték a VR-ben: "DEX és a Csillagtündérek"
 - VR-ben mondd: "csillagtündérek" (vagy játékmenü → Csillagtündérek). Portál a tündérekkel, kristályeső mozgásfeladatokkal, bújócska a kis triceratopsszal. Ujjal érintés, csípés, ránézés vagy hang ("kapd el", "segíts", "megvan").
+
+Közbeszólás és DEX betanítás
+- "fejhallgató" / "füles" = közbeszólhatsz, amíg DEX beszél; "hangszóró" = kikapcsolja.
+- DEX érti a töltelékszavakat (na, szóval, izé, légyszi), a menet közbeni javítást ("vagyis inkább"), és a több kérést egy mondatban ("és utána").
+- Kérdezhetsz a WORK-ről és a rendszerről ("hogy kell üzenetet küldeni?"), utána "vigyél oda". Ha nem biztos, visszakérdez.
+
+XR: gombok kipakolása
+- Csípd meg a kijelzőn a gombot és tartsd (vagy húzd magad felé): kijön a térbe, ott is működik. Hangra: "vedd ki a menü gombot", "hozd ide a vissza gombot", "tedd vissza a menüt", "tegyél vissza mindent". A helyüket megjegyzi.
