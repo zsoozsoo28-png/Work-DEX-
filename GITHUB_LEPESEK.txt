@@ -241,3 +241,6 @@ Bemutató: a hang "Vé-Dé-E-Á Stúdió"-t mond (nem "DEA"-t).
 DEX World és természetesebb DEX
 - A world.html és a dexworld mappa is kerüljön fel a repóba (az index.html mellé).
 - DEX-ben: "dex world" indítja a 12 világos játékot. DEX rövid szavakra is természetesen válaszol ("mizu", "oké", "várj", "mi?").
+
+DEX World szemüveges mód kézzel: a 🥽 gomb vagy "VR". Mutatóujj = megy, ököl = áll, csípés = ugrik, tenyér = DEX segít, integetés = beszél. A dexworld mappát (benne spr és atlas) teljesen töltsd fel.
+VR játékmenü: 1. DEX World, 2. Szókereső, 3. Csillagtündérek. "egyes törlés" kiveszi, "játékok visszaállítása" visszahozza.

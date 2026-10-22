@@ -3323,6 +3323,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   return null}
  GAMES.push({id:'dino',name:'DEX Dínóüldözés',say:'dino uldozes',start:function(){return dnStart()}});
  GAMES.push({id:'mag',name:'DEX őrzője',say:'dex orzoje',start:function(){return mgStart()}});
+ GAMES.push({id:'dexworld',name:'DEX World (12 világ)',say:'dex world',start:function(){try{window.DEX_WORLD&&window.DEX_WORLD.open()}catch(e){}return 'Indul a DEX World! A VR-ből kiléptem, mert ez a játék teljes képernyőn megy. 12 világ vár, én segítek.'}});
  /* ---- DEX DÍNÓÜLDÖZÉS: kézkövetés + kézhez kötött játékpisztoly + dínók a kamerakép előtt ---- */
  var DN=null,DNF=0,DNBEST=+(localStorage.getItem('dex51_dino_best')||0)||0,dnSaid=false;
  var HD={eng:null,loading:false,err:'',busy:false,lastSend:0,res:null,resT:0,mode:'',skin:null,hist:[],pinchOn:false,lastArea:0,lastAreaT:0};
@@ -3685,7 +3686,14 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  GAMES.push({id:'tunder',name:'Csillagtündérek (gyerekjáték)',say:'csillagtunderek',start:function(){return kdStart()}});
  window.DEX_KID={state:function(){if(!KD)return null;return {state:KD.state,stars:KD.stars,caught:KD.caught,rainN:KD.rainN,ori:!!(KD.ori||window.__kidOri),paused:KD.paused,task:KD.task?KD.task.k:null,objs:KD.objs.map(function(o){return {k:o.k,st:o.st||'',gone:o.gone||0,yaw:o.yaw,pit:o.pit,col:o.col||''}}),trike:KD.trike?{yaw:KD.trike.yaw,pit:KD.trike.pit,peek:KD.trike.peek,found:KD.trike.found}:null,imgs:KDIMG?Object.keys(KDIMG).filter(function(k){return kdOk(KDIMG[k])}).length:0}},start:kdStart,stop:kdStop,scr:function(i){if(!KD)return null;var o=i==='trike'?KD.trike:KD.objs[i];if(!o)return null;var ew=eyes[0]?eyes[0].clientWidth:1,eh=eyes[0]?eyes[0].clientHeight:1;var s=kdScr(o,ew,eh,kdView(),kdFov());return {x:s.x,y:s.y,vis:s.vis,w:ew,h:eh}},next:function(){if(!KD)return;if(KD.state==='portal'){KD.objs.forEach(function(o){if(o.k==='fairy')o.st='caught'});kdRain()}else if(KD.state==='rain'||KD.state==='rain-done')kdSeek()}};
 
- function items(){var a=[];if(G&&!G.done)a.push({id:'resume',name:'Folytatás – Szókereső'});if(U&&U.state!=='over')a.push({id:'resumeU',name:'Folytatás – Ütős blokkok'});GAMES.forEach(function(g){a.push(g)});return a}
+ /* játékmenü sorrendje: 1. DEX World, 2. Szókereső, 3. Csillagtündérek, utána a többi; „egyes törlés” kiveszi a menüből */
+ var GORD=['dexworld','szokereso','tunder','utos','csillagvasut','dino','mag'];
+ function ghid(){try{var a=JSON.parse(localStorage.getItem('dex_games_hidden')||'[]');return Array.isArray(a)?a:[]}catch(e){return []}}
+ function gord(g,i){var k=GORD.indexOf(g.id);return k<0?100+i:k}
+ function items(){var a=[];if(G&&!G.done)a.push({id:'resume',name:'Folytatás – Szókereső'});if(U&&U.state!=='over')a.push({id:'resumeU',name:'Folytatás – Ütős blokkok'});var hid=ghid();GAMES.map(function(g,i){return [g,i]}).filter(function(x){return hid.indexOf(x[0].id)<0}).sort(function(x,y){return gord(x[0],x[1])-gord(y[0],y[1])}).forEach(function(x){a.push(x[0])});return a}
+ function gameDel(f){var m=/^(?:(\w+) torles\w*|(\w+) jatek torlese|torold (?:az? )?(\w+)(?: jatekot)?|(\w+) torold)$/.exec(f);if(!m)return null;var w=m[1]||m[2]||m[3]||m[4],n=/^\d+$/.test(w)?+w:NUMW[w];if(!n)return null;var it=items(),g=it[n-1];if(!g)return 'Nincs '+n+'. játék a menüben.';if(/^resume/.test(g.id))return 'A folytatást nem lehet törölni.';
+  var h=ghid();if(h.indexOf(g.id)<0)h.push(g.id);try{localStorage.setItem('dex_games_hidden',JSON.stringify(h))}catch(e){}if(M){var n2=items().length;M.sel=Math.max(0,Math.min(M.sel,n2-1));M.top=Math.max(0,Math.min(M.top,Math.max(0,n2-VIS)));gmRender()}return 'Kivettem a menüből: '+g.name+'. Visszahozni: játékok visszaállítása.'}
+ function gameRestore(f){if(!/\b(jatekok visszaallitasa|allitsd vissza a jatekokat|jatekokat vissza\w*|minden jatekot vissza\w*|torolt jatekok vissza\w*|hozd vissza a jatekokat)\b/.test(f))return null;var n=ghid().length;try{localStorage.removeItem('dex_games_hidden')}catch(e){}if(M)gmRender();return n?'Visszahoztam a törölt játékokat ('+n+').':'Nincs törölt játék, minden megvan.'}
  function gmRender(){hud(function(x){var e=x.querySelector('.gm');if(!e)return;if(!M){e.classList.remove('on');e.innerHTML='';return}
   var it=items(),top=Math.max(0,Math.min(M.top,Math.max(0,it.length-VIS))),h='<b>JÁTÉKOK</b>';
   if(top>0)h+='<u>▲ följebb ('+top+')</u>';
@@ -3700,6 +3708,7 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   menuClose(false);if(G&&G.mp){G.mp=false}G=null;uStop();if(RIDE)rideStop();mgStop();dnStop();return g.start()}
  function menuCmd(f){
   var vr=!!(root&&root.classList.contains('on'));if(!vr)return null;
+  var gd=gameDel(f)||gameRestore(f);if(gd)return gd;
   var open=!!M,inGame=!!(G&&!G.done)||!!(U&&U.state!=='over')||!!RIDE||!!(MG&&MG.state!=='over')||!!DN;
   var wantOpen=/\b(jatek|jatekok|jatekokat|jatekmappa|jatekmenu|jatek menu|jatek lista)\b/.test(f)&&!/\b(vege|ki|kilep\w*|hagyjuk|uj|kovetkezo|masik|ujra)\b/.test(f)
    &&!(G&&!G.paused&&!G.done&&/\bjatek\b/.test(f)&&!/\bjatekok\w*\b/.test(f)&&G.words.some(function(w){return fz(w)==='jatek'&&!G.found[w]}));
@@ -4300,7 +4309,7 @@ window.__KIDIMG={"fairy_cyan": "data:image/webp;base64,UklGRi4aAABXRUJQVlA4WAoAA
   {id:'vr',k:['vr','vr mod','virtualis','szemuveg','vr szemuveg','tegyuk fel a szemuveget'],q:'a VR mód',a:'VR mód: a telefon a szemüvegben, két szemre bontott kép a kamerával. Indítás: mondd, hogy VR. Benne a WORK ablak, játékok és kézvezérlés. Kilépés: VR vége.',go:'VR'},
   {id:'xr',k:['xr','xr ter','valodi ter','ter','szobaban','korbejarhato','ar'],q:'az XR tér (valódi tér)',a:'XR tér: a WORK kijelző a szobádban lebeg, körbejárhatod. A fogantyút (a csík alul) csípve viszed, a sarkát húzva méretezed, előrebökve kattintasz, csípve görgetsz. A mikrofon magától bekapcsol. Indítás: profil menü → XR tér. Kilépés: tér vége.'},
   {id:'dexworld',k:['dex world','dexworld','dex vilag','jatekvilag','12 vilag','vilagok','coin','gyemant','portal'],q:'a DEX World játék',a:'DEX World: 12 bejárható világ (Főváros, Földi Város, Lebegő Szigetek, Űrport, Hegyvidék, Sivatag, Jégvilág, Víz Alatti Világ, Versenypálya, Erdő, Űr Világ, Közösség). Minden világban 8 Coin és 3 gyémánt, utána kinyílik a kapu. Én segítek és mutatom az utat. Indítás: mondd, hogy dex world.',go:'dex world'},
-  {id:'jatek',k:['jatek','jatekok','jatszunk','jatszani','unatkozom','gyerek','gyerekjatek','gyereknek','kisgyerek'],q:'a játékok',a:'Játékok VR-ben: Csillagtündérek (gyerekeknek: tündérfogás, kristályeső, bújócska a kis dínóval), Szókereső, Ütős blokkok, Csillagvasút, Dínóüldözés, DEX őrzője. VR-ben mondd: játékok, vagy a játék nevét.'},
+  {id:'jatek',k:['jatek','jatekok','jatszunk','jatszani','unatkozom','gyerek','gyerekjatek','gyereknek','kisgyerek'],q:'a játékok',a:'Játékok: 1. DEX World (12 világ, teljes képernyőn), 2. Szókereső, 3. Csillagtündérek (gyerekeknek), utána Ütős blokkok, Csillagvasút, Dínóüldözés, DEX őrzője. VR-ben mondd: játékok, vagy a játék nevét. A menüből törölni: egyes törlés, kettes törlés; visszahozni: játékok visszaállítása.'},
   {id:'tunder',k:['csillagtunder','tunderek','tunder','bujocska','kristalyeso','triceratops','kis dino'],q:'a Csillagtündérek gyerekjáték',a:'Csillagtündérek: 3 pálya – a portálból kiszökött tündéreket kell elkapni (ujjal, csípéssel, ránézéssel vagy hangra: kapd el), kristályeső mozgásfeladatokkal, végül bújócska a kis triceratopsszal, hideg-meleg súgással. VR-ben mondd: csillagtündérek.'},
   {id:'fejh',k:['fejhallgato mod','fules','kozbeszolas','felbeszakit','felbeszakitani','kozbe tudok szolni','megszakit'],q:'a fejhallgató mód (közbeszólás)',a:'Fejhallgató mód: beszéd közben is hallgatok, bármikor közbeszólhatsz, elhallgatok, és megjegyzem, amit mondtál. Alapból be van kapcsolva. Ha hangszórón meghallanám magam, mondd: hangszóró. Vissza: fejhallgató vagy füles.'},
   {id:'mic',k:['mikrofon','hogyan beszeljek','nem hall','nem hallasz','nem ert','nem erted'],q:'a mikrofon',a:'A mikrofon gombot egyszer megnyomod, és bekapcsolva marad: addig beszélhetsz, amíg akarsz, szünetnél válaszolok. Újra megnyomva kikapcsol. Ha nem hallalak, ellenőrizd a böngésző mikrofon-engedélyét.'},
@@ -4433,8 +4442,8 @@ window.__KIDIMG={"fairy_cyan": "data:image/webp;base64,UklGRi4aAABXRUJQVlA4WAoAA
  function fold(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim()}
  var FR=null,BOX=null;
  function isOpen(){return !!(BOX&&BOX.isConnected)}
- function open(){if(isOpen())return false;BOX=document.createElement('div');BOX.id='dexWorldBox';BOX.style.cssText='position:fixed;inset:0;z-index:2147482000;background:#070b1c';
-  FR=document.createElement('iframe');FR.src='world.html';FR.title='DEX World';FR.setAttribute('allow','autoplay; microphone');FR.style.cssText='border:0;width:100%;height:100%;display:block';BOX.appendChild(FR);
+ function open(vr){if(isOpen())return false;try{if(window.DEX_VR&&DEX_VR.active&&DEX_VR.active()){vr=true;DEX_VR.leave()}}catch(e){}BOX=document.createElement('div');BOX.id='dexWorldBox';BOX.style.cssText='position:fixed;inset:0;z-index:2147482000;background:#070b1c';
+  FR=document.createElement('iframe');FR.src='world.html'+(vr?'?vr=1':'');FR.title='DEX World';FR.setAttribute('allow','autoplay; microphone; camera; fullscreen; accelerometer; gyroscope');FR.setAttribute('allowfullscreen','');FR.style.cssText='border:0;width:100%;height:100%;display:block';BOX.appendChild(FR);
   var x=document.createElement('button');x.type='button';x.textContent='✕';x.setAttribute('aria-label','DEX World bezárása');x.style.cssText='position:absolute;left:max(10px,env(safe-area-inset-left));bottom:calc(158px + env(safe-area-inset-bottom));width:40px;height:40px;border-radius:12px;border:1px solid #5fe3ff66;background:#0f2448cc;color:#fff;font-size:18px;z-index:2';x.onclick=close;BOX.appendChild(x);
   document.body.appendChild(BOX);return true}
  function close(){if(!isOpen())return false;try{BOX.remove()}catch(e){}BOX=null;FR=null;try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}return true}
