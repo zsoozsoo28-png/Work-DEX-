@@ -222,3 +222,6 @@ v55 (valódi tér / XR, mint a Questben)
 - Kéz natúr (nincs körvonal, pont, csík). Sugár csak kinyújtott mutatóujjnál, vékony vonal végig a kijelzőig.
 - Előrebökés = kattintás; csípve húzva görget; a kijelző alatti fogantyút csípve viszed, elengedve ott marad; sarkát húzva átméretezed.
 - Kerekített, tömör, élesebb kijelző; a videóoldal is látszik. XR-ben a mikrofon magától bekapcsol, a WORK rögtön megjelenik.
+
+Gyerekjáték a VR-ben: "DEX és a Csillagtündérek"
+- VR-ben mondd: "csillagtündérek" (vagy játékmenü → Csillagtündérek). Portál a tündérekkel, kristályeső mozgásfeladatokkal, bújócska a kis triceratopsszal. Ujjal érintés, csípés, ránézés vagy hang ("kapd el", "segíts", "megvan").
