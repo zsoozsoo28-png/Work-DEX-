@@ -1,5 +1,5 @@
 WDEA DEX + WORK — TELJES TELEFONOS / BÖNGÉSZŐS CSOMAG
-Verzió: v55.6
+Verzió: v55.7
 
 Ez a mappa a DEX és a WORK teljes, együtt használható statikus webes csomagja. A telefonos és Windowsos böngésző ugyanazt az alkalmazást futtatja; külön Windows-program nincs benne.
 

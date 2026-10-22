@@ -25,3 +25,9 @@ Hangparancsok
 A DEX-beszéd a meglévő hangbeállítást használja. A DEX és az állatok átlátszó grafikaként jelennek meg a kameraképen. A mozgásérzékelő körbenézéskor áthelyezi a virtuális állatokat a látómezőben. Ez nem méri a telefon helyváltoztatását és a bútorok mélységét; ezért a kanapé mögötti valódi takarást nem tudja pontosan megjeleníteni.
 
 Gyerekekkel játék előtt legyen szabad a közvetlen környezet, és a telefont tartó szemüveget álló helyzetben próbáljátok ki.
+
+
+V55.7 VIZUÁLIS FRISSÍTÉS
+- A keresős VR-játék áttetsző erdei keretet kapott; a középső terület átlátszó marad, így a szobakamera képe látszik.
+- A dínónyomozás és a dínókaland részletes WebP-dínóképeket, lebegő részecskéket, mozgó fényeket és olvasható játékállapotot használ.
+- Új offline grafikai elem: dex-forest-frame.webp; a service worker gyorsítótára tartalmazza.
