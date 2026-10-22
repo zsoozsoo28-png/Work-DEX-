@@ -4299,6 +4299,7 @@ window.__KIDIMG={"fairy_cyan": "data:image/webp;base64,UklGRi4aAABXRUJQVlA4WAoAA
   {id:'mit',k:['mit tudsz','mire vagy kepes','mit csinalsz','mik a funkciok','miben segitesz','mit lehet veled','segitseg dex','hogyan hasznaljalak'],q:'mit tudok',a:'Sok mindenben segítek: beszélgetek, megnyitom a WORK oldalait, VR-ben és a valódi térben (XR) megmutatom a WORK-öt, játékokat indítok, üzenetet és hívást kezelek, felolvasok, és a gépeden futó okos modellel részletesen is válaszolok. Kérdezz bátran, például: hol tudok boltot hozzáadni, hogyan küldök üzenetet, mi az a fejhallgató mód.'},
   {id:'vr',k:['vr','vr mod','virtualis','szemuveg','vr szemuveg','tegyuk fel a szemuveget'],q:'a VR mód',a:'VR mód: a telefon a szemüvegben, két szemre bontott kép a kamerával. Indítás: mondd, hogy VR. Benne a WORK ablak, játékok és kézvezérlés. Kilépés: VR vége.',go:'VR'},
   {id:'xr',k:['xr','xr ter','valodi ter','ter','szobaban','korbejarhato','ar'],q:'az XR tér (valódi tér)',a:'XR tér: a WORK kijelző a szobádban lebeg, körbejárhatod. A fogantyút (a csík alul) csípve viszed, a sarkát húzva méretezed, előrebökve kattintasz, csípve görgetsz. A mikrofon magától bekapcsol. Indítás: profil menü → XR tér. Kilépés: tér vége.'},
+  {id:'dexworld',k:['dex world','dexworld','dex vilag','jatekvilag','12 vilag','vilagok','coin','gyemant','portal'],q:'a DEX World játék',a:'DEX World: 12 bejárható világ (Főváros, Földi Város, Lebegő Szigetek, Űrport, Hegyvidék, Sivatag, Jégvilág, Víz Alatti Világ, Versenypálya, Erdő, Űr Világ, Közösség). Minden világban 8 Coin és 3 gyémánt, utána kinyílik a kapu. Én segítek és mutatom az utat. Indítás: mondd, hogy dex world.',go:'dex world'},
   {id:'jatek',k:['jatek','jatekok','jatszunk','jatszani','unatkozom','gyerek','gyerekjatek','gyereknek','kisgyerek'],q:'a játékok',a:'Játékok VR-ben: Csillagtündérek (gyerekeknek: tündérfogás, kristályeső, bújócska a kis dínóval), Szókereső, Ütős blokkok, Csillagvasút, Dínóüldözés, DEX őrzője. VR-ben mondd: játékok, vagy a játék nevét.'},
   {id:'tunder',k:['csillagtunder','tunderek','tunder','bujocska','kristalyeso','triceratops','kis dino'],q:'a Csillagtündérek gyerekjáték',a:'Csillagtündérek: 3 pálya – a portálból kiszökött tündéreket kell elkapni (ujjal, csípéssel, ránézéssel vagy hangra: kapd el), kristályeső mozgásfeladatokkal, végül bújócska a kis triceratopsszal, hideg-meleg súgással. VR-ben mondd: csillagtündérek.'},
   {id:'fejh',k:['fejhallgato mod','fules','kozbeszolas','felbeszakit','felbeszakitani','kozbe tudok szolni','megszakit'],q:'a fejhallgató mód (közbeszólás)',a:'Fejhallgató mód: beszéd közben is hallgatok, bármikor közbeszólhatsz, elhallgatok, és megjegyzem, amit mondtál. Alapból be van kapcsolva. Ha hangszórón meghallanám magam, mondd: hangszóró. Vissza: fejhallgató vagy füles.'},
@@ -4351,6 +4352,9 @@ window.__KIDIMG={"fairy_cyan": "data:image/webp;base64,UklGRi4aAABXRUJQVlA4WAoAA
    /* függő visszakérdezés */
    if(PEND&&Date.now()-PEND.t<45000){var p=PEND;if(YES.test(f)){PEND=null;var r1=p.e.go&&p.want?doGo(p.e):null;return r1||p.e.a}if(NO.test(f)){PEND=null;return 'Rendben, akkor mondd el másképp, és megpróbálom.'}PEND=null}
    var r=null;
+   /* puszta köszönés („szia”, „jó reggelt”, „szia, mizu?”): természetes, változó válasz a régi fix mondat helyett */
+   var fr=fold(raw);if(/^(szia|sziasztok|szevasz|szervusz|hello|helo|hali|hey|hej|csa|cso|csao|jo reggelt|jo napot|jo estet|reggelt)( dex| dexi)?$/.test(fr)){var tg=talk(fr);if(tg)return tg}
+   var mg=/^(?:szia|hali|hello|helo|szevasz|jo reggelt|jo estet|jo napot)(?: dex)? (mizu|mi ujsag|mi a helyzet|hogy vagy|hogy megy|hogy vagy ma|mi ujsag ma)$/.exec(fr);if(mg){var nn=myName();return pick('hihow',['Szia'+(nn?' '+nn:'')+'! Jól vagyok, köszi. És te?','Hali! Minden oké nálam. Veled mi újság?','Szia! Megvagyok, figyelek. Te hogy vagy?'])}
    function multiRun(self,parts){parts=parts.map(function(x){return x.trim()}).filter(function(x){return x.length>=2});if(parts.length<2)return null;var out=[],any=false;parts.forEach(function(pt){var x=null;try{x=inner.call(self,pt)}catch(e){}if(x===null||x===undefined){var kb=kbAnswer(pt,true);if(kb){x=kb;}}if(x!==null&&x!==undefined){any=true;if(String(x).trim())out.push(String(x))}});return any?out.join(' '):null}
    /* a megtisztított szöveg először (ha más), utána az eredeti */
    /* erős kötőszó („és utána”, „és aztán”): előbb darabolunk, hogy mindkét kérés lefusson */
@@ -4366,6 +4370,7 @@ window.__KIDIMG={"fairy_cyan": "data:image/webp;base64,UklGRi4aAABXRUJQVlA4WAoAA
    var parts=splitMulti(f);if(parts){var mr=multiRun(self,parts);if(mr!==null)return mr}
    /* tudástár */
    var kb2=kbAnswer(f,false);if(kb2)return kb2;
+   var tk=talk(f)||talk(fold(raw));if(tk)return tk;
    return r}
   h.__teach=1;Dx.handle=h;return true}
  function kbAnswer(f,quiet){if(!f)return null;var m=kbFind(f);if(!m)return null;var e=m.e,want=GW.test(f),ask=QW.test(f),nw=f.split(' ').length;
@@ -4374,16 +4379,76 @@ window.__KIDIMG={"fairy_cyan": "data:image/webp;base64,UklGRi4aAABXRUJQVlA4WAoAA
   if(quiet)return null;
   if(m.s>=1.4&&(ask||want)){PEND={e:e,want:want,t:Date.now()};return 'Nem vagyok benne biztos: '+e.q+' érdekel? Mondd: igen, vagy mondd el másképp.'}
   return null}
+ /* ---- 4) TERMÉSZETES BESZÉLGETÉS: rövid szavak („jó”, „aha”, „mizu”, „várj”, „miért?”) – változatos, rövid válaszok, az előző témára emlékezve.
+    Csak akkor szól, ha semmi más nem ismerte fel a mondatot (a meglévő parancsok változatlanok). ---- */
+ var LASTR='',LASTQ=false,TK={n:0,used:{}};
+ function pick(k,arr){var u=TK.used[k],c=arr.filter(function(x){return x!==u});var r=c[Math.floor(Math.random()*c.length)]||arr[0];TK.used[k]=r;return r}
+ function myName(){try{var d=JSON.parse(localStorage.getItem('wdea_work_local_v1')||'{}'),n=d&&d.profile&&d.profile.name;if(n&&!/^saj[aá]t profil$/i.test(n))return String(n).split(' ')[0]}catch(e){}return ''}
+ function first(t){var s=String(t||'').replace(/\s+/g,' ').trim(),m=s.match(/^.{8,160}?[.!?](\s|$)/);return (m?m[0]:s.slice(0,160)).trim()}
+ function hr(){return new Date().getHours()}
+ var TALK=[
+  ['stop',/^(varj|varjal|varj csak|varjal csak|allj|allj meg|egy pillanat|egy pillanatra|pillanat|csend|csendet|maradj csendben|fogd be|elhallgass|hallgass|eleg|eleg mar|ne beszelj|psszt|pszt|sss)$/,function(){try{window.DEX_STOP&&window.DEX_STOP()}catch(e){}return pick('stop',['Oké, várok.','Rendben, csendben vagyok.','Várok.','Itt vagyok, ha kellek.'])}],
+  ['hi',/^(szia|sziasztok|szevasz|szervusz|szervusztok|hello|helo|hali|halika|hey|hej|csa|cso|csao|csumi|jo reggelt|jo napot|jo estet|reggelt|udv|udvozollek)( dex| dexi)?$/,function(){var n=myName(),h=hr(),g=h<10?['Jó reggelt','Reggelt','Szia']:h<18?['Szia','Hali','Szia']:['Jó estét','Szia','Hali'];return pick('hi',[pick('g',g)+(n?', '+n:'')+'! Mi újság?',pick('g2',g)+'! Mondjad.','Szia'+(n?' '+n:'')+'! Itt vagyok.',pick('g3',g)+'! Miben segítsek?'])}],
+  ['how',/^(mizu|mi ujsag|mi a helyzet|mi a palya|na mi van|mi van|hogy vagy|hogy vagy dex|hogy megy|hogy megy a sor|hogy s mint|minden oke|minden rendben|jol vagy)$/,function(){return pick('how',['Jól, köszi! És veled mi van?','Minden oké, figyelek. Te hogy vagy?','Megvagyok, készen állok. Mi a terv?','Jól vagyok! Mesélj, mit csináljunk?'])}],
+  ['metoo',/^(es te|es veled|te|veled|es nalad)$/,function(){return pick('me',['Én jól, köszi. Figyelek rád.','Nálam minden rendben. Mit csináljunk?','Én mindig itt vagyok, jól megvagyok.'])}],
+  ['fine',/^(jol|jol vagyok|megvagyok|jo|egesz jo|minden jo|elvagyok|kosz jol|koszi jol|jol koszi|jol koszonom)$/,function(){return LASTQ?pick('fine',['Ennek örülök!','Szuper! Miben segíthetek?','Jó hallani. Mondd, ha kell valami.']):null}],
+  ['thx',/^(koszi|koszike|kosz|koszonom|koszonom szepen|koszi szepen|kosz szepen|koszi dex|koszonom dex|kossz|koszi szepen dex|thanks|kosza)$/,function(){return pick('thx',['Szívesen!','Nincs mit.','Bármikor!','Szívesen, máskor is.','Ugyan, semmiség.'])}],
+  ['ok',/^(jo|jol van|jo van|oke|okes|ok|okay|rendben|rendben van|aha|ahha|ja|jaja|persze|nana|ertem|ertettem|vettem|ugy van|pontosan|igaz|tenyleg|valoban|naja|na jo|hat jo|jo jo|ok ok|mindegy)$/,function(){return pick('ok',['Oké.','Rendben.','Jó.','Vettem.','Értem.','Aha.'])}],
+  ['yes',/^(igen|igen igen|ja igen|aha igen|persze igen|igenis)$/,function(){return LASTQ?pick('yes',['Rendben, mondd, mit csináljak.','Oké! Mi legyen?','Jó, akkor mondd, és csinálom.']):pick('yes2',['Igen? Mondjad.','Hallgatlak.','Igen, itt vagyok.'])}],
+  ['no',/^(nem|nem nem|nem kell|nem kerem|ne|ne kelljen|nem koszi|nem koszonom|hagyjuk|hagyd|felejtsd el|mindegy hagyjuk)$/,function(){return pick('no',['Jó, akkor hagyjuk.','Rendben, nem csinálom.','Oké, felejtsük el.','Rendben.'])}],
+  ['hey',/^(he|hej|dex|dexi|dexke|figyelj|figyu|hallo|hallod|ott vagy|itt vagy|ebren vagy|halosz|he dex|dex itt vagy)$/,function(){return pick('hey',['Itt vagyok!','Igen?','Mondjad.','Hallgatlak.','Figyelek.'])}],
+  ['what',/^(mi|mit|mi van|hogy|hogyan|micsoda|tessek|parancs|mi az|mit mondtal|mit mondasz|hogyhogy|nem ertettem|ismeteld|mondd meg egyszer|meg egyszer|megegyszer|ismeteld meg)$/,function(){if(!LASTR)return pick('what0',['Még nem mondtam semmit. Mit szeretnél?','Mondjad, figyelek.']);return pick('what',['Röviden: ','Mondom újra: ','Egyszerűbben: '])+first(LASTR)}],
+  ['why',/^(miert|de miert|miert is|es miert|mert|hogy miert)$/,function(){return LASTR?'Az előbb azt mondtam: '+first(LASTR)+' Mi nem világos benne?':'Mire gondolsz pontosan?'}],
+  ['more',/^(es|es akkor|es aztan|na es|na|na es akkor|tovabb|folytasd|mondd tovabb|meg|es meg|na meg)$/,function(){return LASTR?pick('more',['Mondd, mit csináljak tovább?','Mi legyen a következő?','Mehetünk tovább: mondd, mit szeretnél.']):pick('more0',['Mondjad, figyelek.','Igen?'])}],
+  ['praise',/^(ugyes|ugyes vagy|ugyi|ugyi vagy|szuper|szuper vagy|klassz|kiraly|kiraly vagy|zsir|tok jo|ez jo|ez az|ez nagyon jo|nagyon jo|jo vagy|zseni|zseni vagy|tokeletes|profi|profi vagy|hu de jo|bravo|hajra|csucs|fantasztikus|nagyszeru|remek|jo munka|szep munka|ugyes dex)$/,function(){return pick('pr',['Köszi, jólesik! 😊','Ennek örülök!','Köszönöm! Csináljunk még valamit?','Hű, köszi! Együtt jó csapat vagyunk.'])}],
+  ['bad',/^(bena|bena vagy|hulye|hulye vagy|buta|buta vagy|rossz|rossz vagy|ez rossz|nem jo|ez nem jo|nem ez|nem ezt|nem erre gondoltam|tevedes|rosszul|rosszul csinaltad|elrontottad|nem mukodik)$/,function(){return pick('bad',['Bocsi, ezt elrontottam. Mondd, mi volt a gond, és kijavítom.','Hoppá, bocsánat. Mit kellett volna csinálnom?','Igazad van, bocs. Mondd újra kicsit másképp, és megpróbálom.'])}],
+  ['tired',/^(faradt vagyok|faradt|almos vagyok|almos|kimerultem|kesz vagyok|eleg volt mara|lefekszem)$/,function(){return pick('tired',['Pihenj egy kicsit, megérdemled.','Akkor mára elég. Pihenj jól!','Jó, lassítsunk. Ha kellek, szólj.'])}],
+  ['night',/^(jo ejt|jo ejszakat|jo ejt dex|aludj jol|szep almokat|megyek aludni)$/,function(){return pick('night',['Jó éjt! Aludj jól.','Szép álmokat!','Jó éjszakát, holnap folytatjuk.'])}],
+  ['bye',/^(viszlat|viszontlatasra|na szia|szia akkor|akkor szia|majd beszelunk|kesobb|majd kesobb|megyek|mennem kell|pa|papa|csumi akkor|holnap folytatjuk)$/,function(){return pick('bye',['Szia, később!','Rendben, itt leszek.','Szia! Majd folytatjuk.'])}],
+  ['love',/^(szeretlek|szeretlek dex|imadlak|kedvellek|a legjobb vagy|te vagy a legjobb)$/,function(){return pick('love',['Ez nagyon kedves! 😊 Én is szívesen segítek neked.','Köszi! Te is jó fej vagy.','Jólesik! Miben segíthetek?'])}],
+  ['lol',/^(haha|hahaha|hehe|hihi|lol|xd|vicces|de vicces|nagyon vicces)$/,function(){return pick('lol',['😄','Na ugye!','Hehe.','Örülök, hogy nevetsz.'])}],
+  ['hm',/^(hm|hmm|hmmm|mmm|aha hm|ugy|ugyan|hat|hat izé|izé|ize|hat nem tudom|nem tudom|nemtom|fogalmam sincs)$/,function(){return pick('hm',['Gondolkodj nyugodtan, ráérek.','Semmi baj. Ha eszedbe jut, szólj.','Segítsek választani?'])}],
+  ['help',/^(segits|segitseg|segitesz|segitenel|kell egy kis segitseg|segits mar|help)$/,function(){return pick('help',['Persze! Miben?','Szívesen. Mondd, mi a gond.','Itt vagyok, miben segítsek?'])}],
+  ['sorry',/^(bocs|bocsi|bocsanat|elnezest|bocsanatot kerek|sajnalom)$/,function(){return pick('sorry',['Semmi gond!','Nincs baj.','Ugyan, rendben van.'])}],
+  ['wow',/^(hu|huha|wow|azta|hu de|nahat|ejha|na ne|komolyan|tenyleg)$/,function(){return pick('wow',['Ugye?','Bizony!','Komolyan.'])}]
+ ];
+ function talk(f){if(!f||f.split(' ').length>5)return null;f=f.replace(/\s+/g,' ').trim();for(var i=0;i<TALK.length;i++){if(TALK[i][1].test(f)){var r=TALK[i][2](f);if(r){TK.n++;TK.last=TALK[i][0];return r}}}return null}
  /* „vigyél oda” az előző tudástár-válasz után */
  var LASTE=null;var _kb=kbAnswer;kbAnswer=function(f,q){var m=kbFind(f);var r=_kb(f,q);if(r&&m)LASTE=m.e;return r};
  var _w=wrap;
- function wrap2(){if(!_w())return false;var Dx=window.DEX40,h=Dx.handle;if(h.__teach2)return true;var h2=function(raw){var f=clean(raw).f;if(LASTE&&/^(vigyel oda|vigy oda|nyisd meg|mutasd|menjunk|oda|igen vigyel oda|akkor vigyel oda)$/.test(f)){var e=LASTE;LASTE=null;var r=doGo(e);if(r)return r}return h.apply(this,arguments)};h2.__teach=1;h2.__teach2=1;Dx.handle=h2;return true}
+ function wrap2(){if(!_w())return false;var Dx=window.DEX40,h=Dx.handle;if(h.__teach2)return true;var h2=function(raw){var f=clean(raw).f;if(LASTE&&/^(vigyel oda|vigy oda|nyisd meg|mutasd|menjunk|oda|igen vigyel oda|akkor vigyel oda)$/.test(f)){var e=LASTE;LASTE=null;var r=doGo(e);if(r)return r}var out=h.apply(this,arguments);try{if(typeof out==='string'&&out.trim()){if(!TK.last)LASTR=out;LASTQ=/\?\s*$/.test(out)}TK.last=''}catch(e){}return out};h2.__teach=1;h2.__teach2=1;Dx.handle=h2;return true}
  /* a többi modul is cseréli a handle-t: a tanítás mindig a legkülső legyen */
  var tries=0,iv=setInterval(function(){var Dx=window.DEX40;if(Dx&&Dx.handle&&!Dx.handle.__teach){wrap2()}else wrap2();if(++tries>40)clearInterval(iv)},500);
  setTimeout(wrap2,0);
  /* az okos modell is megkapja a tudástárat és a beszédmódot */
  window.DEX_KB_LLM=function(){return ' A felhasználó (Zsolt) magyarul, gyakran diktálva beszél: töltelékszavak (na, szóval, figyelj, izé, légyszi, léci), menet közbeni javítás (vagyis, nem, hanem), több kérés egy mondatban. Ezeket szűrd ki, és a lényegre válaszolj; ha nem biztos, kérdezz vissza röviden. A rendszer ismerete: '+KB.map(function(e){return e.q+': '+e.a}).join(' | ')};
- window.DEX_TEACH={clean:function(t){return clean(t).f},kb:function(t){var m=kbFind(fold(t));return m?{id:m.e.id,s:m.s}:null},last:function(){return LAST},size:KB.length,pending:function(){return !!PEND}};
+ window.DEX_TEACH={clean:function(t){return clean(t).f},kb:function(t){var m=kbFind(fold(t));return m?{id:m.e.id,s:m.s}:null},last:function(){return LAST},size:KB.length,pending:function(){return !!PEND},talk:function(t){return talk(fold(t))},lastReply:function(){return LASTR}};
+})();
+
+</script>
+<script>
+/* DEX WORLD – a 12 világos játék megnyitása a DEX-ből (hangra: „dex world”, „játékvilág”), teljes képernyőn.
+   Amíg nyitva van, a hangparancsok előbb a játékhoz mennek („segíts”, „ugorj”, „következő világ”…), DEX hangján beszél. */
+(function(){'use strict';
+ function fold(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim()}
+ var FR=null,BOX=null;
+ function isOpen(){return !!(BOX&&BOX.isConnected)}
+ function open(){if(isOpen())return false;BOX=document.createElement('div');BOX.id='dexWorldBox';BOX.style.cssText='position:fixed;inset:0;z-index:2147482000;background:#070b1c';
+  FR=document.createElement('iframe');FR.src='world.html';FR.title='DEX World';FR.setAttribute('allow','autoplay; microphone');FR.style.cssText='border:0;width:100%;height:100%;display:block';BOX.appendChild(FR);
+  var x=document.createElement('button');x.type='button';x.textContent='✕';x.setAttribute('aria-label','DEX World bezárása');x.style.cssText='position:absolute;left:max(10px,env(safe-area-inset-left));bottom:calc(158px + env(safe-area-inset-bottom));width:40px;height:40px;border-radius:12px;border:1px solid #5fe3ff66;background:#0f2448cc;color:#fff;font-size:18px;z-index:2';x.onclick=close;BOX.appendChild(x);
+  document.body.appendChild(BOX);return true}
+ function close(){if(!isOpen())return false;try{BOX.remove()}catch(e){}BOX=null;FR=null;try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}return true}
+ window.addEventListener('message',function(e){var d=e.data||{};if(d.type==='dex-world-close')close()});
+ function gameCmd(t){try{var W=FR&&FR.contentWindow&&FR.contentWindow.WORLD;if(W&&W.cmd)return W.cmd(t)}catch(e){}return null}
+ var OPEN=/\b(dex ?world\w*|dex ?vilag\w*|dex ?vord\w*|dex ?verld\w*|jatekvilag\w*|jatek vilag\w*|vilagjatek\w*|12 vilag\w*|tizenket vilag\w*|tizenketto vilag\w*)\b/;
+ function hook(n){var Dx=window.DEX40;if(!Dx||typeof Dx.handle!=='function'){if(n<60)setTimeout(function(){hook(n+1)},250);return}
+  var h0=Dx.handle;var h=function(raw){var f=fold(raw);
+   if(isOpen()){if(/\b(zard be|kilep\w*|vege a jateknak|jatek vege|bezaras|lepj ki)\b/.test(f)&&f.split(' ').length<=6){close();return 'Bezártam a DEX Worldöt.'}
+    var r=gameCmd(raw);if(r)return r}
+   if(OPEN.test(f)&&f.split(' ').length<=7&&!/\b(mi az|mi a|mit tud|hogy kell|hogyan|mesel\w*)\b/.test(f)){if(/\b(zard|kilep|vege)\b/.test(f)){close();return 'Bezártam a DEX Worldöt.'}open();return 'Indul a DEX World! 12 világ vár: gyűjts Coint és gyémántot, én segítek. Mondhatod: segíts, ugorj, következő világ.'}
+   return h0.apply(this,arguments)};h.__world=1;for(var k in h0)if(!(k in h))h[k]=h0[k];Dx.handle=h}
+ hook(0);
+ window.DEX_WORLD={open:open,close:close,isOpen:isOpen,cmd:gameCmd};
 })();
 
 </script>

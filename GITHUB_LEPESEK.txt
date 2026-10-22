@@ -237,3 +237,7 @@ XR: gombok kipakolása
 VR: gombok kipakolása körben (360°)
 - WORK-gombot csípd és tartsd 1 mp-ig: kijön, viheted (akár magad mögé). Hangra: "tedd balra/jobbra/mögém a menüt", "hozd ide a vissza gombot", "tegyél vissza mindent".
 Bemutató: a hang "Vé-Dé-E-Á Stúdió"-t mond (nem "DEA"-t).
+
+DEX World és természetesebb DEX
+- A world.html és a dexworld mappa is kerüljön fel a repóba (az index.html mellé).
+- DEX-ben: "dex world" indítja a 12 világos játékot. DEX rövid szavakra is természetesen válaszol ("mizu", "oké", "várj", "mi?").
