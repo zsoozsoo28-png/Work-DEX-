@@ -1,6 +1,6 @@
-const V='dex51-pwa-38-v462';
+const V='dex51-pwa-39-v463';
 const FILES=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./layer.js','./dex-work-bridge.js',
- './work.html','./wdea-ai-command-bridge.css','./wdea-ai-command-bridge.js','./wdea-ai.css','./wdea-ai.js','./wdea-dex-link.js','./wdea-drive-voice-adapter.js','./wdea-robot-blue.png'];
+ './work.html','./wdea-ai-command-bridge.css','./wdea-ai-command-bridge.js','./wdea-ai.css','./wdea-ai.js','./wdea-dex-link.js','./wdea-drive-voice-adapter.js','./wdea-hu-voice.js','./wdea-robot-blue.png','./mp/hand_landmark_lite.tflite','./mp/hands.binarypb','./mp/hands.js','./mp/hands_solution_packed_assets.data','./mp/hands_solution_packed_assets_loader.js','./mp/hands_solution_simd_wasm_bin.data','./mp/hands_solution_simd_wasm_bin.js','./mp/hands_solution_simd_wasm_bin.wasm'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>Promise.all(FILES.map(f=>c.add(f).catch(()=>{})))).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET'||new URL(r.url).origin!==location.origin)return;

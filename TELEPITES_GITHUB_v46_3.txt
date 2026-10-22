@@ -1,0 +1,7 @@
+WDEA DEX + WORK – TELEFONOS GITHUB PAGES CSOMAG (v46.3)
+
+Ez a mappa közvetlenül a GitHub Pages tárhely gyökerébe tölthető fel. A DEX belépője az index.html, a WORK fájlja a work.html. A mappában minden szükséges helyi fájl és az offline kézkövetés mp/ könyvtára is benne van.
+
+Feltöltés: GitHub → tárhely → Add file → Upload files → jelöld ki a mappa összes fájlját és almappáját → Commit changes. A fájlokat a tárhely gyökerébe tedd, ne a WDEA_TELEFON_GITHUB_v46_3 nevű mappába. A meglévő fájlokat írd felül.
+
+A feltöltés után Chrome-ban nyisd meg a GitHub Pages főcímet, majd egyszer a /work.html oldalt is. Kameraengedély kell a VR kézkövetéséhez. A játékok menüben az 1-es a Szókereső, a 2-es az Ütős blokkok; a Folytatás sor nem tolja el a játékszámokat.

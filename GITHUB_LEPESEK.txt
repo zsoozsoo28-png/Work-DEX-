@@ -23,3 +23,6 @@ HA A VR-BEN 404 JELENIK MEG A WORK HELYETT: a work.html nincs feltöltve. Tölts
 KORLÁTOK: nincs szerver; a WORK itt demó, az adat csak a telefonon van. A tárhely nyilvános, jelszót ne tegyél bele.
 
 ÚJ: az admin (CONTROL / ADMIN) két új gombbal bővült: „WORK megjelenítése” (előnézet a DEX-en belül) és „Átlépés a WORK-be”.
+
+
+KIADÁS v46.3: töltsd fel az összes gyökérfájlt és az mp/ almappát. A Szókereső mindig az 1-es játék, a Folytatás sor nem változtatja meg a játékszámokat.

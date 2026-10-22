@@ -797,21 +797,24 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
  function gmRender(){hud(function(x){var e=x.querySelector('.gm');if(!e)return;if(!M){e.classList.remove('on');e.innerHTML='';return}
   var it=items(),top=Math.max(0,Math.min(M.top,Math.max(0,it.length-VIS))),h='<b>JÁTÉKOK</b>';
   if(top>0)h+='<u>▲ följebb ('+top+')</u>';
-  it.slice(top,top+VIS).forEach(function(g,k){var n=top+k;h+='<i class="'+(n===M.sel?'s':'')+'"><em>'+(n+1)+'</em>'+g.name.replace(/[<>&]/g,'')+'</i>'});
+  it.slice(top,top+VIS).forEach(function(g,k){var n=top+k,gi=GAMES.findIndex(function(x){return x.id===g.id}),label=gi>=0?String(gi+1):'↩';h+='<i class="'+(n===M.sel?'s':'')+'"><em>'+label+'</em>'+g.name.replace(/[<>&]/g,'')+'</i>'});
   if(top+VIS<it.length)h+='<u>▼ lejjebb ('+(it.length-top-VIS)+')</u>';
-  h+='<s>Mondd a játék nevét vagy a számát · lejjebb · följebb · vissza</s>';e.innerHTML=h;e.classList.add('on')})}
+  h+='<s>Játéknév vagy játékszám · lejjebb · följebb · folytasd · vissza</s>';e.innerHTML=h;e.classList.add('on')})}
  function menuOpen(){var it=items();M={sel:0,top:0};if(G&&!G.paused){G.paused=true;G.pa=Date.now();G.mp=true}if(U&&!U.paused&&U.state!=='over'){U.paused=true;U.pa=Date.now();U.mp=true}if(RIDE&&!RIDE.paused){RIDE.paused=true;RIDE.mp=true}if(MG&&!MG.paused&&MG.state!=='over'){MG.paused=true;MG.mp=true;mgRender()}if(DN&&!DN.paused){DN.paused=true;DN.mp=true}gmRender();skRender();
-  return it.length?('Játékok: '+it.map(function(g,i){return (i+1)+', '+(g.say||g.name)}).join('; ')+'. Mondd a nevét vagy a számát.'+(G?' A „folytasd” visszavisz a játékba.':'')):'Még nincs játék.'}
+  return GAMES.length?('Játékok: '+GAMES.map(function(g,i){return (i+1)+', '+(g.say||g.name)}).join('; ')+'. Mondd a játék nevét vagy a játékszámát.'+((G||U||RIDE||MG||DN)?' A folytatáshoz mondd: folytasd.':'')):'Még nincs játék.'}
  function menuClose(resume){M=null;gmRender();if(resume&&G&&G.paused&&G.mp){G.paused=false;G.mp=false;G.tp+=Date.now()-G.pa}if(resume&&U&&U.paused&&U.mp){U.paused=false;U.mp=false;U.lt=Date.now();uBar()}if(resume&&RIDE&&RIDE.paused&&RIDE.mp){RIDE.paused=false;RIDE.mp=false}if(resume&&DN&&DN.paused&&DN.mp){DN.paused=false;DN.mp=false;DN.lt=Date.now()}if(resume&&MG&&MG.paused&&MG.mp){MG.paused=false;MG.mp=false;MG.lt=Date.now();mgRender()}skRender()}
  function menuPick(i){var it=items(),g=it[i];if(!g)return null;
   if(g.id==='resume'||g.id==='resumeU'){menuClose(true);return 'Visszamentünk a játékba.'}
   menuClose(false);if(G&&G.mp){G.mp=false}G=null;uStop();if(RIDE)rideStop();mgStop();dnStop();return g.start()}
+ function gameNumber(s){var a=fold(s).split(/\s+/);for(var i=0;i<a.length;i++){var t=a[i].replace(/[^a-z0-9]/g,'');if(NUMW[t]!=null)return NUMW[t];var m=/^(\d+)(?:es|as|os|ik)?$/.exec(t);if(m)return +m[1]}return null}
  function menuCmd(f){
   var vr=!!(root&&root.classList.contains('on'));if(!vr)return null;
   var open=!!M,inGame=!!(G&&!G.done)||!!(U&&U.state!=='over')||!!RIDE||!!(MG&&MG.state!=='over')||!!DN;
   var wantOpen=/\b(jatek|jatekok|jatekokat|jatekmappa|jatekmenu|jatek menu|jatek lista)\b/.test(f)&&!/\b(vege|ki|kilep\w*|hagyjuk|uj|kovetkezo|masik|ujra)\b/.test(f)
    &&!(G&&!G.paused&&!G.done&&/\bjatek\b/.test(f)&&!/\bjatekok\w*\b/.test(f)&&G.words.some(function(w){return fz(w)==='jatek'&&!G.found[w]}));
   if(!open){
+   var directN=gameNumber(f);
+   if(directN&&directN<=GAMES.length&&/\b(jatek|jatekot|jatekba|jatekhoz|inditsd|megnyit|valaszd|nyisd)\b/.test(f)&&!/\b(jatekok|jatekmenu|jatek lista)\b/.test(f)){var direct=GAMES[directN-1],di=items().findIndex(function(g){return g.id===direct.id});if(di>=0){M={sel:0,top:0};return menuPick(di)}}
    if(wantOpen)return menuOpen();
    if(inGame&&/^(vissza|menu|fomenu|lepj vissza|lepjunk vissza|kilepek)$/.test(f))return menuOpen();
    return null}
@@ -822,9 +825,9 @@ function lev(a,b){var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.len
   if(/^(ez|ezt|ezt valasztom|valasztom|inditsd|indits|mehet|ok|oke|rendben)$/.test(f))return menuPick(M.sel);
   if(/\b(vissza|bezar\w*|eltuntet\w*|eleg|jatek el|menu el|jatekok el|kilep\w*)\b/.test(f)&&!/\bvr\b/.test(f)){menuClose(true);return inGame?'Visszamentünk a játékba.':'Bezártam a játékmenüt.'}
   var it=items(),w=f.split(' ').filter(Boolean);
-  if(w.length<=4){
-   for(var i=0;i<it.length;i++){var nm=fold(it[i].name).replace(/[^a-z ]/g,'');if(it[i].id==='resume')continue;if(f.indexOf(fold(it[i].say||it[i].name))>=0||f.indexOf(nm)>=0)return menuPick(i)}
-   for(var k=0;k<w.length;k++){var v=/^\d+$/.test(w[k])?+w[k]:NUMW[w[k]];if(v&&v<=it.length)return menuPick(v-1)}}
+  if(w.length<=6){
+   for(var gi=0;gi<GAMES.length;gi++){var game=GAMES[gi],nm=fold(game.name).replace(/[^a-z ]/g,'');if(f.indexOf(fold(game.say||game.name))>=0||f.indexOf(nm)>=0){var namedIx=it.findIndex(function(g){return g.id===game.id});if(namedIx>=0)return menuPick(namedIx)}}
+   var v=gameNumber(f);if(v&&v<=GAMES.length){var target=GAMES[v-1],gameIx=it.findIndex(function(g){return g.id===target.id});if(gameIx>=0)return menuPick(gameIx)}}
   return null}
  var h0=Dx.handle;
  Dx.handle=function(raw){
