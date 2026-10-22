@@ -1,0 +1,18 @@
+DEX DÍNÓJÁTÉK – LÁTHATÓ INDÍTÓJELENET (v46.2)
+
+Mi változott
+- A dínójáték látványa akkor is elindul, ha a böngésző nem ad kameraképet.
+- A kézfelismerés és a kézzel vezérelt lövés továbbra is kamerát igényel.
+- Az indító képernyőn rögtön látható DEX felirat és három mozgó dínó jelenik meg.
+- A Service Worker gyorsítótár-verziója frissült, hogy a telefon a javított index.html-t töltse be.
+
+Telepítés
+1. Csomagold ki a ZIP-et.
+2. Töltsd fel a benne levő összes fájlt ugyanabba a GitHub Pages mappába, ahol a mostani DEX van; írd felül a régieket.
+3. Várd meg, amíg a GitHub Pages frissít.
+4. Telefonon zárd be a DEX-et, majd Chrome-ban nyisd meg újra. Ha még mindig régi verziót mutat, frissítsd az oldalt, illetve töröld a DEX webhelyadatát és nyisd meg újra.
+5. Menü → VR mód → „dínóüldözés”. A dínókaland látványa azonnal megjelenik. A kameraengedély szükséges a kézvezérléshez.
+
+Ellenőrzés
+- VR-forrásfájl és az index.html-be ágyazott VR-kód JavaScript szintaxis-ellenőrzésen átment.
+- Külön telefonos kamerával és szemüveggel végzett élő tesztet ebben a környezetben nem lehetett futtatni.

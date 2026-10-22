@@ -1,0 +1,13 @@
+DEX · VR / WORK hangparancsok (v46.1)
+
+Görgetés lefelé: „görgess lejjebb”, „görgess lefelé”, „menj lejjebb”, „lapozz le”, „lejjebb”, „lentebb”.
+Görgetés felfelé: „görgess feljebb”, „görgess felfelé”, „menj feljebb”, „lapozz fel”, „feljebb”, „fentebb”.
+Jobbra: „lapozz jobbra”, „görgess jobbra”, „következő”, „lapozz”, „tovább”.
+Balra: „lapozz balra”, „görgess balra”, „előző oldal”, „lapozz vissza”.
+Nagyítás: „nagyíts”, „nagyítsál”, „nagyítót”, „nagyobb”, „közelíts”, „zoomolj”.
+Kicsinyítés: „kicsinyíts”, „kicsinyítsél”, „kisebb”, „távolíts”, „zoomolj ki”.
+A WORK-panel mozgatása: „mozdítsd a WORK-öt jobbra/balra/feljebb/lejjebb”, „told a WORK-öt …”.
+Teljes nézet: „teljes képernyő”, „teljes kijelző”, „töltsd ki”, „maximum”. Visszaállítás: „alaphelyzet”.
+Kézmozdulat: tartsd a kezed a kamera előtt; suhintás fel/le görget, balra/jobbra lapoz. A csipesz megfogja és viszi a WORK-panelt; két kéz széthúzása nagyítja.
+
+A hangfelismerést a böngésző/telefon beszédfelismerője végzi. A DEX a felismert magyar szövegből helyi, előre megadott szinonima- és ragozásmintákkal választ műveletet; minden magyar beszédváltozatot vagy tetszőleges mondatot nem garantál.
