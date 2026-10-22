@@ -45,12 +45,17 @@
  function menu(act){var b=menuBtn();if(!b||!vis(b))return 'A menü ezen a kijelzőméreten mindig látszik.';var o=menuOpen();if(act==='open'&&o)return 'A menü már nyitva van.';if(act==='close'&&!o)return 'A menü már be van zárva.';b.click();return o?'Becsuktam a menüt.':'Kihoztam a menüt.'}
  function openDex(){var c=document.getElementById('wdea-companion');if(c){c.click();return 'Megnyitottam a DEX csevegőt a WORK-ben.'}try{if(window.WDEA_WORK_AI&&window.WDEA_WORK_AI.open){window.WDEA_WORK_AI.open();return 'Megnyitottam a DEX csevegőt a WORK-ben.'}}catch(e){}return 'Nem találom a DEX-et ezen a WORK-oldalon.'}
  function voiceBtn(){var q=document.getElementById('wdea-quick-voice');if(!q)return 'Nem találom a hang gombját ezen az oldalon.';(q.querySelector('button')||q).click();return 'Megnyomtam a hang gombot.'}
+ /* v55: csípve húzott görgetés a valódi térben (XR): a csípés helyén lévő görgethető részt görgeti, beágyazott oldalban is */
+ function scrollAt(fx,fy,df){var W=window,D=document,x=fx*W.innerWidth,y=fy*W.innerHeight,dy=df*W.innerHeight,n=0;
+  while(n++<3){var el=D.elementFromPoint(x,y);if(el&&el.tagName==='IFRAME'){try{var r=el.getBoundingClientRect(),cd=el.contentDocument;if(cd){x-=r.left;y-=r.top;D=cd;W=el.contentWindow;continue}}catch(e){}}
+   while(el&&el!==D.body&&el!==D.documentElement){var cs=W.getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowY)&&el.scrollHeight>el.clientHeight+2){el.scrollBy(0,dy);return ''}el=el.parentElement}
+   W.scrollBy(0,dy);return ''}return ''}
  var EG=null;
  function egPick(el){var W=innerWidth,H=innerHeight,best=null,n=0;while(el&&el!==document.body&&el!==document.documentElement&&n++<12){var r=el.getBoundingClientRect(),tg=el.tagName,cl=(el.className&&el.className.baseVal===undefined?String(el.className):'')+' '+(el.id||'');
    var okSize=r.width>=44&&r.height>=30&&r.width<W*.85&&r.height<H*.85;if(okSize){var cardish=/^(ARTICLE|LI|FIGURE|ASIDE|FORM)$/.test(tg)||/card|post|tile|item|panel|story|widget|box|block|product|chip|tab|btn/i.test(cl);if(cardish)return el;if(!best&&/^(SECTION|DIV|BUTTON|A|IMG|VIDEO)$/.test(tg))best=el}el=el.parentElement}return best}
  function egGrab(fx,fy){var el=document.elementFromPoint(Math.round(fx*innerWidth),Math.round(fy*innerHeight));var t=egPick(el);if(!t){EG=null;return 'Itt nincs mozgatható elem.'}
   var m=/translate\(([-0-9.]+)px,\s*([-0-9.]+)px\)/.exec(t.style.transform||'');EG={el:t,x0:m?+m[1]:0,y0:m?+m[2]:0,pos:t.style.position,z:t.style.zIndex};
-  if(getComputedStyle(t).position==='static')t.style.position='relative';t.style.zIndex='9999';t.style.transition='none';t.style.outline='2px solid #8ce7ff';t.style.outlineOffset='2px';t.setAttribute('data-dex-move','1');return 'Megfogtam.'}
+  if(getComputedStyle(t).position==='static')t.style.position='relative';t.style.zIndex='9999';t.style.transition='none';t.style.outline='1.5px solid #8ce7ff';t.style.outlineOffset='2px';t.setAttribute('data-dex-move','1');return 'Megfogtam.'}
  function egDrag(dx,dy){if(!EG)return '';var x=EG.x0+dx*innerWidth,y=EG.y0+dy*innerHeight;EG.el.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)';return ''}
  function egDrop(){if(EG){EG.el.style.outline='';EG.el.style.outlineOffset='';EG.el.style.zIndex='9999';EG=null}return ''}
  function egAll(){EG=null;[].forEach.call(document.querySelectorAll('[data-dex-move]'),function(e){e.style.transform='';e.style.outline='';e.style.zIndex='';e.style.position='';e.removeAttribute('data-dex-move')});return 'Visszaraktam az elemeket.'}
@@ -58,6 +63,7 @@
  function run(raw,id){var t=String(raw||'').trim(),n=fold(t),m,c;
   if((m=/^@nav ([a-z]+)$/.exec(t)))return nav(m[1]);
   if((m=/^@scroll (up|down|top|bottom|left|right) ([0-9.]+)$/.exec(t)))return scrl(m[1],+m[2]||.6);
+  if((m=/^@scrollby ([0-9.\-]+) ([0-9.\-]+) ([0-9.\-]+)$/.exec(t)))return scrollAt(+m[1],+m[2],+m[3]);
   if(t==='@back'){history.back();return 'Visszaléptem.'}
   if((m=/^@menu (open|close|toggle)$/.exec(t)))return menu(m[1]);
   if(t==='@admin')return adminOpen();
@@ -78,7 +84,7 @@
  var HV=null;
  function hvClear(){if(HV){HV.style.outline=HV.getAttribute('data-dex-ho')||'';HV.style.boxShadow=HV.getAttribute('data-dex-hs')||'';HV.style.transform=HV.getAttribute('data-dex-ht')||'';HV.style.zIndex=HV.getAttribute('data-dex-hz')||'';['data-dex-ho','data-dex-hs','data-dex-ht','data-dex-hz','data-dex-hover'].forEach(function(a){HV.removeAttribute(a)});HV=null}}
  window.__dexHover=function(fx,fy){try{if(!(fx>=0&&fy>=0&&fx<=1&&fy<=1)){hvClear();return ''}var el=document.elementFromPoint(Math.round(fx*innerWidth),Math.round(fy*innerHeight)),t=el&&el.closest('button,a,[role=button],[data-route],[data-action],input,select,textarea,summary,label,[onclick]');
-  if(t){var cd=t.closest('article,li,[class*=card],[class*=tile],[class*=item],[class*=product]');if(cd&&cd!==document.body){var rc=cd.getBoundingClientRect();if(rc.width*rc.height<innerWidth*innerHeight*.45&&rc.width>20)t=cd}}if(t===HV)return '';hvClear();if(!t)return '';HV=t;t.setAttribute('data-dex-ho',t.style.outline||'');t.setAttribute('data-dex-hs',t.style.boxShadow||'');t.setAttribute('data-dex-ht',t.style.transform||'');t.setAttribute('data-dex-hz',t.style.zIndex||'');t.setAttribute('data-dex-hover','1');t.style.outline='3px solid #ffffff';t.style.outlineOffset='1px';t.style.boxShadow='0 0 18px rgba(255,255,255,.55)';t.style.transform=(t.getAttribute('data-dex-ht')||'')+' scale(1.035)';if(!t.style.transition)t.style.transition='transform .12s';if(getComputedStyle(t).position!=='static')t.style.zIndex='5';return ''}catch(e){return ''}};
+  if(t){var cd=t.closest('article,li,[class*=card],[class*=tile],[class*=item],[class*=product]');if(cd&&cd!==document.body){var rc=cd.getBoundingClientRect();if(rc.width*rc.height<innerWidth*innerHeight*.45&&rc.width>20)t=cd}}if(t===HV)return '';hvClear();if(!t)return '';HV=t;t.setAttribute('data-dex-ho',t.style.outline||'');t.setAttribute('data-dex-hs',t.style.boxShadow||'');t.setAttribute('data-dex-ht',t.style.transform||'');t.setAttribute('data-dex-hz',t.style.zIndex||'');t.setAttribute('data-dex-hover','1');t.style.outline='1.5px solid #ffffff';t.style.outlineOffset='1px';t.style.boxShadow='0 0 6px rgba(255,255,255,.35)';t.style.transform=(t.getAttribute('data-dex-ht')||'')+' scale(1.035)';if(!t.style.transition)t.style.transition='transform .12s';if(getComputedStyle(t).position!=='static')t.style.zIndex='5';return ''}catch(e){return ''}};
  function onMessage(e){var d=e.data||{};if(d.type==='command'&&typeof d.text==='string'){var answer;try{answer=run(d.text,d.requestId)}catch(err){answer='Nem sikerült végrehajtani a WORK-parancsot.'}say(answer,d.requestId)}else if(d.type==='reset'){try{localStorage.removeItem(STORE)}catch(e){}if(watcher){watcher.stop();watcher=null}}}
  try{channel=new BroadcastChannel(CHANNEL);channel.addEventListener('message',onMessage)}catch(e){}
  if(window.parent!==window){window.addEventListener('message',function(e){if(e.source!==window.parent||!e.data||e.data.channel!==CHANNEL)return;onMessage({data:e.data})});try{window.parent.postMessage({channel:CHANNEL,type:'ready'},location.origin)}catch(e){}}
