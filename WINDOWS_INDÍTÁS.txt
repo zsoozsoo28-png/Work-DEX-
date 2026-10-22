@@ -1,0 +1,14 @@
+WDEA DEX + WORK — WINDOWS INDÍTÁSA
+
+A WINDOWS ugyanazt a teljes webalkalmazást használja, nem külön natív .exe programot.
+
+Helyi próba:
+1. Csomagold ki a teljes mappát.
+2. Fájlkezelőben nyisd meg ezt a mappát, címsorba írd: powershell
+3. A PowerShell ablakban futtasd: py -m http.server 8080
+4. Chrome vagy Edge címsorába írd: http://localhost:8080/
+5. Engedélyezd a kamera- és mikrofonhasználatot.
+
+Ha a py parancs nem elérhető, tedd közzé a mappát HTTPS tárhelyen, vagy használj localhost szervert. Ne az index.html fájlra koppintva (file://) próbáld, mert az böngészőbiztonsági okból nem ad megbízható kamera-/mikrofonengedélyt.
+
+Hangvezérlés: egy koppintás indítja a folyamatos beszélgetést; „beszélgetés vége” lezárja, hosszú nyomás szintén. A DEX válasza alatt a beszélgetési mód aktív marad. A Windows mikrofonengedélyt az Edge/Chrome címsora melletti lakat/webhelybeállítások alatt lehet megadni.

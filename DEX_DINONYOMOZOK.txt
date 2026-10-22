@@ -1,24 +1,27 @@
-DEX DÍNÓNYOMOZÓK — GYORS HASZNÁLAT
+DEX ERDEI KALAND — GYORS HASZNÁLAT
 
 Indítás
-• A DEX VR-ben mondd: „játékok”, majd válaszd a „DEX Dínónyomozók” játékot.
+• DEX VR-ben mondd: „játékok”, majd válaszd az első játékot: „DEX Dínónyomozók”.
 • Közvetlenül is kérheted: „DEX, indítsd el a Dínónyomozókat.”
 • A meglévő „DEX Dínóüldözés” külön játékmódként megmaradt.
 
 Játék
 1. Tedd a telefont a VR-szemüvegbe úgy, hogy a kamera szabadon lásson.
 2. Emeld fel a kezed a kamera elé; a kézkövetés elindítja a keresést.
-3. Figyeld a DEX jelzéseit, a neszt és a képernyőn megjelenő nyomokat.
-4. Amikor előbújik a dínó, mutass rá, majd csippents (érintsd össze a hüvelyk- és mutatóujjad), vagy mondd: „megvan”.
-5. A játék folytatódik a következő bújócskázó dínóval.
+3. Fordulj körbe a fejeddel/telefonnal: az állatok más-más irányból bújnak elő.
+4. Mutass az állatra, majd csippents, vagy mondd: „megvan”. DEX továbbmeséli az erdei kalandot, magyarul és németül megnevezi az állatot, mond róla egy rövid érdekességet, majd kéri a német szó ismétlését.
+
+A játékban szereplő állatok
+Dínók és őshüllők: Triceratops — der Triceratops; Stegosaurus — der Stegosaurus; Tyrannosaurus rex — der Tyrannosaurus rex; Diplodocus — der Diplodocus; Pteranodon — der Pteranodon.
+Erdei állatok: róka — der Fuchs; nyúl — der Hase; bagoly — die Eule; őz — das Reh.
 
 Hangparancsok
-• „Segíts” / „merre van?” — DEX ad egy tippet.
-• „Következő dínó” — továbblép a következő keresésre.
+• „Segíts” / „merre van?” — DEX irányt mutat.
+• „Mi ez?” / „milyen állat?” / „taníts németül” — DEX megismétli a nevet és a német szót.
+• „Következő állat” — továbblép.
 • „Szünet” / „folytasd” — megállítja vagy folytatja a játékot.
 • „Játék vége” — kilép.
 
-Megjegyzés
-A játék a meglévő DEX kamerás, két szemre osztott VR-nézetét használja, és átlátszó grafikát rajzol a kameraképre. A dínó képernyőn belüli helyét változtatja és időnként elbújik; a jelenlegi telefonos kamerakép önmagában nem méri fel a szoba mélységét, így a kanapé mögötti valódi takarást nem tudja pontosan megjeleníteni. Ehhez kompatibilis, HTTPS-en futó WebXR/AR eszköz és térérzékelés kell.
+A DEX-beszéd a meglévő hangbeállítást használja. A DEX és az állatok átlátszó grafikaként jelennek meg a kameraképen. A mozgásérzékelő körbenézéskor áthelyezi a virtuális állatokat a látómezőben. Ez nem méri a telefon helyváltoztatását és a bútorok mélységét; ezért a kanapé mögötti valódi takarást nem tudja pontosan megjeleníteni.
 
-Gyerekekkel játék előtt legyen szabad a közvetlen környezet, és a telefont tartó szemüveget csak álló helyzetben próbáljátok ki.
+Gyerekekkel játék előtt legyen szabad a közvetlen környezet, és a telefont tartó szemüveget álló helyzetben próbáljátok ki.
