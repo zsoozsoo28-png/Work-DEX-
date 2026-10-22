@@ -7,24 +7,18 @@
       .toLocaleLowerCase('hu').replace(/[’'`]/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
   }
   var actions = [
-    'nyisd meg','nyissuk meg','nyiss meg','mutasd meg','tedd elem','rakd elem','hozd elem','vidd el','menjunk','menj a','lepj a','ugorj a','nyisd','mutasd','menj','lepj','ugorj','valts','navigalj','keresd meg','keress ra','keresek','hol talalom','hol van','gorgess','gorgess le','gorgess fel','lapozz','mozdits','mozgasd','told','huzd','nagyits','nagyitsal','nagyitsd','nagyobb','kozelits','zoomolj','kicsinyits','kicsinyitsel','tavolits','kisebb','hangosits','halkits','nemits','hang be','hang ki','integess','intsd','legyints','kezmozdulat'
+    'nyisd meg','nyissuk meg','nyiss meg','mutasd meg','tedd elem','rakd elem','hozd elem','vidd el','menjunk','menj a','lepj a','ugorj a','nyisd','mutasd','menj','lepj','ugorj','valts','navigalj','keresd meg','keress ra','keresek','hol talalom','hol van','gorgess','gorgess le','gorgess fel','lapozz','mozdits','mozgasd','told','huzd'
   ];
   function resolveAction(utterance) {
     var text=norm(utterance);
     if(!text||/\bne (?:nyisd|nyiss|mutasd|menj|lepj|ugorj|hozd|gorgess|lapozz|mozdits|mozgasd|told|huzd)\b/.test(text))return null;
     var search=text.match(/(?:hol (?:talalom|van|talalhato)|keresd meg|keress(?: ra)?|mutasd meg hol (?:van|talalom))\s+(?:a |az )?(.+)/);
     if(search){var query=search[1].replace(/\b(kerlek|nekem|workben|webshopban|webshopon belul)\b/g,' ').trim();if(query.length>1)return {action:'search',query:query};}
-    var vertical=/\b(gorg\w*|gorget\w*|lapoz\w*|menj\w*|indulj\w*|lepj\w*|ugorj\w*|huzd\w*|csusz\w*|gordit\w*|lejjebb|lejebb|lentebb|alabb|feljebb|foljebb|felfele|felfelebb|fentebb|felul|lefele|lefelebb|lefelebb|alul)\b/.test(text);
-    if(vertical&&/\b(lejjebb|lejebb|lefele|lefelebb|lefelebb|le|lentebb|alabb|alul|lefele iranyba|kovetkezo oldal|tovabb le)\b/.test(text))return {action:'scroll',direction:'down'};
-    if(vertical&&/\b(feljebb|foljebb|foljebb|felfele|felfelebb|fel|fentebb|felul|fel iranyba|elozo oldal|tovabb fel)\b/.test(text))return {action:'scroll',direction:'up'};
-    if(/\b(menj\w*|lapoz\w*|gorg\w*|gorget\w*|csussz\w*|mozdits\w*|mozgasd\w*|told\w*|huzd\w*)\b/.test(text)&&/\b(jobbra|jobbrafele|jobb oldalra|jobb fele|jobbra at)\b/.test(text))return {action:'scroll',direction:'right'};
-    if(/\b(menj\w*|lapoz\w*|gorg\w*|gorget\w*|csussz\w*|mozdits\w*|mozgasd\w*|told\w*|huzd\w*)\b/.test(text)&&/\b(balra|balrafele|bal oldalra|bal fele|balra at)\b/.test(text))return {action:'scroll',direction:'left'};
-    if(/\b(nagyits\w*|nagyit\w*|nagyobb\w*|kozelits\w*|zoomolj\w*|zoom\s*in|hozd kozelebb|tedd kozelebb|kozelebb)\b/.test(text)&&!/\b(ne |neki |nem )/.test(text))return {action:'zoom',direction:'in'};
-    if(/\b(kicsinyits\w*|kicsit kisebb|kisebb\w*|tavolits\w*|zoomolj ki|zoom out|vidd tavolabb|tedd tavolabb|tavolabb)\b/.test(text))return {action:'zoom',direction:'out'};
-    if(/\b(hangosit\w*|hangosits\w*|hang fel|hangero fel|szolj hangosabban)\b/.test(text))return {action:'sound',direction:'up'};
-    if(/\b(halkit\w*|halkits\w*|nemits\w*|hang ki|hangero le|csendesits\w*)\b/.test(text))return {action:'sound',direction:'down'};
-    if(/\b(lapoz\w*|kovetkezo oldal|tovabb)\b/.test(text)&&!vertical)return {action:'scroll',direction:'right'};
-    if(/\b(elozo oldal|vissza egyet|lapozz vissza)\b/.test(text))return {action:'scroll',direction:'left'};
+    var vertical=/\b(gorgess|gorget|gorgetes|lapozz|menj|lejjebb|feljebb|felfele|lefele|lefelebb|felfelebb|menjunk)\b/.test(text);
+    if(vertical&&/\b(lejjebb|lefele|lefelebb|le|lentebb|lefele iranyba|kovetkezo oldal)\b/.test(text))return {action:'scroll',direction:'down'};
+    if(vertical&&/\b(feljebb|felfele|felfelebb|fel|fentebb|fel iranyba|elozo oldal)\b/.test(text))return {action:'scroll',direction:'up'};
+    if(/\b(menj|lapozz|gorgess|gorget|csussz)\b/.test(text)&&/\b(jobbra|jobb oldalra|jobbrafele)\b/.test(text))return {action:'scroll',direction:'right'};
+    if(/\b(menj|lapozz|gorgess|gorget|csussz)\b/.test(text)&&/\b(balra|bal oldalra|balrafele)\b/.test(text))return {action:'scroll',direction:'left'};
     return null;
   }
   var entries = [
@@ -58,16 +52,5 @@
     }
     return null;
   }
-  var motionWords = [
-    {action:'fel',aliases:['görgess fel','görgess feljebb','menj fel','menj feljebb','lapozz fel','lapozz felfelé','fentebb','fölfele','mozdítsd fel','told fel','húzd fel']},
-    {action:'le',aliases:['görgess le','görgess lejjebb','menj le','menj lejjebb','lapozz le','lapozz lefelé','lentebb','alább','mozdítsd le','told le','húzd le']},
-    {action:'jobbra',aliases:['lapozz jobbra','görgess jobbra','menj jobbra','mozdítsd jobbra','told jobbra','húzd jobbra','következő oldal','lapozz','tovább']},
-    {action:'balra',aliases:['lapozz balra','görgess balra','menj balra','mozdítsd balra','told balra','húzd balra','előző oldal','lapozz vissza']},
-    {action:'nagyítás',aliases:['nagyíts','nagyítsál','nagyítsd','nagyítson','nagyítót','nagyobb','közelíts','zoomolj','hozd közelebb']},
-    {action:'kicsinyítés',aliases:['kicsinyíts','kicsinyítsél','kicsinyítsd','kicsit kisebb','távolíts','zoomolj ki','vidd távolabb']},
-    {action:'hang fel',aliases:['hangosíts','hangosítsál','hangosítsd','hang fel','hangerő fel']},
-    {action:'hang le',aliases:['halkíts','halkítsál','halkítsd','némíts','némítsd','hang ki','hangerő le']},
-    {action:'kézmozdulat',aliases:['ints','integess','intsd a kezed','legyints','legyints fel','legyints le','kézzel lapozz','mozdítsd a kezed']}
-  ];
-  root.WDEA_HU_VOICE = {normalize:norm, resolve:resolve, resolveAction:resolveAction, actions:actions.slice(), entries:entries.slice(), motionWords:motionWords};
+  root.WDEA_HU_VOICE = {normalize:norm, resolve:resolve, resolveAction:resolveAction, actions:actions.slice(), entries:entries.slice()};
 })(window);

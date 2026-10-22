@@ -25,4 +25,193 @@ KORLÁTOK: nincs szerver; a WORK itt demó, az adat csak a telefonon van. A tár
 ÚJ: az admin (CONTROL / ADMIN) két új gombbal bővült: „WORK megjelenítése” (előnézet a DEX-en belül) és „Átlépés a WORK-be”.
 
 
-KIADÁS v46.3: töltsd fel az összes gyökérfájlt és az mp/ almappát. A Szókereső mindig az 1-es játék, a Folytatás sor nem változtatja meg a játékszámokat.
+ÚJ: DEX / WORK magyar hangparancs-szótár (offline)
+A csomag tartalmazza a wdea-hu-voice.js fájlt. Frissítéskor ezt is töltsd fel a többi fájllal együtt a tárhely gyökerébe.
+Példák: „Nyisd meg a webshopot”; „tedd elém a vásárlásokat”; „menjünk a beállításokon belül a profilokra”; „nyisd meg a rendeléseimet / kosarat / pénztárt”; „mutasd a boltsablon-szerkesztőt”.
+VR-ben mondd ki előbb: „WORK VR-be” vagy „tedd elém a WORK-öt”, majd a fenti oldalnevet. A DEX a WORK panelt a kért oldalra navigálja.
+A kifejezések magyar ékezet nélkül, toldalékolva és több hétköznapi szófordulattal is felismerhetők. Ez helyi kulcsszó- és szófordulat-szótár, nem új AI-modell.
+E-mail kampányküldés jelenleg nincs a WORK-ben. Az e-mail kampányt kérő mondat ezért egyértelműen jelzi, hogy a funkció hiányzik; nem nyitja meg tévesen a hirdetési kampány piszkozatot.
+
+
+HANGPARANCS-BŐVÍTÉS – GÖRGETÉS, KERESÉS ÉS MOZGATÁS
+Példák: „görgess lejjebb”, „görgess feljebb”, „menj jobbra”, „menj balra”; „hol találom a vásárlásokat?”, „keresd meg a termékeket”. Ezek a WORK-ben helyi keresést vagy görgetést indítanak.
+A DEX mozgatásához: „mozdítsd jobbra/balra/fel/le”, „told a robotot 20 pixellel jobbra”, „tedd a mikrofont előre/hátra”, „tedd a mikrofont a küldés gomb mögé”. Irány megadásakor távolság nélkül 30 pixeles lépést használ.
+A VR hangparancsai a WORK panelt is megnyitják, és a parancsot ugyanazon az eszközön továbbítják a WORK-nek. Frissítéskor minden fájlt tölts fel újra a tárhely gyökerébe, különösen a wdea-hu-voice.js és sw.js fájlokat.
+
+
+ÚJ: CSILLAGVASÚT játék
+- VR módban: „játékok”, majd mondd: „Csillagvasút”, vagy mondd: „játsszunk a Csillagvasúttal”.
+- Irányítás: „balra”, „jobbra”, „szünet”, „folytasd”, „játék vége”.
+- „teljes képernyő” vagy „nagyítás” teljes képernyőre vált és nagyít. Ha a Chrome a hangparancsot nem engedi, koppints egyszer az oldalra, majd mondd újra.
+- A pálya áttetsző, a kameraképet hagyja látszani. VR-t csak állva/ülve, biztonságos helyen próbáld ki.
+
+
+ÚJ (v37): KÉZVEZÉRLÉS, IRÁNYÍTÓ SZALAG, WORK HANGVEZÉRLÉS VR-BEN
+Fájlok: a csomag MINDEN fájlját töltsd fel újra (index.html, work.html, dex-work-bridge.js, wdea-hu-voice.js, sw.js …).
+
+KÉZMOZDULAT (gesztus mód)
+ • Mondd: „gesztus mód” (vagy „gesztusos”, „gömbös”, „kézvezérlés”). Kikapcsolás: „gesztus ki”.
+ • Be van kapcsolva: a WORK lapozik, ha a kezed a kamera előtt – fel: feljebb · le: lejjebb · jobbra: jobbra lapoz · balra: balra lapoz.
+ • Fejmozgásra, a kép általános remegésére és lassú, kis mozgásra nem lapoz. Játék közben és megnyitott játékmenüben nem lapoz.
+IRÁNYÍTÓ SZALAG
+ • „irányító szalag” / „irányítópult” / „parancsok” → áttetsző szalag alul, 4 lap, ~90 parancs magyarázattal.
+ • „szalag tovább” / „szalag előző” lapoz, „szalag el” elrejti. A végrehajtott parancs a szalagon felvillan.
+WORK HANGPARANCSOK (VR-ben)
+ • „nyisd meg a vásárlásokat / üzleteket”, „mutasd a termékeket”, „nyisd meg a kosarat / rendeléseket / üzeneteket”, főoldal, értesítések, profil, beállítások, segítség …
+ • „görgess lejjebb / feljebb”, „kicsit lejjebb”, „sokat lejjebb”, „lejjebb”, „csússz feljebb”, „görgess az aljára / a tetejére”, „lapozz jobbra / balra”.
+ • „nyisd fel a csetet / üzenetablakot”: ha a WORK látszik, a WORK üzenetei nyílnak; ha nem, a DEX saját csevegése. „csevegés” szóra mindig a DEX csevegése.
+ • WORK-ablak: „WORK nagyobb / kisebb”, „told a WORK-öt balra / jobbra / fel / le”, „WORK középre”, „WORK alaphelyzet”, „WORK el”.
+ÜTŐS BLOKKOK
+ • Az ütésfelismerés szigorúbb: csak a figura helyén, egymás utáni két mintán át tartó, a kép többi részénél jóval erősebb mozgás üt; fej- és kameramozgásra nem. Egy lendítés egy figurát üt.
+
+ÚJ JÁTÉK: DEX ŐRZŐJE
+ • VR-ben: „játékok”, majd „DEX őrzője” (vagy közvetlenül: „DEX őrzője”, „lebegő mag”).
+ • DEX lebeg előtted három sáv egyikében. Üstökösök és fénygömbök közelednek. Fénygömb: elkapod (+10 pont), üstökös: kitérsz vagy pajzzsal kivéded (3 életed van).
+ • Irányítás hanggal: „balra”, „jobbra”, „középre”, „pajzs”, „gyorsabban”, „lassabban”, „állj” (szünet), „folytasd”, „még egyszer”, „játék vége”.
+ • Irányítás kézzel (gesztus mód nélkül is, amíg a játék megy): legyintés balra/jobbra = DEX kitér, felfelé = pajzs. A pajzs ~1,6 mp-ig véd, utána kb. 3 mp-ig töltődik.
+ • Menü megnyitásakor a játék szünetel, a „vissza” folytatja. Legjobb pont a telefonon marad.
+
+ÚJ JÁTÉK (v38): DEX DÍNÓÜLDÖZÉS
+ • VR-ben: „játékok”, majd „DEX Dínóüldözés” (vagy közvetlenül: „dínóüldözés”).
+ • Teljes képernyő, a szoba kamerája végig látszik; halvány dzsungel-levelek, Dex a bal szélen, nincs menü és nincs fekete panel.
+ • INDULÁS: először kézfelismerés. Emeld fel a kezed a kamera elé. Csak ha felismerte, jelenik meg a kék-sárga játékpisztoly a kezedben, és kapsz egy gyakorló célkört.
+ • CÉLZÁS: a mutatóujjad iránya vezeti a célkeresztet. LÖVÉS: érintsd össze a hüvelyk- és mutatóujjad, vagy mondd: „lőj”.
+ • Ha a kamera elveszíti a kezed: a pisztoly és a célkereszt azonnal eltűnik, lőni NEM lehet (se csippentéssel, se hanggal).
+ • A dínók a kép két oldalán bújnak elő, majd elbújnak. Dex hangosan segít („Nézz jobbra, ott látom a dínót!”). Találatkor fényeffekt, a dínó elszalad, jön a következő. Vér nincs.
+ • Hangparancsok: „indítsuk el”, „segíts”, „mutasd, merre van”, „következő dínó”, „állj”, „folytasd”, „lépj ki”, „lőj”.
+ • KÉZFELISMERÉS: az első indításnál internet kell (a MediaPipe kézmodellt a telefon letölti és elmenti, utána hálózat nélkül is megy). Ha a modell nem tölt be, egyszerűbb színalapú kézfelismerés lép be (jó fény kell, lőni ilyenkor hanggal érdemes).
+ • KORLÁT: a dínó a kamerakép elé kerül; valódi bútor mögé NEM tud bújni (ehhez a telefonnak mélységfelismerés kellene). A VR-tartó nem takarhatja a kamerát, a kéznek bele kell férnie a kép látóterébe.
+ • A magyar hangfelismerés offline működését a saját telefonodon kell kipróbálni.
+
+ÚJ (v39): WORK EGYSÉGES FELÜLET + VR-PARANCSOK
+ • WORK: egységes betűskála, csak a szöveg nő nagyobb betűnél (kártya/kép nem torzul), szűk helyen a kép a felirat fölé kerül, közös visszafogott színalap. Funkciók változatlanok.
+ • VR-ben: „work”, „webshop”, „shop”, „főoldalt tegyél elém”, „csetet tegyél elém”, „üzeneteket/kosarat/profilt/rendeléseket mutasd” – a WORK akkor is előjön, ha nem volt kint. Félrehallásra is (pl. „vörköt tedd elém”).
+ • „kattints a DEX-re” – a WORK-ön belüli DEX-csevegő kinyílik. „menüt hozd ki/csukd be a workben”.
+ • Kézmozdulat (gesztusmód alapból BE): fel/le = görgetés, balra/jobbra = lapozás, ha nincs mit lapozni, kijön a WORK menüje. Érintés a VR-ablakon átmegy a WORK-be. Ha zavar a véletlen görgetés: „gesztus ki”.
+ • „kapcsold be a gombot” = hang gomb. „kapcsold ki a hangszórót” = felolvasás ki. „tedd át a hangszórót”: a böngésző nem tudja átváltani a hangkimenetet, a telefon értesítési sávjában kell választani.
+ • Valódi telefonon kell kipróbálni: kézgesztusok, érintés a VR-ablakon, a WORK VR-ablak megjelenése (a képek külső forrásból jönnek, offline csak a képfelirat látszik).
+
+ÚJ (v40): KÉZKÖVETÉS, CSIPESZ, HANGOS ABLAKMÉRET
+ • FONTOS: a „mp” mappa (a kézkövető modell, 8 fájl) a csomag része. Az index.html-lel együtt töltsd fel a GitHubra MAPPÁSTUL (Add file → Upload files → húzd be az egész mp mappát). A modell onnan töltődik, internet/CDN nélkül, és a telefon elmenti.
+ • Kézmozdulat (gesztusmód alapból BE, „gesztus ki” kikapcsolja): fel/le görget, balra/jobbra lapoz. Pontos kézfelismeréssel (21 pont), nem csak képkülönbséggel. A szalagon látod: „kéz: BE · pontos”.
+ • CSIPESZ: a WORK-ablakot két ujjal (hüvelyk+mutató) megcsípve megfogod és viszed (sárga keret). Két kézzel csípve és széthúzva nagyítod, összehúzva kicsinyíted. Elengedés után fél másodpercig nem lapoz.
+ • Hangra: „szélesítsd ki a workot / vörköt”, „szélesebb”, „keskenyebb”, „magasabb”, „alacsonyabb”, „nagyobb/kisebb a work”, „teljes képernyő work”, „told balra a workot”, „work középre”, „work alaphelyzet”.
+ • Rövid parancsok, ha a WORK kint van: „görgess”, „tovább”, „lenn”, „mutass még”, „vissza fel”, „legalulra”, „legfelülre”, „oldal eleje / vége”, „lapozz”, „következő”, „előző”, „lapozz vissza”, „csússz jobbra / balra”.
+ • Windows-szerver: a .tflite, .data, .binarypb fájlokat is kiszolgálja (ez hiányzott, ezért nem töltődhetett volna be a modell).
+ • KORLÁT: a kézfelismerést, a csipeszt és a kétkezes nagyítást géppel hamis kézadatokkal teszteltem, igazi kézzel a te telefonodon kell kipróbálni. A kéz nem takarhatja a kamerát, jó fény kell. A „hands_solution_simd_wasm_bin.data” 0 bájtos, ez rendben van. Nagyon régi telefonon (SIMD nélkül) a modell nem indul, ilyenkor a képkülönbséges mozgásérzékelés dolgozik.
+
+ • RÖGZÍTÉS: amit csipesszel vagy hanggal beállítasz (WORK helye, mérete), elengedés után ott marad és el is mentődik (újraindítás után is). „rögzítsd”, „maradjon így”, „mentsd el” megerősíti. „work alaphelyzet” visszaállítja.
+ • OLDALON BELÜLI NEVEK: ha a WORK előtted van, bármilyen látható fül/gomb/menüpont nevét kimondhatod („képek”, „videók”, „hirdetések”, „vállalkozások”, „neked”…), ragokkal és ékezet nélkül is, és rákattint. Offline is működik, a DEX-csevegő nyitva tartása mellett is.
+
+ÚJ (v41): ADMIN A DEX-BŐL, WORK A MENÜBEN, CHAT / WORK CHAT, LÁTHATÓ KÉZPONT
+ • ADMIN (GitHub Pages, szerver nélkül): 8 gyors koppintás a DEX feliraton, vagy hangra: „Zsolt nyolcvannyolc admin” (a sorrend mindegy). Megnyílik a WORK admin, kód nélkül (VR-ben a bent lévő WORK-ablakban). FIGYELEM: ez kényelmi nyitás, NEM védelem; a WORK admin kódja amúgy is látszik a work.html forrásában. Zárat később az adminban lehet visszarakni. A Windows-szerveres változatban (/dex/) a szerver jelszavas admin belépése marad, azt nem kerüli meg.
+ • WORK a profil-menüben (jobb felső profil ikon): a „WORK” pont új lapon megnyitja a WORK-öt.
+ • „chat” / „csevegés” / „csetet tegyél elém” = a kettőnk közti DEX-csevegés. „work chat” / „üzenetek” = a WORK üzenetei.
+ • KÉZKÖVETÉS parancs: „kézkövetés” (be, elindítja), „kézkövetés állapot” (elmondja, működik-e, és ha nem, miért nem), „kézkövetés újra” (kényszerített újraindítás), „kézkövetés ki”. A kezeden pont jelenik meg: cián = nyitott kéz, sárga = csipesz. Ha a pont nem jelenik meg, a rendszer nem lát kezet; ilyenkor kérdezd: „kézkövetés állapot”.
+
+v42 – KÉZ A KÉP ELŐTT (Tony Stark)
+- A kamerakép kéz-alakú kivágása a WORK-ablak FÖLÉ kerül (cián kontúr, ujjhegyeken pontok), így a saját kezed látod az ablak előtt.
+- Koppintás: rövid csipesz (hüvelyk+mutató összeér és el) a WORK-ablak fölött = kattintás arra, ami az ujjhegyed alatt van. Sárga gyűrű jelzi.
+- Tartott + húzott csipesz továbbra is viszi az ablakot; két kézzel nagyít.
+- Hang: "kéz a kép előtt be / ki", "Tony Stark kéz előre", "kiemelt kéz be".
+- Ez nem valódi 3D: a kivágás a lapos kameraképből készül, enyhén késhet a gyors mozdulatoknál.
+
+v43
+- Kéz: természetes kép, csík nélkül, csak egy pont (cián = nyitott kéz a mutatóujjon, sárga = csipesz). Hologramszerű, éles WORK-ablak.
+- Kamera forgatása: "forgasd el a kamerát" (90°-onként, "balra" visszafelé), "tükrözd a kamerát", "kamera alaphelyzet". Álló telefonnál alapból 270°.
+- "screenshot" / "fényképezd le" / "fotózd le": kép a nézetről (kamera + WORK + kéz), letöltésként mentve. A WORK tartalma néhány másodperc alatt kerül rá.
+
+v44
+- A rárajzolt kéz-kép alapból ki: a valódi kezed látszik; ha a kezed az ablak fölé ér, az ablak áttetszővé válik. (Régi kivágás: "kéz a kép előtt be".)
+- Kitolás/behúzás: csipesz közben a kezed közelebb viszed a kamerához = az ablak nagyobb, távolabb = kisebb.
+- Letétel a térben: "tedd le a térbe" (giroszkóp, ha ellenkező irányba megy: "tér fordítva"); "vedd fel az ablakot".
+- Elemenkénti mozgatás: "elemenként mozgatom" -> csipesz + húzás egy kártyán/elemen; az ablak szélét megfogva az egész ablak mozog; "elemek alaphelyzet", "elem mozgatás ki".
+
+v45
+- Térbe tétel többféle szóval: "tedd le", "hagyd ott", "maradj ott", "engedd oda", "tedd oda", "maradjon ott", "hagyd", "tedd le a térbe". Ha 3,5 mp-ig nem jön giroszkóp-adat, a DEX megmondja.
+- "melyik verzió" -> megmondja a VR-rész verzióját (v45), így ellenőrizhető, hogy az új fájlok futnak-e.
+- Elem-mozgatás: "mozgasd el az elemet / a gombot / a kártyát" is bekapcsolja.
+- A kéz-kép (rárajzolt kéz) tárolója nullázva: alapból ki.
+
+v46
+- Átlátszó ablak (ha a kezed fölötte van): kicsit sötétebb háttér + élesebb kontraszt.
+- Térbe tétel újraírva: valódi 360 fokos forgáskövetés (giroszkóp + gravitáció + kamera látószöge). Elfordulsz: az ablak kimegy a képből; visszafordulsz: ott van. Függőleges nézés is követve. Telefon-tartás (álló/fekvő) automatikusan.
+- Korlát: csak forgást követ (nézés körbe), a telefon helyzetváltozását (odébb sétálás) nem. "melyik verzió" -> v46.
+
+v47 (tartalmazza a v46.1 hangparancs-bővítéseket is)
+- Hangparancsok: több szinonima görgetésre, lapozásra, nagyításra, kicsinyítésre és mozgatásra (v46.1). Javítva: a "görgess jobbra/balra" és a "lapozz balra" most jó irányba megy; a "teljes képernyő", "töltsd ki" és "maximum" kitölti a WORK-ablakot; a sima "alaphelyzet" visszaállítja.
+- Térbe tétel tengely-javítás: az ablak helyét a telefon tájolásából számolom (a hátsó kamera nézési iránya). Fel-le bólintásra az ablak csak függőlegesen mozog, oldalra fordulásra csak vízszintesen, álló és fekvő telefonnál is. Ha nincs tájolás-adat, a régi giroszkópos út fut.
+- "tér kalibrálás" (vagy "tér középre"): az ablak oda kerül, amerre most nézel.
+- "tér állapot": megmondja, be van-e kapcsolva, melyik érzékelő fut, és hány fokot fordultál.
+- "melyik verzió" -> v47.
+
+v48
+- Megnyitáskor a WORK-ablak hologramszerűen kibontakozik, bezáráskor összezáródik.
+- Rámutatás-kiemelés: ami a mutatóujjad hegye alatt van (gomb, link, menüpont), kéken világít. "kiemelés ki/be".
+- Szélfogás: a jobb/bal szélét csipesszel megfogva szélesíted, a tetejét/alját megfogva magasítod, a sarkát fogva mindkettő. Középen fogva továbbra is viszed.
+- Két kézzel két átlós sarkot megfogva a sarkok a kezed alatt maradnak.
+- Kétujjas nyitás: ha a WORK zárva van, két csipeszt széthúzva kinyílik ott, ahol a kezed van.
+- Döntés: két kézzel fogva az egyik kezed közelebb hozod -> az ablak 3D-ben megdől. Hangra: "döntsd balra/jobbra/hátra/előre", "ablak egyenesen".
+- Szálas kéz: "szálak be" -> a hüvelyk- és mutatóujj (vagy két kéz) között fehér szálak, közöttük szürke üveglap. "szálak ki".
+- Második ablak: "nyiss egy második ablakot" (pl. "második ablak webshop"), külön mozgatható és kattintható; "második ablak bezár".
+- WebXR-próba: "xr próba" -> megmondja, hogy a telefon tudja-e a körbejárható AR-módot.
+- "melyik verzió" -> v48.
+
+v49
+- VALÓDI, KÖRBEJÁRHATÓ TÉR (WebXR AR + ARCore): "tedd le" (vagy kiemel, emeld ki, tedd ki, tedd oda, rakd le, hagyd ott, marad, maradj, "valódi tér") után egyszer koppints a képernyőre vagy nyomd meg a szemüveg gombját. Az ablak a szobában marad: odébb sétálhatsz, közelebb mehetsz, körbejárhatod, hátulról is látszik. Két szemre bontva (ha a telefon ad kamera-hozzáférést).
+- AR-ben kattintás: nézz a gombra, hogy a középső pont sárga legyen, és koppints / nyomd meg a szemüveg gombját. A gomb kéken kiemelődik, amire nézel.
+- AR-ben hang: "hozd ide", "közelebb", "távolabb", "nagyobb", "kisebb", "kép fordítva" (ha fejjel lefelé lenne a kamerakép), "tér vége" / "vedd fel az ablakot" (kilépés). Görgetés, lapozás, oldalak ugyanúgy mennek.
+- A döntés kézzel most a jó irányba megy: a jobb kezed magad felé húzva az ablak jobb oldala feléd jön.
+- A gombok kék kiemelésének kapcsolója: "rámutatás ki/be" (a "kiemel" szó mostantól a térbe tétel).
+- Korlát: AR-ben még nincs kézkövetés (a kamerát az AR használja), ott nézéssel + koppintással és hanggal irányítasz.
+- "melyik verzió" -> v49.
+
+v50 (Quest 3 passthrough-stílus)
+- Fehér körvonalas kéz: a kezed széle vékony, világító fehér vonallal látszik (alapból bekapcsolva). "körvonal ki/be".
+- Fehér keretes kiemelés: amire mutatsz (kártya, gomb), fehér keretet kap és kicsit kiemelkedik.
+- Dokksáv az ablak alatt: óra, akku és a WORK oldalai (Főoldal, Webshop, Üzenetek, Felfedezés, Videó, Stúdió, AI, Értesítések, Profil, Beállítások). Rámutatva az ikon kiemelődik, csípésre odavált. "dokk ki/be".
+- Valódi térben (AR): nagyobb, ívelt ablak, alatta a dokksáv; nézz az ikonra és koppints.
+- "melyik verzió" -> v50.
+
+v51
+- Profil-menü: új "XR tér" pont a "VR mód" alatt (Valódi tér). Koppintásra azonnal indul a valódi, körbejárható tér, VR nélkül is; kilépéskor visszajön a DEX főoldala.
+- Hang: "XR", "XR tér", "VR tér", "tér", "valódi tér", "XR mód", "nyisd meg az XR-t" -> XR tér (egy koppintás kell az induláshoz, a böngésző hangra nem engedi). A "VR" szó továbbra is a sima VR módot nyitja.
+- Kilépés: "tér vége" vagy "XR vége".
+- "melyik verzió" -> v52 (lásd lent).
+
+v52
+- XR tér szemüvegben: ha a telefon fekszik (szemüvegben), a két szem képe a hosszanti tengely mentén válik szét, mindkettő egyenes, fekvő kép. Álló telefonnál (kézben) a régi nézet marad. Ezt a telefon helyzetéből magától dönti el.
+- Az XR-ablak alapból kisebb, hogy a dokksávval együtt beférjen egy szem képébe ("nagyobb", "közelebb" nagyít).
+- "melyik verzió" -> v52.
+
+v53
+- KÉZKÖVETÉS A VALÓDI TÉRBEN (XR): a telefon AR-kameraképét kapja a kézmodell. Külön a VR-étől: amíg az XR tér fut, a VR kézvezérlése szünetel, utána ugyanúgy megy tovább.
+  - Mutatás: a mutatóujjad hegye alatt a gomb/kártya kiemelődik.
+  - Rövid csipesz az ablakon = kattintás; a dokksáv ikonján = oldalváltás.
+  - Csipesszel fogva húzod = az ablak a térben odébb megy, és ott marad.
+  - Két kézzel csípve széthúzod = nagyobb, összehúzod = kisebb.
+  - A kezed fehér körvonallal látszik, az ujjhegyen pont (sárga, ha csípsz).
+  - "kézkövetés ki/be" (XR-ben). Ha a telefon nem adja ki a kameraképet, a DEX megmondja; akkor nézéssel + koppintással megy.
+- "melyik verzió" -> v53.
+
+v54 (fénysugár a valódi térben)
+- A kijelző alapból távolabb (1,6 m) és nagyobb; közelebb lépve megnő, mint egy igazi monitor.
+- Fénysugár: ha kinyújtod a mutatóujjad (a többi behajlítva), vékony kék sugár megy a kezedtől a kijelzőig, ahol egy pont mutatja, hová célzol. A kezed lent maradhat, távolról irányítasz.
+- Kattintás: csípés (hüvelyk + mutató), koppintás a képernyőre / szemüveg-gomb, vagy hangra: "kattints", "koppints", "menj rá", "nyomd meg" – mindig oda, ahová a sugár mutat.
+- "fogd meg" -> megfogja az elemet a sugár alatt, a kezed után viszi; "engedd el" -> leteszi. "fogd meg az ablakot" -> az egész kijelzőt viszi.
+- A valódi kezed a kijelző ELŐTT látszik (kivágva, fehér körvonallal), nem a kijelző mögött.
+- "sugár ki/be". Két kézzel csípve széthúzva továbbra is nagyítod.
+- "melyik verzió" -> v54.
+- (v54) Gyorsítás: a kijelző képének frissítése a valódi térben kb. 15-ször gyorsabb (kevesebb akadás, simább kéz és sugár). A csipeszes kattintás akkor is működik, ha a telefon épp akad.
+
+WORK – nyelvek és telefonos hírfolyam (2026-10-21)
+- A WORK minden oldala most a kiválasztott nyelven jelenik meg (magyar, német, angol, olasz): menük, gombok, keresőmező, kategóriák, kosár, beállítások, segítség, admin, felugró üzenetek és hibaüzenetek is. Kb. 2300 szöveg lefordítva; a márka- és személynevek változatlanok.
+- Nyelvváltás: Beállítások → Nyelv és régió; azonnal átvált, újratöltés nélkül. Magyarra visszaváltva minden az eredeti.
+- Telefonon a hírfolyam egy oszlopban jelenik meg, a feliratok nem törnek szét ("DEMÓ · MINTATARTALOM", "Törlés").
+
+WORK – Üzenetek és hívás, új főoldal (2026-10-21)
+- Új 💬 Üzenetek gomb a fejlécben (a ☰ és az S mellett), olvasatlan-számmal. Beszélgetéslista, chat buborékokkal, hang- és videóhívás, felugró értesítés új üzenetnél.
+- Hangra: "üzenetek", "nyisd meg az üzenetet", "nézd meg", "vedd fel", "ne vedd fel", "tedd le", "hívd fel X-et", "írd meg neki, hogy ...", "próbahívás".
+- FONTOS: a GitHub Pages csak statikus oldal, ott DEMÓ módban fut (minta-ismerősök). Valódi üzenetküldés és hívás a saját WDEA szervereden megy (START_WDEA, https://...:8443/work/index.html) – ehhez a TELJES csomag kell.
+- Főoldal: köszöntés + gyorsgombok + elérhetők; a főoldalon nincs Vissza gomb és nagy cím (a többi oldalon a Vissza megmaradt).
+- DEX: beszéd közben a szája világít.
