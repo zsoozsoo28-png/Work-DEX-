@@ -61,6 +61,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 #card h2{margin:0;font-size:clamp(26px,7vw,44px);font-weight:1000;text-shadow:0 0 18px #2bb8ff,0 3px 10px #000}
 #card div{font-size:15px;color:#ffe9a8;text-shadow:0 2px 8px #000}
 #vrh{position:fixed;inset:0;z-index:12;pointer-events:none;display:none}
+body.vrp #gl,body.vrp #vrh{position:fixed;inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-origin:0 0;transform:rotate(90deg)}
+body.vrp.vrf #gl,body.vrp.vrf #vrh{left:0;top:100vh;transform:rotate(-90deg)}
+body.vrp #vrx{left:auto;right:4px;top:50%;transform:translateY(-50%) rotate(90deg)}
 #vrh.on{display:block}
 .vre{position:absolute;top:0;bottom:0;width:50%;overflow:hidden}
 .vre .vc{position:absolute;left:50%;top:14%;transform:translateX(-50%);display:flex;gap:6px;font-weight:900;font-size:13px}
@@ -147,9 +150,9 @@ const SPR={meta:null,tex:{},on:true};try{SPR.on=localStorage.getItem('dex_world_
 function sprTex(n){const t=gl.createTexture(),o={t,ok:false};SPR.tex[n]=o;const im=new Image();im.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);o.ok=true};im.src='dexworld/spr/'+n+'.png'}
 fetch('dexworld/spr/meta.json').then(r=>r.json()).then(m=>{SPR.meta=m;for(const k in m)sprTex(k)}).catch(()=>{});
 function sprReady(n){return !!(SPR.on&&SPR.meta&&SPR.meta[n]&&SPR.tex[n]&&SPR.tex[n].ok)}
-const ATL={meta:null,tex:null,dirty:1};
-fetch('dexworld/atlas.json').then(r=>r.json()).then(m=>{ATL.tex=imgTex('dexworld/atlas.png',()=>{ATL.meta=m;ATL.dirty=1})}).catch(()=>{});
-function atlOk(n){return !!(SPR.on&&ATL.meta&&ATL.meta.i[n])}
+const ATL={meta:null,tex:null,dirty:1,loaded:false};
+fetch('dexworld/atlas.json').then(r=>r.json()).then(m=>{ATL.tex=imgTex('dexworld/atlas.png',()=>{ATL.meta=m;ATL.dirty=1;ATL.loaded=true})}).catch(()=>{});
+function atlOk(n){return !!(SPR.on&&ATL.meta&&ATL.tex&&ATL.loaded&&ATL.meta.i[n])}
 function atlBuild(){if(!ATL.dirty||!ATL.meta)return;ATL.dirty=0;const M=ATL.meta,a=[];for(const d of DEC){const it=M.i[d[0]];if(!it)continue;const u0=(it[0]+.5)/M.w,v0=(it[1]+.5)/M.h,u1=(it[0]+it[2]-.5)/M.w,v1=(it[1]+it[3]-.5)/M.h,ar=it[2]/it[3],sw=/tree|pine|palm|bush|flower|vine|hedge/.test(d[0])?.25:0;
   const C=[[-.5,0,u0,v1],[.5,0,u1,v1],[.5,1,u1,v0],[-.5,0,u0,v1],[.5,1,u1,v0],[-.5,1,u0,v0]];for(const q of C)a.push(d[1],d[2],d[3],q[0],q[1],q[2],q[3],d[4],1,1,1,ar,sw)}
  if(MESH.decor)gl.deleteBuffer(MESH.decor.b);const f=new Float32Array(a),b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,f,gl.STATIC_DRAW);MESH.decor={b,n:f.length/13}}
@@ -186,6 +189,20 @@ class Geo{constructor(){this.a=[]}
 /* ---- textúrák ---- */
 const TEX={};function texLoad(name){if(TEX[name])return TEX[name];const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([200,200,200,255]));
  const im=new Image();im.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);gl.generateMipmap(gl.TEXTURE_2D);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT)};im.src='dexworld/t_'+name+'.jpg';TEX[name]=t;return t}
+/* Eredeti grafikák valódi 3D anyagként a falakra: WebGL textúra */
+const EXTRA_TEX={};
+function texFile(path){
+ if(EXTRA_TEX[path])return EXTRA_TEX[path];
+ const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
+ gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([150,150,160,255]));
+ const im=new Image();im.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,t);
+ gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT)};
+ im.src=path;EXTRA_TEX[path]=t;return t;
+}
 /* ---- rajzolás ---- */
 let VP=M4.id(),CAM=[0,5,10],CAMR=[1,0,0],W={};
 function setCommon(){const u=SH.U;gl.uniformMatrix4fv(u.VP,false,VP);gl.uniform3fv(u.sunD,W.sunD);gl.uniform3fv(u.sunC,W.sunC);gl.uniform3fv(u.skyC,W.skyC);gl.uniform3fv(u.gndC,W.gndC);gl.uniform3fv(u.fogC,W.fogC);gl.uniform1f(u.fogD,W.fogD);gl.uniform3fv(u.cam,CAM)}
@@ -216,11 +233,11 @@ const WORLDS=[
  {n:'Űr Világ',s:'Bolygók',task:'Alacsony gravitáció! Ugorj nagyokat az aszteroidákra!',tex:'rock',sky:[0x000005,0x05051a,0x1a1040],fog:0x0a0a1a,fogD:.008,sun:0xffffff,sunI:1.2,amb:[0x8a8aff,0x1a1a2a],stars:1.4,gen:'space',pt:[0xffffff,.0,'none'],grav:.42},
  {n:'Közösség',s:'Játékosok',task:'Beszélgess a játékosokkal a fesztiválon, és gyűjts!',tex:'concrete',sky:[0x0b1236,0x3a3a9a,0xffa86a],fog:0x2a2a5a,fogD:.012,sun:0xffd0a0,sunI:.85,amb:[0xa0b0ff,0x302030],stars:.5,gen:'community',pt:[0xffd98a,.4,'spark']}];
 /* ---- világépítő segédek ---- */
-let G,GE,GT,OBST,PLAT,NPCS,ANIM,COL,PORTAL,SPAWN,VOID,WIDX=0,WATER;
+let G,GE,GF,GT,OBST,PLAT,NPCS,ANIM,COL,PORTAL,SPAWN,VOID,WIDX=0,WATER;
 function addObst(x,z,r){OBST.push({x,z,r})}
 function addPlat(x,z,hw,hd,top,round){PLAT.push({x,z,hw,hd,top,round:!!round})}
 function T(...a){return chain(...a)}
-function building(x,z,w,d,h,col,win,emis=.85){G.box(T(M4.tr(x,0,z)),hex(col),0,w,h,d);G.box(T(M4.tr(x,h,z)),hex(win),.6,w*1.04,.25,d*1.04);
+function building(x,z,w,d,h,col,win,emis=.85){GF.box(T(M4.tr(x,0,z)),[1,1,1],0,w,h,d);G.box(T(M4.tr(x,h,z)),hex(win),.6,w*1.04,.25,d*1.04);
  const fl=Math.floor(h/1.4);for(let k=1;k<fl;k++){if(rnd()<.25)continue;const y=k*1.4-.3;for(const s of [-1,1]){GE.box(T(M4.tr(x,y,z+s*(d/2+.02))),hex(win),emis,w*.82,.5,.04);GE.box(T(M4.tr(x+s*(w/2+.02),y,z)),hex(win),emis,.04,.5,d*.82)}}addObst(x,z,Math.max(w,d)*.62)}
 function tree(x,z,h,col,trunk=0x6d4a33,kind=0){G.cyl(T(M4.tr(x,0,z)),hex(trunk),0,.16,.24,h*.45,7);
  if(kind===0){for(let j=0;j<3;j++)G.cyl(T(M4.tr(x,h*.35+j*h*.2,z)),hex(col).map(v=>v*(1-j*.06)),0,0,h*(.42-j*.08),h*.42,8)}else{G.sph(T(M4.tr(x,h*.62,z)),hex(col),0,h*.32,9,6);G.sph(T(M4.tr(x+h*.15,h*.5,z+h*.1)),hex(col).map(v=>v*.9),0,h*.22,8,5)}addObst(x,z,.45)}
@@ -365,9 +382,9 @@ function partsBuild(){const P={};
  for(const k in P)MESH[k]=P[k].upload()}
 function GE_(geo,col,list){list.forEach(b=>geo.box(M4.tr(b[0],b[1],b[2]),hex(col),.9,b[3],b[4],b[5]))}
 /* ---- egy világ felépítése ---- */
-function buildWorld(i){const w=WORLDS[i];seed=1000+i*7919;G=new Geo();GE=new Geo();GRS=[];DEC=[];ATL.dirty=1;OBST=[];PLAT=[];NPCS=[];ANIM=[];COL=[];PORTAL=null;VOID=false;
- GEN[w.gen]();for(const k of ['world','worldE'])if(MESH[k])gl.deleteBuffer(MESH[k].b);MESH.world=G.upload();MESH.worldE=GE.upload();if(MESH.grass)gl.deleteBuffer(MESH.grass.b);{const d=new Float32Array(GRS),b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,d,gl.STATIC_DRAW);MESH.grass={b,n:d.length/13}}
- const sky=w.sky.map(hex);W={sunD:norm([.45,.8,.35]),sunC:hex(w.sun).map(v=>v*w.sunI),skyC:hex(w.amb[0]),gndC:hex(w.amb[1]),fogC:hex(w.fog),fogD:w.fogD,top:sky[0],hor:sky[1],bot:sky[2],stars:w.stars,tex:texLoad(w.tex),grav:w.grav||1};
+function buildWorld(i){const w=WORLDS[i];seed=1000+i*7919;G=new Geo();GE=new Geo();GF=new Geo();GRS=[];DEC=[];ATL.dirty=1;OBST=[];PLAT=[];NPCS=[];ANIM=[];COL=[];PORTAL=null;VOID=false;
+ GEN[w.gen]();for(const k of ['world','worldE'])if(MESH[k])gl.deleteBuffer(MESH[k].b);MESH.world=G.upload();MESH.worldE=GE.upload();if(MESH.facade)gl.deleteBuffer(MESH.facade.b);MESH.facade=GF.upload();if(MESH.grass)gl.deleteBuffer(MESH.grass.b);{const d=new Float32Array(GRS),b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,d,gl.STATIC_DRAW);MESH.grass={b,n:d.length/13}}
+ const sky=w.sky.map(hex);W={sunD:norm([.45,.8,.35]),sunC:hex(w.sun).map(v=>v*w.sunI),skyC:hex(w.amb[0]),gndC:hex(w.amb[1]),fogC:hex(w.fog),fogD:w.fogD,top:sky[0],hor:sky[1],bot:sky[2],stars:w.stars,tex:texFile('dexworld/feloltoztetes/talaj_'+(['aszfalt','aszfalt','fold','fem','fold','homok','jeg','homok','uveg','fold','ko','aszfalt'][i])+'.png'),facade:texFile('dexworld/feloltoztetes/fal_'+String(i).padStart(2,'0')+'.png'),grav:w.grav||1};
  if(!GROUND){const g=new Geo();g.box(M4.tr(0,-1,0),[1,1,1],0,170,1,170);GROUND=g.upload()}
  /* részecskék */
  const pk=w.pt[2],np=pk==='none'?0:pk==='snow'||pk==='bubble'?700:300,pa=[];for(let k=0;k<np;k++)pa.push(rr(-60,60),rr(0,30),rr(-60,60),rr(2,5));PTS={k:pk,col:hex(w.pt[0]),arr:new Float32Array(pa),buf:PTS&&PTS.buf||gl.createBuffer(),n:np};
@@ -447,7 +464,7 @@ function flash(c){const f=$('flash');f.style.background='radial-gradient(circle,
 function hud(){const w=WORLDS[ST.w];$('wname').firstChild.textContent=(ST.w+1)+'/12 · '+w.n;$('wname').querySelector('small').textContent=w.task;$('sc').textContent=ST.coins+'/8';$('sg').textContent=ST.gems+'/3';document.querySelectorAll('.vre .vc').forEach(e=>{e.innerHTML='<span class="pill">🟡 '+ST.coins+'/8</span><span class="pill">💎 '+ST.gems+'/3</span>'+(PORTAL&&PORTAL.open?'<span class="pill">🌀 kapu nyitva</span>':'')});$('sp').style.display=PORTAL&&PORTAL.open?'':'none'}
 function card(h,s){const c=$('card');c.querySelector('h2').textContent=h;c.querySelector('div').textContent=s;c.classList.add('on');setTimeout(()=>c.classList.remove('on'),2600)}
 /* ---- rajz ---- */
-function render(t){const w=WORLDS[ST.w],dpr=Math.min(1.75,devicePixelRatio||1),Wd=Math.floor(innerWidth*dpr),Hd=Math.floor(innerHeight*dpr);if(cv.width!==Wd||cv.height!==Hd){cv.width=Wd;cv.height=Hd}
+function render(t){const w=WORLDS[ST.w],dpr=Math.min(1.75,devicePixelRatio||1),rot=VRM.on&&innerHeight>innerWidth;document.body.classList.toggle('vrp',rot);const Wd=Math.floor((rot?innerHeight:innerWidth)*dpr),Hd=Math.floor((rot?innerWidth:innerHeight)*dpr);if(cv.width!==Wd||cv.height!==Hd){cv.width=Wd;cv.height=Hd}
  if(VRM.on){/* szemüveg: két szem, saját szemmel látsz (első személy), fejjel nézel körül */gl.clearColor(0,0,0,1);gl.viewport(0,0,Wd,Hd);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   const eye=[PL.x,PL.y+(PL.car?1.25:1.62),PL.z],cp=Math.cos(VRM.pitch),fw=[-Math.sin(YAW)*cp,Math.sin(VRM.pitch),-Math.cos(YAW)*cp],rt=[Math.cos(YAW),0,-Math.sin(YAW)];
   for(const e of [-1,1]){const ex=[eye[0]+rt[0]*e*.032,eye[1],eye[2]+rt[2]*e*.032];CAM=ex;const P=M4.persp(1.45,(Wd/2)/Hd,.08,400),V=M4.look(ex,[ex[0]+fw[0],ex[1]+fw[1],ex[2]+fw[2]],[0,1,0]);VP=M4.mul(P,V);CAMR=[V[0],V[4],V[8]];
@@ -462,7 +479,7 @@ function scene(t,w,Hd,vr){
  gl.enable(gl.DEPTH_TEST);gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);gl.frontFace(gl.CW);gl.disable(gl.CULL_FACE);
  gl.useProgram(SH.p);setCommon();
  if(!VOID&&w.gen!=='underwater'||w.gen==='underwater')if(!VOID)draw(GROUND,M4.id(),{tex:W.tex,texS:.09,tint:w.tex==='grass'?[.62,.72,.6]:[1,1,1]});
- draw(MESH.world,M4.id());draw(MESH.worldE,M4.id(),{glow:.5});
+ draw(MESH.world,M4.id());draw(MESH.facade,M4.id(),{tex:W.facade,texS:.09});draw(MESH.worldE,M4.id(),{glow:.5});
  atlBuild();if((MESH.grass&&MESH.grass.n)||(MESH.decor&&MESH.decor.n)){for(const k in SH.A)gl.disableVertexAttribArray(SH.A[k]);gl.useProgram(GR.p);gl.bindBuffer(gl.ARRAY_BUFFER,MESH.grass.b);const A=GR.A,S=52;gl.enableVertexAttribArray(A.c);gl.vertexAttribPointer(A.c,3,gl.FLOAT,false,S,0);gl.enableVertexAttribArray(A.o);gl.vertexAttribPointer(A.o,2,gl.FLOAT,false,S,12);gl.enableVertexAttribArray(A.uv);gl.vertexAttribPointer(A.uv,2,gl.FLOAT,false,S,20);gl.enableVertexAttribArray(A.s);gl.vertexAttribPointer(A.s,1,gl.FLOAT,false,S,28);gl.enableVertexAttribArray(A.tn);gl.vertexAttribPointer(A.tn,3,gl.FLOAT,false,S,32);gl.enableVertexAttribArray(A.ar);gl.vertexAttribPointer(A.ar,1,gl.FLOAT,false,S,44);gl.enableVertexAttribArray(A.swk);gl.vertexAttribPointer(A.swk,1,gl.FLOAT,false,S,48);
   gl.uniformMatrix4fv(GR.U.VP,false,VP);gl.uniform3fv(GR.U.camR,CAMR);gl.uniform3fv(GR.U.cam,CAM);gl.uniform1f(GR.U.t,t*.001);gl.uniform3fv(GR.U.sunC,W.sunC);gl.uniform3fv(GR.U.skyC,W.skyC);gl.uniform3fv(GR.U.fogC,W.fogC);gl.uniform1f(GR.U.fogD,W.fogD);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,GRASS_TEX);gl.uniform1i(GR.U.tex,0);gl.drawArrays(gl.TRIANGLES,0,MESH.grass.n);if(MESH.decor&&MESH.decor.n&&SPR.on){gl.bindBuffer(gl.ARRAY_BUFFER,MESH.decor.b);gl.vertexAttribPointer(A.c,3,gl.FLOAT,false,S,0);gl.vertexAttribPointer(A.o,2,gl.FLOAT,false,S,12);gl.vertexAttribPointer(A.uv,2,gl.FLOAT,false,S,20);gl.vertexAttribPointer(A.s,1,gl.FLOAT,false,S,28);gl.vertexAttribPointer(A.tn,3,gl.FLOAT,false,S,32);gl.vertexAttribPointer(A.ar,1,gl.FLOAT,false,S,44);gl.vertexAttribPointer(A.swk,1,gl.FLOAT,false,S,48);gl.bindTexture(gl.TEXTURE_2D,ATL.tex);gl.drawArrays(gl.TRIANGLES,0,MESH.decor.n)}
   for(const k in A)gl.disableVertexAttribArray(A[k]);gl.useProgram(SH.p)}
@@ -473,7 +490,7 @@ function scene(t,w,Hd,vr){
   else if(a.k==='fish'){const an=t*.001*a.sp,x=Math.cos(an)*a.r,z=Math.sin(an)*a.r;draw(MESH.fish,chain(M4.tr(x,a.y+Math.sin(t*.003+a.r)*.4,z),M4.ry(Math.atan2(-Math.sin(an)*a.sp,Math.cos(an)*a.sp))),{tint:hex(a.c)})}
   else if(a.k==='kelp'){for(let s=0;s<a.h;s++)draw(MESH.kelp,chain(M4.tr(a.x+Math.sin(t*.0015+s*.6+a.x)*.08*s,s,a.z),M4.rz(Math.sin(t*.0015+s*.5)*.12)))}}
  /* NPC-k */
- NPCS.forEach((n,ni)=>{const an='npc'+String((ni*7+ST.w*3)%21).padStart(2,'0');if(atlOk(an)){const tk=n.talk>t,bb=tk?Math.abs(Math.sin(t*.012))*.06:Math.sin(t*.002+ni)*.015;billDraw(an,n.x,(n.y||0)+bb,n.z,1.9);draw(MESH.shadow,chain(M4.tr(n.x,(n.y||0)+.03,n.z),M4.sc(1.1,1,1.1)),{alpha:.25});n.spr=1;return}const sn=['npc_01','npc_02','npc_03','npc_04','npc_05','felfedezo'][ni%6];if(sprReady(sn)){const tk=n.talk>t,ry=tk?Math.atan2(PL.x-n.x,PL.z-n.z):n.ry;sprDraw(sn,tk?'integetes':'allas',dirIdx(n.x,n.z,ry),Math.floor(t*(tk?8:3)/1000+ni),n.x,n.y||0,n.z,1.95);draw(MESH.shadow,chain(M4.tr(n.x,(n.y||0)+.03,n.z),M4.sc(1.1,1,1.1)),{alpha:.25});n.spr=1}else n.spr=0});
+ NPCS.forEach((n,ni)=>{const an='npc'+String((ni*7+ST.w*3)%21).padStart(2,'0');if(!sprReady(['npc_01','npc_02','npc_03','npc_04','npc_05','felfedezo'][ni%6])&&atlOk(an)){const tk=n.talk>t,bb=tk?Math.abs(Math.sin(t*.012))*.06:Math.sin(t*.002+ni)*.015;billDraw(an,n.x,(n.y||0)+bb,n.z,1.9);draw(MESH.shadow,chain(M4.tr(n.x,(n.y||0)+.03,n.z),M4.sc(1.1,1,1.1)),{alpha:.25});n.spr=1;return}const sn=['npc_01','npc_02','npc_03','npc_04','npc_05','felfedezo'][ni%6];if(sprReady(sn)){const tk=n.talk>t,ry=tk?Math.atan2(PL.x-n.x,PL.z-n.z):n.ry;sprDraw(sn,tk?'integetes':'allas',dirIdx(n.x,n.z,ry),Math.floor(t*(tk?8:3)/1000+ni),n.x,n.y||0,n.z,1.95);draw(MESH.shadow,chain(M4.tr(n.x,(n.y||0)+.03,n.z),M4.sc(1.1,1,1.1)),{alpha:.25});n.spr=1}else n.spr=0});
  for(const n of NPCS){if(n.spr)continue;const tk=n.talk>t,b=Math.sin(t*.003+n.x)*.03;draw(MESH.npc,chain(M4.tr(n.x,(n.y||0)+b,n.z),M4.ry(tk?Math.atan2(PL.x-n.x,PL.z-n.z):n.ry)),{tint:hex(n.c)});draw(MESH.shadow,chain(M4.tr(n.x,(n.y||0)+.03,n.z),M4.sc(1.1,1,1.1)),{alpha:.25})}
  /* gyűjtenivalók */
  gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
@@ -495,7 +512,7 @@ function scene(t,w,Hd,vr){
  draw(MESH.head,chain(B,M4.tr(0,1.58+bob,0),M4.ry(Math.sin(t*.0007)*.15)));}
  /* DEX */
  const D=chain(M4.tr(DX.x,DX.y,DX.z),M4.ry(DX.ry)),tk=DX.talkT>t,bl=(t%3800)<130?.15:1;draw(MESH.shadow,chain(M4.tr(DX.x,groundAt(DX.x,DX.z,DX.y)+.03,DX.z),M4.sc(.9,1,.9)),{alpha:.18});
- if(atlOk('dex')){const k=tk?1+.05*Math.sin(t*.03):DX.joyT>t?1+.1*Math.abs(Math.sin(t*.012)):1;billDraw('dex',DX.x,DX.y-.95+(DX.joyT>t?Math.abs(Math.sin(t*.012))*.25:0),DX.z,1.5*k)}else if(sprReady('dex')){const st=DX.thinkT>t?'gondolkodik':tk?'beszel':DX.joyT>t?'orul':DX.hint>t?'mutatas':'lebeg';sprDraw('dex',st,dirIdx(DX.x,DX.z,DX.ry),Math.floor(t*(st==='beszel'?10:6)/1000),DX.x,DX.y-.95,DX.z,1.55)}else{
+ if(!sprReady('dex')&&atlOk('dex')){const k=tk?1+.05*Math.sin(t*.03):DX.joyT>t?1+.1*Math.abs(Math.sin(t*.012)):1;billDraw('dex',DX.x,DX.y-.95+(DX.joyT>t?Math.abs(Math.sin(t*.012))*.25:0),DX.z,1.5*k)}else if(sprReady('dex')){const st=DX.thinkT>t?'gondolkodik':tk?'beszel':DX.joyT>t?'orul':DX.hint>t?'mutatas':'lebeg';sprDraw('dex',st,dirIdx(DX.x,DX.z,DX.ry),Math.floor(t*(st==='beszel'?10:6)/1000),DX.x,DX.y-.95,DX.z,1.55)}else{
  draw(MESH.dex,D,{glow:.3});for(const s of [-1,1])draw(MESH.dexeye,chain(D,M4.tr(s*.18,.06,.56),M4.sc(1,bl*(tk?1+.25*Math.sin(t*.03):1),1)),{glow:1,tint:tk?[1,1,1]:[.85,1,1]});
  draw(MESH.dexant,chain(D,M4.tr(0,.92,0)),{glow:1,tint:tk?[1,.85,.4]:[1,1,1]});}draw(MESH.dexring,chain(M4.tr(DX.x,DX.y-.95,DX.z),M4.rx(Math.PI/2*0),M4.sc(1+.08*Math.sin(t*.004))),{glow:1,alpha:.8});
  /* DEX fénycsíkja a cél felé */
@@ -545,6 +562,7 @@ function cmd(raw){const f=fold(raw);if(!f)return null;const now=performance.now(
  if(/\b(3d figura\w*|harom d|3d)\b/.test(f)){figSet(false);return '3D figurák.'}if(/\b(rajzolt figura\w*|rajzolt|2d)\b/.test(f)){figSet(true);return 'Rajzolt figurák.'}
  if(/\b(vr|szemuveg\w*|szemuveges)\b/.test(f)&&/\b(vege|ki|kilep\w*|eleg)\b/.test(f)){vrSet(false);return 'Kiléptél a szemüveges módból.'}
  if(/\b(vr|szemuveg\w*|szemuveges mod\w*|kezzel jatsz\w*|kezzel iranyit\w*)\b/.test(f)&&f.split(' ').length<=5){vrSet(true);return 'Szemüveges mód indul: tedd a telefont a szemüvegbe.'}
+ if(/\b(kep ford\w*|forditsd meg a kepet|fejjel lefele|fordits a kepen)\b/.test(f)&&VRM.on){document.body.classList.toggle('vrf');return 'Megfordítottam a képet.'}
  if(/\b(irany ford\w*|forditsd meg az iranyt|fordított)\b/.test(f)&&VRM.on){VRM.sg=-VRM.sg;VRM.y0=null;return 'Megfordítottam a fejmozgás irányát.'}
  if(/\b(allj|stop|alljunk meg|varj)\b/.test(f)){VOICE.mv=null;VRM.walk=false;return 'Megálltunk.'}
  if(/\b(beszelj|beszelgess|kerdezd|szia|hello)\b/.test(f)&&NPCS.some(n=>Math.hypot(n.x-PL.x,n.z-PL.z)<4)){interact();return lastSay}
@@ -572,9 +590,13 @@ addEventListener('deviceorientation',vrOrient);
 function vrHandsStart(){if(typeof window.__wHands==='function'){VRM.src='teszt';return}
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){VRM.err='nincs kamera';return}
  navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:640},height:{ideal:480}},audio:false}).then(st=>{VRM.cam=st;const v=VRM.vid=document.createElement('video');v.muted=true;v.playsInline=true;v.srcObject=st;v.play().catch(()=>{});vrMP()}).catch(e=>{VRM.err='kamera: '+(e&&e.name);say('Nem kaptam kamerát, ezért most hanggal irányíts: előre, balra, ugorj, segíts.')})}
-function vrMP(){if(VRM.mp||window.__noMP)return;const s=document.createElement('script');s.src='mp/hands.js';s.onload=()=>{try{const H=new window.Hands({locateFile:f=>'mp/'+f});H.setOptions({maxNumHands:1,modelComplexity:0,minDetectionConfidence:.6,minTrackingConfidence:.5});H.onResults(r=>{VRM.res=(r&&r.multiHandLandmarks)||[];VRM.resT=performance.now();VRM.busy=false;VRM.frames++});Promise.resolve(H.initialize()).then(()=>{VRM.mp=H}).catch(()=>{VRM.err='kézmodell'})}catch(e){VRM.err='kézmodell'}};s.onerror=()=>{VRM.err='kézmodell nem töltődött'};document.head.appendChild(s)}
+function vrParent(){try{const P=window.parent!==window&&window.parent.DEX_VR;if(P&&P.mpLoad&&P.mpSend&&P.mpRes){const st=P.mpLoad();if(!st.err)return P}}catch(e){}return null}
+function vrMP(base){if(VRM.mp||window.__noMP)return;if(!base&&vrParent()){VRM.par=1;return}base=base||'mp/';const s=document.createElement('script');s.src=base+'hands.js';s.crossOrigin='anonymous';s.onload=()=>{try{const H=new window.Hands({locateFile:f=>base+f});H.setOptions({maxNumHands:1,modelComplexity:0,minDetectionConfidence:.6,minTrackingConfidence:.5});H.onResults(r=>{VRM.res=(r&&r.multiHandLandmarks)||[];VRM.resT=performance.now();VRM.busy=false;VRM.frames++});Promise.resolve(H.initialize()).then(()=>{VRM.mp=H;VRM.err=''}).catch(()=>{if(base==='mp/'){window.Hands=undefined;vrMP(MPCDN)}else VRM.err='kézmodell'})}catch(e){if(base==='mp/'){window.Hands=undefined;vrMP(MPCDN)}else VRM.err='kézmodell'}};s.onerror=()=>{try{s.remove()}catch(e){}if(base==='mp/')vrMP(MPCDN);else VRM.err='kézmodell nem töltődött (nincs internet?)'};document.head.appendChild(s)}
+const MPCDN='https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/';VRM.cv=null;
 function vrHandsStop(){try{VRM.cam&&VRM.cam.getTracks().forEach(t=>t.stop())}catch(e){}VRM.cam=null;VRM.vid=null}
-function vrFeed(t){if(VRM.src==='teszt'){VRM.res=window.__wHands()||[];VRM.resT=t;return}if(VRM.mp&&VRM.vid&&VRM.vid.readyState>=2&&!VRM.busy&&t-(VRM.sendT||0)>70){VRM.busy=true;VRM.sendT=t;Promise.resolve(VRM.mp.send({image:VRM.vid})).catch(()=>{VRM.busy=false})}}
+function vrFeed(t){if(VRM.src==='teszt'){VRM.res=window.__wHands()||[];VRM.resT=t;return}
+ if(VRM.par){const P=vrParent();if(!P){VRM.par=0;vrMP();return}const r=P.mpRes();if(r&&r.t&&Date.now()-r.t<500){VRM.res=r.all||[];VRM.resT=t}
+  if(VRM.vid&&VRM.vid.readyState>=2&&t-(VRM.sendT||0)>70){const v=VRM.vid,c=VRM.cv||(VRM.cv=document.createElement('canvas')),w=320,h=Math.round(320*v.videoHeight/Math.max(1,v.videoWidth));if(c.width!==w||c.height!==h){c.width=w;c.height=h}c.getContext('2d').drawImage(v,0,0,w,h);if(P.mpSend(c))VRM.sendT=t}return}if(VRM.mp&&VRM.vid&&VRM.vid.readyState>=2&&!VRM.busy&&t-(VRM.sendT||0)>70){VRM.busy=true;VRM.sendT=t;Promise.resolve(VRM.mp.send({image:VRM.vid})).catch(()=>{VRM.busy=false})}}
 const GLAB={walk:'👉 megyünk',stop:'✊ állj',pinch:'🤏 ugrás',palm:'🖐 DEX segít',wave:'👋 szia!',none:'kezed nem látszik'};
 function vrGesture(t){vrFeed(t);const L=(t-VRM.resT<500&&VRM.res[0])||null;let g='none';
  if(L&&L.length>=21){const d=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),sz=d(L[0],L[9])||.01,ext=(tip,pip)=>d(L[0],L[tip])>d(L[0],L[pip])*1.12;const iE=ext(8,6),mE=ext(12,10),rE=ext(16,14),pE=ext(20,18),pinch=d(L[4],L[8])/sz<.33;
@@ -588,7 +610,7 @@ function vrGesture(t){vrFeed(t);const L=(t-VRM.resT<500&&VRM.res[0])||null;let g
  if(g==='wave'&&t>VRM.waveT){VRM.waveT=t+2500;VRM.waves=(VRM.waves||0)+1;interact()}
  if(g==='palm'&&held>900&&t>VRM.palmT){VRM.palmT=t+6000;VRM.helps=(VRM.helps||0)+1;dexHelp(false)}
  const lab=g==='fist'?'stop':g==='other'?'none':g;document.querySelectorAll('.vre .vg').forEach(e=>e.textContent=(GLAB[lab]||'')+(VRM.err?' · '+VRM.err:''))}
-function vrSet(on){if(on===VRM.on)return VRM.on;VRM.on=on;document.body.classList.toggle('vr',on);$('vrh').classList.toggle('on',on);
+function vrSet(on){if(on===VRM.on)return VRM.on;VRM.on=on;document.body.classList.toggle('vr',on);try{window.parent!==window&&window.parent.postMessage({type:'dex-world-vr',on:on},'*')}catch(e){}$('vrh').classList.toggle('on',on);
  if(on){VRM.y0=null;VRM.pitch=0;DIST=7.5;if(!ST.started)goWorld(SAVE.last||0);else menu(false);try{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}try{screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{})}catch(e){}
   try{if(window.DeviceOrientationEvent&&DeviceOrientationEvent.requestPermission)DeviceOrientationEvent.requestPermission().catch(()=>{})}catch(e){}vrHandsStart();vrVoice(true);hud();
   setTimeout(()=>say('Szemüveges mód! Fejjel nézel körül. Mutatóujjal előre mész, ököllel megállsz, csípéssel ugrasz, integetéssel beszélgetsz, nyitott tenyérrel segítséget kérsz. Beszélhetsz is hozzám.'),400)}
@@ -601,5 +623,5 @@ partsBuild();menu(true);requestAnimationFrame(frame);
 if(/[?&]vr=1/.test(location.search)){setTimeout(()=>{goWorld(SAVE.last||0);vrSet(true)},300)}
 window.WORLD.vr=vrSet;
 </script>
-</body>
+<a href="dexworld/grafikak.html" style="position:fixed;top:10px;right:10px;z-index:99999;background:#0b2739e8;color:#d9faff;border:1px solid #3aa9c8;border-radius:20px;padding:8px 12px;font:12px system-ui;text-decoration:none" aria-label="Összes grafika megtekintése">🖼️ Grafikák</a></body>
 </html>

@@ -4447,7 +4447,7 @@ window.__KIDIMG={"fairy_cyan": "data:image/webp;base64,UklGRi4aAABXRUJQVlA4WAoAA
   var x=document.createElement('button');x.type='button';x.textContent='✕';x.setAttribute('aria-label','DEX World bezárása');x.style.cssText='position:absolute;left:max(10px,env(safe-area-inset-left));bottom:calc(158px + env(safe-area-inset-bottom));width:40px;height:40px;border-radius:12px;border:1px solid #5fe3ff66;background:#0f2448cc;color:#fff;font-size:18px;z-index:2';x.onclick=close;BOX.appendChild(x);
   document.body.appendChild(BOX);return true}
  function close(){if(!isOpen())return false;try{BOX.remove()}catch(e){}BOX=null;FR=null;try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}return true}
- window.addEventListener('message',function(e){var d=e.data||{};if(d.type==='dex-world-close')close()});
+ window.addEventListener('message',function(e){var d=e.data||{};if(d.type==='dex-world-close')close();if(d.type==='dex-world-vr'&&BOX){var b=BOX.querySelector('button');if(b)b.style.display=d.on?'none':''}});
  function gameCmd(t){try{var W=FR&&FR.contentWindow&&FR.contentWindow.WORLD;if(W&&W.cmd)return W.cmd(t)}catch(e){}return null}
  var OPEN=/\b(dex ?world\w*|dex ?vilag\w*|dex ?vord\w*|dex ?verld\w*|jatekvilag\w*|jatek vilag\w*|vilagjatek\w*|12 vilag\w*|tizenket vilag\w*|tizenketto vilag\w*)\b/;
  function hook(n){var Dx=window.DEX40;if(!Dx||typeof Dx.handle!=='function'){if(n<60)setTimeout(function(){hook(n+1)},250);return}

@@ -1,0 +1,8 @@
+WDEA DEX WORLD – grafikai integráció
+Összes gyűjtött kép: 5824
+A korábban átadott működő játékállományok megőrizve; a world.html fájlban csak a grafikai galéria hivatkozása új.
+Minden korábban készített kép külön eredeti fájlnévvel megtalálható a dexworld/grafikai_konyvtar/ mappában.
+A galéria: dexworld/grafikak.html – a játékból a 'Grafikák' gombbal elérhető.
+A már működő karakter- és járműatlaszokat nem cseréltük le ellenőrizetlen sprite-okkal.
+FONTOS: A grafikai könyvtárban lévő összes kép NEM jelenik meg automatikusan a 3D világban. A galériában megtekinthető, de a játékon belüli térbeli beépítéshez külön objektum-hozzárendelés szükséges.
+Valódi telefonos teszt nem történt. A meglévő WORK/DRIVE/CONTROL alkalmazásokat nem módosítottuk.
