@@ -244,3 +244,12 @@ DEX World és természetesebb DEX
 
 DEX World szemüveges mód kézzel: a 🥽 gomb vagy "VR". Mutatóujj = megy, ököl = áll, csípés = ugrik, tenyér = DEX segít, integetés = beszél. A dexworld mappát (benne spr és atlas) teljesen töltsd fel.
 VR játékmenü: 1. DEX World, 2. Szókereső, 3. Csillagtündérek. "egyes törlés" kiveszi, "játékok visszaállítása" visszahozza.
+
+Fizetés (v57)
+- GitHubon (szerver nélkül) a Pénztár végigmegy, de kiírja, hogy valódi fizetés csak a saját szerveren van. Éles fizetéshez: START_WDEA → Admin → 💳 Fizetési módok és kulcsok.
+
+DEX szerkesztés hangra (admin)
+- Admin belépés után: "tedd 20 pixellel balra a képet", "legyen 10 pixellel szűkebb", "vedd ki ezt a képet", "tegyél helyette egy másikat", "vond vissza".
+
+DEX súgó
+- "hogyan fizetek?", "elakadtam", "vezess végig …" → lépésenként vezet, internet nélkül is.

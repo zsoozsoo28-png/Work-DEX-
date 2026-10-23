@@ -75,6 +75,7 @@
   if((m=/^@drag ([0-9.\-]+) ([0-9.\-]+)$/.exec(t)))return egDrag(+m[1],+m[2]);
   if(t==='@drop')return egDrop();
   if(t==='@dropall')return egAll();
+  if(window.WDEA_EDIT){var we=window.WDEA_EDIT.cmd(t);if(we)return we}
   if((m=/^(?:ird at|ird at|nevezd at|csereld le)\s+(.+?)\s+(?:erre|helyette)\s+(.+)$/i.exec(n))){var orig=t.match(/^(?:írd át|ird at|nevezd át|nevezd at|cseréld le|csereld le)\s+(.+?)\s+(?:erre|helyette)\s+(.+)$/i);return textEdit(orig?orig[1]:m[1],orig?orig[2]:m[2])}
   if((m=/^(?:szinezd at|szinezd|valtoztasd meg)\s+(.+?)\s+(?:szinet\s+)?(kekre|kek|lilara|lila|rozsaszinre|rozsaszin|feherre|feher|zoldre|zold)$/i.exec(n))){c={kek:'#49c8ff',lilara:'#c285ff',lila:'#c285ff',rozsaszinre:'#ff72bd',rozsaszin:'#ff72bd',feherre:'#ffffff',feher:'#ffffff',zoldre:'#55e2a0',zold:'#55e2a0',kekre:'#49c8ff'}[m[2]];return colorEdit(m[1],c)}
   if((m=/^(?:keresd meg|keresd|kutass|talald meg)\s+(?:a\s+|az\s+)?(.+?)(?:\s+(?:oldalon|oldalt))?$/i.exec(n)))return search(m[1]);

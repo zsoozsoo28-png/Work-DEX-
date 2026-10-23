@@ -150,9 +150,9 @@ const SPR={meta:null,tex:{},on:true};try{SPR.on=localStorage.getItem('dex_world_
 function sprTex(n){const t=gl.createTexture(),o={t,ok:false};SPR.tex[n]=o;const im=new Image();im.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);o.ok=true};im.src='dexworld/spr/'+n+'.png'}
 fetch('dexworld/spr/meta.json').then(r=>r.json()).then(m=>{SPR.meta=m;for(const k in m)sprTex(k)}).catch(()=>{});
 function sprReady(n){return !!(SPR.on&&SPR.meta&&SPR.meta[n]&&SPR.tex[n]&&SPR.tex[n].ok)}
-const ATL={meta:null,tex:null,dirty:1,loaded:false};
-fetch('dexworld/atlas.json').then(r=>r.json()).then(m=>{ATL.tex=imgTex('dexworld/atlas.png',()=>{ATL.meta=m;ATL.dirty=1;ATL.loaded=true})}).catch(()=>{});
-function atlOk(n){return !!(SPR.on&&ATL.meta&&ATL.tex&&ATL.loaded&&ATL.meta.i[n])}
+const ATL={meta:null,tex:null,dirty:1};
+fetch('dexworld/atlas.json').then(r=>r.json()).then(m=>{ATL.tex=imgTex('dexworld/atlas.png',()=>{ATL.meta=m;ATL.dirty=1})}).catch(()=>{});
+function atlOk(n){return !!(SPR.on&&ATL.meta&&ATL.meta.i[n])}
 function atlBuild(){if(!ATL.dirty||!ATL.meta)return;ATL.dirty=0;const M=ATL.meta,a=[];for(const d of DEC){const it=M.i[d[0]];if(!it)continue;const u0=(it[0]+.5)/M.w,v0=(it[1]+.5)/M.h,u1=(it[0]+it[2]-.5)/M.w,v1=(it[1]+it[3]-.5)/M.h,ar=it[2]/it[3],sw=/tree|pine|palm|bush|flower|vine|hedge/.test(d[0])?.25:0;
   const C=[[-.5,0,u0,v1],[.5,0,u1,v1],[.5,1,u1,v0],[-.5,0,u0,v1],[.5,1,u1,v0],[-.5,1,u0,v0]];for(const q of C)a.push(d[1],d[2],d[3],q[0],q[1],q[2],q[3],d[4],1,1,1,ar,sw)}
  if(MESH.decor)gl.deleteBuffer(MESH.decor.b);const f=new Float32Array(a),b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,f,gl.STATIC_DRAW);MESH.decor={b,n:f.length/13}}
@@ -189,20 +189,6 @@ class Geo{constructor(){this.a=[]}
 /* ---- textúrák ---- */
 const TEX={};function texLoad(name){if(TEX[name])return TEX[name];const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([200,200,200,255]));
  const im=new Image();im.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);gl.generateMipmap(gl.TEXTURE_2D);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT)};im.src='dexworld/t_'+name+'.jpg';TEX[name]=t;return t}
-/* Eredeti grafikák valódi 3D anyagként a falakra: WebGL textúra */
-const EXTRA_TEX={};
-function texFile(path){
- if(EXTRA_TEX[path])return EXTRA_TEX[path];
- const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
- gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([150,150,160,255]));
- const im=new Image();im.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,t);
- gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
- gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
- gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
- gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);
- gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT)};
- im.src=path;EXTRA_TEX[path]=t;return t;
-}
 /* ---- rajzolás ---- */
 let VP=M4.id(),CAM=[0,5,10],CAMR=[1,0,0],W={};
 function setCommon(){const u=SH.U;gl.uniformMatrix4fv(u.VP,false,VP);gl.uniform3fv(u.sunD,W.sunD);gl.uniform3fv(u.sunC,W.sunC);gl.uniform3fv(u.skyC,W.skyC);gl.uniform3fv(u.gndC,W.gndC);gl.uniform3fv(u.fogC,W.fogC);gl.uniform1f(u.fogD,W.fogD);gl.uniform3fv(u.cam,CAM)}
@@ -233,11 +219,11 @@ const WORLDS=[
  {n:'Űr Világ',s:'Bolygók',task:'Alacsony gravitáció! Ugorj nagyokat az aszteroidákra!',tex:'rock',sky:[0x000005,0x05051a,0x1a1040],fog:0x0a0a1a,fogD:.008,sun:0xffffff,sunI:1.2,amb:[0x8a8aff,0x1a1a2a],stars:1.4,gen:'space',pt:[0xffffff,.0,'none'],grav:.42},
  {n:'Közösség',s:'Játékosok',task:'Beszélgess a játékosokkal a fesztiválon, és gyűjts!',tex:'concrete',sky:[0x0b1236,0x3a3a9a,0xffa86a],fog:0x2a2a5a,fogD:.012,sun:0xffd0a0,sunI:.85,amb:[0xa0b0ff,0x302030],stars:.5,gen:'community',pt:[0xffd98a,.4,'spark']}];
 /* ---- világépítő segédek ---- */
-let G,GE,GF,GT,OBST,PLAT,NPCS,ANIM,COL,PORTAL,SPAWN,VOID,WIDX=0,WATER;
+let G,GE,GT,OBST,PLAT,NPCS,ANIM,COL,PORTAL,SPAWN,VOID,WIDX=0,WATER;
 function addObst(x,z,r){OBST.push({x,z,r})}
 function addPlat(x,z,hw,hd,top,round){PLAT.push({x,z,hw,hd,top,round:!!round})}
 function T(...a){return chain(...a)}
-function building(x,z,w,d,h,col,win,emis=.85){GF.box(T(M4.tr(x,0,z)),[1,1,1],0,w,h,d);G.box(T(M4.tr(x,h,z)),hex(win),.6,w*1.04,.25,d*1.04);
+function building(x,z,w,d,h,col,win,emis=.85){G.box(T(M4.tr(x,0,z)),hex(col),0,w,h,d);G.box(T(M4.tr(x,h,z)),hex(win),.6,w*1.04,.25,d*1.04);
  const fl=Math.floor(h/1.4);for(let k=1;k<fl;k++){if(rnd()<.25)continue;const y=k*1.4-.3;for(const s of [-1,1]){GE.box(T(M4.tr(x,y,z+s*(d/2+.02))),hex(win),emis,w*.82,.5,.04);GE.box(T(M4.tr(x+s*(w/2+.02),y,z)),hex(win),emis,.04,.5,d*.82)}}addObst(x,z,Math.max(w,d)*.62)}
 function tree(x,z,h,col,trunk=0x6d4a33,kind=0){G.cyl(T(M4.tr(x,0,z)),hex(trunk),0,.16,.24,h*.45,7);
  if(kind===0){for(let j=0;j<3;j++)G.cyl(T(M4.tr(x,h*.35+j*h*.2,z)),hex(col).map(v=>v*(1-j*.06)),0,0,h*(.42-j*.08),h*.42,8)}else{G.sph(T(M4.tr(x,h*.62,z)),hex(col),0,h*.32,9,6);G.sph(T(M4.tr(x+h*.15,h*.5,z+h*.1)),hex(col).map(v=>v*.9),0,h*.22,8,5)}addObst(x,z,.45)}
@@ -254,6 +240,7 @@ let GRS=[];function tuft(x,y,z,sz,tint){const i=Math.floor(rnd()*16),u0=(i%4)/4,
 /* díszletek a kapott nagy atlaszból (fák, házak, vár, járművek, sziklák, felhők…) – mindig feléd fordulnak */
 let DEC=[];function dec(n,x,z,h,y,ob){DEC.push([n,x,y||0,z,h]);if(ob)addObst(x,z,ob)}
 function decScatter(names,cnt,R,h0,h1,ok,ob,minR){for(let k=0;k<cnt;k++){const x=rr(-R,R),z=rr(-R,R);if(minR&&Math.hypot(x,z)<minR)continue;if(ok&&!ok(x,z))continue;if(OBST.some(o=>Math.hypot(x-o.x,z-o.z)<o.r+1.2))continue;const h=rr(h0,h1);dec(names[Math.floor(rnd()*names.length)],x,z,h,0,ob?h*ob:0)}}
+function poster(n,x,z,h){G.cyl(T(M4.tr(x-h*.62,0,z)),hex(0x9aa4c8),0,.07,.08,h*1.55+1.6,6);G.cyl(T(M4.tr(x+h*.62,0,z)),hex(0x9aa4c8),0,.07,.08,h*1.55+1.6,6);dec(n,x,z,h,1.6);addObst(x,z,.4)}
 function decRing(names,cnt,r0,r1,h0,h1){for(let k=0;k<cnt;k++){const a=rnd()*6.283,r=rr(r0,r1);dec(names[Math.floor(rnd()*names.length)],Math.cos(a)*r,Math.sin(a)*r,rr(h0,h1))}}
 function grass(n,R,tint,ok,sz){for(let k=0;k<n;k++){const x=rr(-R,R),z=rr(-R,R);if(ok&&!ok(x,z))continue;if(OBST.some(o=>Math.hypot(x-o.x,z-o.z)<o.r*.9))continue;tuft(x,0,z,(sz||1)*rr(.7,1.4),tint)}}
 /* gyűjtenivalók: 8 Coin, 3 gyémánt, a pálya bejárható részein */
@@ -267,14 +254,14 @@ const GEN={
   /* DEX torony a közepén */
   G.cyl(T(M4.tr(0,0,-30)),hex(0xdde6ff),0,1.6,3,34,14);GE.tor(T(M4.tr(0,22,-30)),hex(0x5fe3ff),1,4,.25,28,8);GE.tor(T(M4.tr(0,30,-30)),hex(0xff9af0),1,3,.2,28,8);GE.sph(T(M4.tr(0,35,-30)),hex(0x8fe9ff),1,1.4,12,8);addObst(0,-30,3.4);
   for(let i=0;i<5;i++){const isl=[rr(-50,50),rr(25,45),rr(-60,-20)];G.cyl(T(M4.tr(isl[0],isl[1],isl[2])),hex(0x6a5a8a),0,rr(3,6),.4,3,10);G.cyl(T(M4.tr(isl[0],isl[1]+3,isl[2])),hex(0x5ab86a),0,rr(3,6),rr(3,6),.5,10)}
-  decRing(['sky','city'],14,95,120,26,40);dec('wcar',-6.5,-14,1.5,0,1.2);dec('hbike',6.6,10,1.3,0,.8);dec('rcar',6.5,-40,1.5,0,1.2);decScatter(['flower','bushes'],10,60,1.1,1.8,(x,z)=>Math.abs(x)>6&&Math.abs(z)>6,.3);spots([[0,0,12],[0,0,-12],[14,0,0],[-14,0,0],[0,0,40],[30,0,0],[-30,0,0],[0,0,-50],[48,0,48],[-48,0,-48],[-50,0,50]]);portalAt(0,0,58);SPAWN=[0,0,24];
+  decRing(['sky','city'],14,95,120,26,40);dec('wcar',-6.5,-14,1.5,0,1.2);dec('hbike',6.6,10,1.3,0,.8);dec('rcar',6.5,-40,1.5,0,1.2);decScatter(['flower','bushes'],10,60,1.1,1.8,(x,z)=>Math.abs(x)>6&&Math.abs(z)>6,.3);for(let k=0;k<12;k++){const side=k%2?1:-1,z=-50+Math.floor(k/2)*18+(k%2)*9;poster('poster'+String(k+1).padStart(2,'0'),side*8.6,z,2.6)}dec('p_logo',0,-36,4.4,14);dec('sign_a',3,20,1.4);dec('bench',-7.6,44,1);spots([[0,0,12],[0,0,-12],[14,0,0],[-14,0,0],[0,0,40],[30,0,0],[-30,0,0],[0,0,-50],[48,0,48],[-48,0,-48],[-50,0,50]]);portalAt(0,0,58);SPAWN=[0,0,24];
   ANIM.push({k:'car',y:4,r:30,sp:.25,c:0xff6ad5},{k:'car',y:6,r:44,sp:-.18,c:0x5fe3ff},{k:'car',y:9,r:20,sp:.3,c:0xffe27a})},
  town(){road(0,0,8,120,0);road(0,-20,8,120,Math.PI/2);road(0,25,8,120,Math.PI/2);const cs=[0xff8a7a,0xffc76a,0x7ad0ff,0xa58aff,0x7ae0a0,0xff9ad0];
   for(let i=0;i<24;i++){const side=i%2?1:-1,z=-54+Math.floor(i/2)*10;if(Math.abs(z+20)<6||Math.abs(z-25)<6)continue;const x=side*rr(11,13),h=rr(5,9),c=cs[i%cs.length];G.box(T(M4.tr(x,0,z)),hex(0xf3ead8),0,7,h,7);G.box(T(M4.tr(x,h,z)),hex(c),0,7.4,.5,7.4);G.box(T(M4.tr(x-side*3.6,2.6,z),M4.rz(side*.35)),hex(c),0,1.8,.12,6);GE.box(T(M4.tr(x-side*3.52,.6,z)),hex(0xfff2c0),.5,.05,1.8,4);addObst(x,z,4.6)}
   for(let i=0;i<14;i++){const x=(i%2?1:-1)*6,z=-50+i*7.5;if(Math.abs(z+20)<5||Math.abs(z-25)<5)continue;G.cyl(T(M4.tr(x,0,z)),hex(0x8a6a4a),0,.18,.26,4.5,7);for(let k=0;k<6;k++)G.box(T(M4.tr(x,4.4,z),M4.ry(k*1.05),M4.rx(.5),M4.tr(0,0,.9)),hex(0x3fae5a),0,.5,.08,2);addObst(x,z,.4)}
   G.cyl(T(M4.tr(0,0,2)),hex(0xd8d8e8),0,3.4,3.6,.6,18);GE.cyl(T(M4.tr(0,.6,2)),hex(0x6fd8ff),.4,3,3,.1,18);G.cyl(T(M4.tr(0,0,2)),hex(0xd8d8e8),0,.4,.5,2.4,10);GE.sph(T(M4.tr(0,2.6,2)),hex(0xbff0ff),.6,.6,10,6);addObst(0,2,3.6);
   for(let i=0;i<7;i++)NPCS.push({x:rr(-4,4)+(i%2?3:-3),z:-45+i*13,c:cs[i%cs.length],ry:rnd()*6,say:['Szia! Láttál már a szökőkútnál Coint?','Ma vásár van a főutcán!','A pékségben friss kifli van. Jó illata van, ugye?','Hallottam, a sarkon gyémánt csillog!','DEX nagyon okos robot, kérdezd bátran!','Szép napunk van ma!','Erre van a kapu, ha végeztél!'][i]});
-  grass(500,62,null,(x,z)=>Math.abs(x)>4.5&&Math.abs(z+20)>4.5&&Math.abs(z-25)>4.5);decRing(['house_a','house_b','castle'],14,72,92,10,16);decScatter(['tree_a','tree_b','flower','bushes'],26,58,2,5,(x,z)=>Math.abs(x)>4.6&&Math.abs(z+20)>4.6&&Math.abs(z-25)>4.6,.18);dec('rcar',-4,8,1.5,0,1.1);dec('wcar',4,-36,1.5,0,1.1);dec('balloon',30,-20,7,22);spots([[0,0,-8],[0,0,14],[-6,0,-30],[6,0,36],[20,0,-20],[-22,0,25],[0,0,-46],[30,0,25],[-36,0,-20],[40,0,-20],[0,0,50]]);portalAt(0,0,-62);SPAWN=[0,0,30]},
+  grass(500,62,null,(x,z)=>Math.abs(x)>4.5&&Math.abs(z+20)>4.5&&Math.abs(z-25)>4.5);decRing(['house_a','house_b','castle'],14,72,92,10,16);decScatter(['tree_a','tree_b','flower','bushes'],26,58,2,5,(x,z)=>Math.abs(x)>4.6&&Math.abs(z+20)>4.6&&Math.abs(z-25)>4.6,.18);dec('rcar',-4,8,1.5,0,1.1);dec('wcar',4,-36,1.5,0,1.1);dec('balloon',30,-20,7,22);dec('p_buildings',-14,-6,3.2,5.4);poster('p_buildings',14,10,2.6);decScatter(['flowerbed','flowers_a','flowers_b','flowers_c','bush_a','bush_b'],24,56,.8,1.4,(x,z)=>Math.abs(x)>4.6&&Math.abs(z+20)>4.6&&Math.abs(z-25)>4.6,0);dec('bench',5,-2,1);dec('bench',-5,6,1);dec('sign_b',3,26,1.3);dec('bird',8,-10,1,9);dec('bird',-12,20,1,11);spots([[0,0,-8],[0,0,14],[-6,0,-30],[6,0,36],[20,0,-20],[-22,0,25],[0,0,-46],[30,0,25],[-36,0,-20],[40,0,-20],[0,0,50]]);portalAt(0,0,-62);SPAWN=[0,0,30]},
  islands(){VOID=true;const I=[[0,0,0,9],[0,1.5,-16,6],[12,3,-26,5],[24,4.5,-18,6],[30,6,-4,5],[20,7.5,10,6],[6,9,18,5],[-10,10.5,14,6],[-22,12,4,5],[-26,13.5,-12,6],[-14,15,-24,5],[0,16.5,-34,7]];
   I.forEach((p,i)=>{const [x,y,z,r]=p;G.cyl(T(M4.tr(x,y-.6,z)),hex(0x5cc06a),0,r,r,.6,16);G.cyl(T(M4.tr(x,y-.6,z),M4.sc(1,-1,1)),hex(0x8a6a5a),0,r*.98,r*.25,r*.9,12);addPlat(x,z,r,r,y,true);
    if(r>5){tree(x+r*.4,z-r*.3,3.2,0x4fc06a,0x6a4a33,1);NPCS.length<3&&i>0&&NPCS.push({x:x-r*.3,z:z+r*.2,y,c:0x7ad0ff,ry:2,say:['Hú, de magasan vagyunk! Ugorj bátran!','A legfelső szigeten van a kapu.','Ha leesel, DEX visszahoz, ne félj!'][NPCS.length]})}
@@ -285,59 +272,59 @@ const GEN={
   for(let i=0;i<10;i++){const p=[rr(-60,60),rr(-30,-8),rr(-60,40)];for(let k=0;k<4;k++)G.sph(T(M4.tr(p[0]+k*3,p[1]+rnd(),p[2]+rnd()*2)),hex(0xffffff),.35,rr(3,5),9,6,.6)}
   for(let i=1;i<I.length-1;i+=4){const a=I[i],b=I[i+1],mx=(a[0]+b[0])/2,mz=(a[2]+b[2])/2,my=(a[1]+b[1])/2,l=Math.hypot(b[0]-a[0],b[2]-a[2]),ang=Math.atan2(b[0]-a[0],b[2]-a[2]);G.box(T(M4.tr(mx,my-.25,mz),M4.ry(ang)),hex(0x9a7a5a),0,1.4,.25,l);}
   I.forEach(p=>{for(let k=0;k<Math.round(p[3]*7);k++){const a=rnd()*6.28,r=Math.sqrt(rnd())*(p[3]-.6);tuft(p[0]+Math.cos(a)*r,p[1],p[2]+Math.sin(a)*r,rr(.6,1.2))}});
-  I.forEach((p,i)=>{if(p[3]>=6){dec(['tree_b','trees_pink','tree_a'][i%3],p[0]-p[3]*.45,p[2]+p[3]*.3,rr(3.5,5),p[1],0);dec('flower',p[0]+p[3]*.4,p[2]-p[3]*.4,1,p[1],0)}});decRing(['cloud_a','cloud_b','cloud_c','cloud_d'],26,30,90,6,14);for(let k=0;k<DEC.length;k++){if(/cloud/.test(DEC[k][0]))DEC[k][2]=rr(-14,26)}dec('balloon',-30,10,8,20);dec('castle',0,-90,30,6);spots([[0,1.5,-16],[12,3,-26],[24,4.5,-18],[30,6,-4],[20,7.5,10],[6,9,18],[-10,10.5,14],[-22,12,4],[-26,13.5,-12],[-14,15,-24],[3,0,4]].map(p=>[p[0],p[1],p[2]]));
+  I.forEach((p,i)=>{if(p[3]>=6){dec(['tree_b','trees_pink','tree_a'][i%3],p[0]-p[3]*.45,p[2]+p[3]*.3,rr(3.5,5),p[1],0);dec('flower',p[0]+p[3]*.4,p[2]-p[3]*.4,1,p[1],0)}});decRing(['cloud_a','cloud_b','cloud_c','cloud_d'],26,30,90,6,14);for(let k=0;k<DEC.length;k++){if(/cloud/.test(DEC[k][0]))DEC[k][2]=rr(-14,26)}dec('balloon',-30,10,8,20);dec('castle',0,-90,30,6);dec('campfire',2,-1,1);dec('logs',3.2,-.4,.7);dec('boat',-6,2,1.4);dec('sign_a',-3,3,1.3);dec('bird',10,-20,1.2,14);dec('bird',-16,6,1.2,18);dec('palm',8,-24,4,3);spots([[0,1.5,-16],[12,3,-26],[24,4.5,-18],[30,6,-4],[20,7.5,10],[6,9,18],[-10,10.5,14],[-22,12,4],[-26,13.5,-12],[-14,15,-24],[3,0,4]].map(p=>[p[0],p[1],p[2]]));
   portalAt(0,16.5,-34);SPAWN=[0,0,5]},
  spaceport(){road(0,0,10,140,0);for(let i=0;i<6;i++){const x=(i%2?1:-1)*20,z=-45+i*18;G.cyl(T(M4.tr(x,0,z)),hex(0x4a5070),0,6,6.4,.4,20);GE.tor(T(M4.tr(x,.45,z)),hex(0xffb070),.9,5.6,.08,30,6);addPlat(x,z,6,6,.4,true);
    if(i%2===0){G.cyl(T(M4.tr(x,.4,z)),hex(0xe8ecff),0,1.2,1.2,9,14);G.cyl(T(M4.tr(x,9.4,z)),hex(0xff6a5a),0,0,1.2,3,14);for(let k=0;k<3;k++)G.box(T(M4.tr(x,.4,z),M4.ry(k*2.09),M4.tr(0,0,1.4)),hex(0xff6a5a),0,.15,3,1.4);GE.cyl(T(M4.tr(x,-.1,z)),hex(0xffd08a),1,.8,.2,.5,10);addObst(x,z,1.8)}}
   for(let i=0;i<8;i++)building((i%2?1:-1)*45,-56+i*16,rr(8,12),rr(8,12),rr(6,12),0x3a3f5a,0xffc08a);G.box(T(M4.tr(0,0,-60)),hex(0x5a6080),0,30,8,10);GE.box(T(M4.tr(0,6,-54.9)),hex(0xff9a6a),.9,24,1.2,.1);addObst(-8,-60,8);addObst(8,-60,8);addObst(0,-60,8);
   ANIM.push({k:'planet',x:80,y:60,z:-160,r:38,c:0x6a7aff},{k:'ship',y:14,r:36,sp:.2,c:0xffb070},{k:'ship',y:20,r:50,sp:-.14,c:0x8fe9ff});
-  dec('ship',20,-27.5,3,.4);dec('ship',-20,9,3,.4);dec('hbike',6,-8,1.3,0,.8);dec('mech',-8,30,3,0,1);decRing(['sky','city'],8,100,120,26,36);spots([[-20,.4,-45],[20,.4,-27],[-20,.4,-9],[20,.4,9],[-20,.4,27],[20,.4,45],[0,0,-30],[0,0,30],[34,0,0],[-34,0,-40],[0,0,52]]);portalAt(0,0,62);SPAWN=[0,0,0]},
+  dec('ship',20,-27.5,3,.4);dec('ship',-20,9,3,.4);dec('hbike',6,-8,1.3,0,.8);dec('mech',-8,30,3,0,1);decRing(['sky','city'],8,100,120,26,36);dec('p_vehicles',0,-54,4,9);decScatter(['crate','robot_a','robot_b','robot_d'],12,50,1,2,(x,z)=>Math.abs(x)>6,.5);dec('drone',4,4,1,4);dec('orb',-6,-20,1.4,1);spots([[-20,.4,-45],[20,.4,-27],[-20,.4,-9],[20,.4,9],[-20,.4,27],[20,.4,45],[0,0,-30],[0,0,30],[34,0,0],[-34,0,-40],[0,0,52]]);portalAt(0,0,62);SPAWN=[0,0,0]},
  mountains(){for(let i=0;i<16;i++){const a=i/16*Math.PI*2,r=rr(62,80),x=Math.cos(a)*r,z=Math.sin(a)*r,h=rr(28,48),w=rr(16,24);G.cyl(T(M4.tr(x,0,z)),hex(0x6a7088),0,0,w,h,9,false);G.cyl(T(M4.tr(x,h*.7,z)),hex(0xf4f8ff),0,0,w*.3+.3,h*.3+.02,9,false)}
   for(let i=0;i<10;i++){const x=rr(-50,50),z=rr(-50,50);if(Math.hypot(x,z)<10)continue;const h=rr(4,10),w=rr(6,10);G.cyl(T(M4.tr(x,0,z)),hex(0x7a8a6a),0,w*.35,w,h,9);addPlat(x,z,w*.45,w*.45,h,true);addObst(x,z,w*.8)}
   G.box(T(M4.tr(-30,0,-40)),hex(0x6a7088),0,18,16,8);waterfall(-30,0,15.6,4);addObst(-30,-40,9);GE.box(T(M4.tr(-30,.02,-24)),hex(0x5fc4ff),.35,5,.05,30);
   G.box(T(M4.tr(-30,.6,-14)),hex(0x9a7a5a),0,7,.3,2.4);for(let i=0;i<40;i++){const x=rr(-55,55),z=rr(-55,55);if(Math.hypot(x,z)<8)continue;tree(x,z,rr(3,6),0x2f8a4a,0x5a3a2a,0)}
   for(let i=0;i<12;i++)rock(rr(-50,50),rr(-50,50),rr(.6,1.6));
   grass(1600,60,null,(x,z)=>Math.hypot(x,z)>3);
-  decScatter(['pine_a','pine_b','tree_a'],40,60,4,8,(x,z)=>Math.hypot(x,z)>9,.15);decScatter(['rock_a','rocks','rock_b'],14,55,1,2.2,(x,z)=>Math.hypot(x,z)>8,.4);dec('castle',34,-52,14,0,7);dec('house_a',-44,22,7,0,3);dec('truck',8,12,1.8,0,1.5);decScatter(['flower','bushes'],16,50,1,1.6,(x,z)=>Math.hypot(x,z)>6,0);spots([[8,0,-6],[-12,0,8],[20,0,20],[-30,0,-20],[30,0,-30],[-40,0,30],[40,0,10],[0,0,-40],[-20,0,-50],[45,0,-45],[-45,0,-10]]);portalAt(0,0,40);SPAWN=[0,0,0]},
+  decScatter(['pine_a','pine_b','tree_a'],40,60,4,8,(x,z)=>Math.hypot(x,z)>9,.15);decScatter(['rock_a','rocks','rock_b'],14,55,1,2.2,(x,z)=>Math.hypot(x,z)>8,.4);dec('castle',34,-52,14,0,7);dec('house_a',-44,22,7,0,3);dec('truck',8,12,1.8,0,1.5);decScatter(['flower','bushes'],16,50,1,1.6,(x,z)=>Math.hypot(x,z)>6,0);dec('campfire',4,6,1);dec('logs',5.2,6.6,.7);dec('sign_b',-3,4,1.4);decScatter(['bush_c','bush_d','bush_e','flowers_a','flowers_c','pine_c','tree_c'],30,55,1,4,(x,z)=>Math.hypot(x,z)>8,.12);dec('bird',0,-30,1.4,16);dec('bird',20,-10,1.4,20);spots([[8,0,-6],[-12,0,8],[20,0,20],[-30,0,-20],[30,0,-30],[-40,0,30],[40,0,10],[0,0,-40],[-20,0,-50],[45,0,-45],[-45,0,-10]]);portalAt(0,0,40);SPAWN=[0,0,0]},
  desert(){for(let i=0;i<40;i++){const x=rr(-70,70),z=rr(-70,70);if(Math.hypot(x,z)<10)continue;G.sph(T(M4.tr(x,-.6,z)),hex(0xe8c27a),0,rr(4,9),10,6,.25)}
   for(let i=0;i<9;i++){const x=rr(-55,55),z=rr(-55,55);if(Math.hypot(x,z)<14)continue;const h=rr(6,14),r=rr(4,8);G.cyl(T(M4.tr(x,0,z)),hex(0xb86a3a),0,r*.85,r,h,10);G.cyl(T(M4.tr(x,h,z)),hex(0xc8784a),0,r*.9,r*.85,.6,10);addObst(x,z,r*1.05)}
   for(let i=0;i<22;i++){const x=rr(-60,60),z=rr(-60,60);if(Math.hypot(x,z)<6)continue;G.cyl(T(M4.tr(x,0,z)),hex(0x3f9a4a),0,.35,.4,rr(2,3.5),8);G.cyl(T(M4.tr(x+.45,1.2,z),M4.rz(-.9)),hex(0x3f9a4a),0,.2,.22,1,7);addObst(x,z,.5)}
   G.box(T(M4.tr(0,0,-40)),hex(0xc8905a),0,14,7,10);G.box(T(M4.tr(0,7,-40)),hex(0xd8a06a),0,10,3,8);GE.box(T(M4.tr(0,3,-34.9)),hex(0x5fe3ff),.9,3,3.4,.1);addObst(0,-40,8);
   road(0,0,7,140,.3,0x8a6a4a,0xfff0c0);ANIM.push({k:'car',y:.5,r:38,sp:.35,c:0xff4a6a},{k:'car',y:.5,r:52,sp:-.28,c:0x6a8aff});
   grass(160,60,[1.15,.95,.45],null,.8);
-  dec('truck',12,-4,1.9,0,1.6);dec('atv',-10,14,1.4,0,1);decScatter(['rocks','rock_a','rock_b'],16,62,1,2.4,(x,z)=>Math.hypot(x,z)>8,.4);dec('ruins',40,-48,7,0,4);dec('tower',-48,-30,10,0,3);decScatter(['palms'],4,60,5,7,(x,z)=>Math.hypot(x,z)>12,.4);spots([[10,0,10],[-14,0,-6],[24,0,-26],[-28,0,22],[36,0,30],[-40,0,-36],[0,0,30],[46,0,-6],[6,7,-40],[-50,0,50],[52,0,46]]);addPlat(0,-40,7,5,7);for(let k=0;k<5;k++){const x=19-k*2.2,h=1.2*(k+1);G.box(T(M4.tr(x,0,-40)),hex(0xd8a06a),0,2.2,h,3);addPlat(x,-40,1.1,1.5,h);addObst(x,-40,1.1)}portalAt(-56,0,0);SPAWN=[0,0,0]},
+  dec('truck',12,-4,1.9,0,1.6);dec('atv',-10,14,1.4,0,1);decScatter(['rocks','rock_a','rock_b'],16,62,1,2.4,(x,z)=>Math.hypot(x,z)>8,.4);dec('ruins',40,-48,7,0,4);dec('tower',-48,-30,10,0,3);decScatter(['palms'],4,60,5,7,(x,z)=>Math.hypot(x,z)>12,.4);dec('palm',6,8,4.6,0,.4);dec('palm',-8,-12,4.2,0,.4);dec('sign_a',3,3,1.4);dec('crate',-4,4,1);dec('torch',-3,2,1.2);spots([[10,0,10],[-14,0,-6],[24,0,-26],[-28,0,22],[36,0,30],[-40,0,-36],[0,0,30],[46,0,-6],[6,7,-40],[-50,0,50],[52,0,46]]);addPlat(0,-40,7,5,7);for(let k=0;k<5;k++){const x=19-k*2.2,h=1.2*(k+1);G.box(T(M4.tr(x,0,-40)),hex(0xd8a06a),0,2.2,h,3);addPlat(x,-40,1.1,1.5,h);addObst(x,-40,1.1)}portalAt(-56,0,0);SPAWN=[0,0,0]},
  ice(){for(let i=0;i<14;i++){const a=i/14*Math.PI*2,r=rr(60,76),x=Math.cos(a)*r,z=Math.sin(a)*r,h=rr(24,40);GE.cyl(T(M4.tr(x,0,z)),hex(0xa8d8ff),.25,0,rr(10,16),h,7,false)}
   GE.cyl(T(M4.tr(0,.02,0)),hex(0x8fd0ff),.3,18,18,.06,30);for(let i=0;i<30;i++){const a=rnd()*6.28,r=rr(22,55);crystal(Math.cos(a)*r,Math.sin(a)*r,rr(.7,1.8),[0x8fe9ff,0xbfa8ff,0xd8f4ff][i%3])}
   for(let i=0;i<14;i++){const a=rnd()*6.28,r=rr(24,56),x=Math.cos(a)*r,z=Math.sin(a)*r;G.cyl(T(M4.tr(x,0,z)),hex(0x4a6a5a),0,.15,.2,1.5,6);G.cyl(T(M4.tr(x,1.2,z)),hex(0xf2f8ff),0,0,1.5,3.2,8);addObst(x,z,.6)}
   G.cyl(T(M4.tr(0,0,-42)),hex(0xd8ecff),.15,6,7,10,12);GE.cyl(T(M4.tr(0,10,-42)),hex(0x9fe8ff),.4,0,6,8,12);for(const s of [-1,1]){G.cyl(T(M4.tr(s*9,0,-42)),hex(0xd8ecff),.15,2,2.4,14,10);GE.cyl(T(M4.tr(s*9,14,-42)),hex(0x9fe8ff),.4,0,2.4,5,10);addObst(s*9,-42,2.8)}addObst(0,-42,7.2);
   NPCS.push({x:6,z:-30,c:0x6a8aff,ry:3,say:'Brrr, de hideg van! A jégpalota mögött kristályok csillognak.'},{x:-12,z:12,c:0xff8a6a,ry:1,say:'A tó jege vastag, nyugodtan csússz rajta!'});
-  decScatter(['icerock','rock_b'],18,58,1.4,3,(x,z)=>Math.hypot(x,z)>20,.4);decScatter(['pine_a','pine_b'],16,62,4,7,(x,z)=>Math.hypot(x,z)>24,.15);dec('house_b',30,30,6,0,3);spots([[0,0,8],[10,0,-8],[-12,0,-4],[16,0,18],[-20,0,24],[30,0,-20],[-34,0,-26],[0,0,-28],[40,0,30],[-46,0,10],[24,0,-46]]);portalAt(0,0,48);SPAWN=[0,0,16]},
+  decScatter(['icerock','rock_b'],18,58,1.4,3,(x,z)=>Math.hypot(x,z)>20,.4);decScatter(['pine_a','pine_b'],16,62,4,7,(x,z)=>Math.hypot(x,z)>24,.15);dec('house_b',30,30,6,0,3);dec('lantern',3,10,1.2);dec('torch',-3,10,1.3);dec('iceorb',0,-30,1.6,1);decScatter(['iceorb','crystal_b'],8,50,1,1.6,(x,z)=>Math.hypot(x,z)>20,0);spots([[0,0,8],[10,0,-8],[-12,0,-4],[16,0,18],[-20,0,24],[30,0,-20],[-34,0,-26],[0,0,-28],[40,0,30],[-46,0,10],[24,0,-46]]);portalAt(0,0,48);SPAWN=[0,0,16]},
  underwater(){for(let i=0;i<60;i++){const x=rr(-60,60),z=rr(-60,60);if(Math.hypot(x,z)<6)continue;const k=Math.floor(rnd()*3),c=[0xff6a8a,0xffb46a,0xb46aff,0x6affd8][Math.floor(rnd()*4)];
    if(k===0){G.cyl(T(M4.tr(x,0,z)),hex(c),.25,.3,.5,rr(1,2.5),7);G.sph(T(M4.tr(x,rr(1.2,2.2),z)),hex(c),.3,rr(.6,1),8,6)}else if(k===1){ANIM.push({k:'kelp',x,z,h:rr(4,9)})}else G.sph(T(M4.tr(x,0,z)),hex(c),.2,rr(.8,1.6),9,6,.6);addObst(x,z,.7)}
   G.sph(T(M4.tr(0,0,-36)),hex(0x8fe9ff),.15,12,18,9,.75);GE.tor(T(M4.tr(0,.4,-36)),hex(0x5fe3ff),.9,12,.35,40,8);G.box(T(M4.tr(0,0,-23)),hex(0x7a8aa8),0,4,3.4,4);addObst(0,-36,12.4);
   for(let i=0;i<6;i++)ANIM.push({k:'fish',r:rr(10,40),y:rr(2,8),sp:rr(.2,.5)*(i%2?1:-1),c:[0xffb46a,0xff6a8a,0x6affd8][i%3]});
   NPCS.push({x:4,z:-18,c:0x5fe3ff,ry:3,say:'Üdv a víz alatti bázison! Ide mindenki búvárruhában jön.'});
   grass(700,60,[.45,1,.85],null,1.3);
-  decScatter(['rock_b','rocks','rock_a'],16,58,1,2.4,(x,z)=>Math.hypot(x,z)>6,.4);dec('sail',30,-10,6,0,2.5);decScatter(['vines','hedge'],10,55,2,4,(x,z)=>Math.hypot(x,z)>6,.2);spots([[0,0,10],[12,0,-6],[-12,0,-10],[22,0,18],[-24,0,24],[30,0,-30],[-34,0,-34],[0,0,40],[44,0,6],[-46,0,-4],[16,0,-50]]);portalAt(0,0,-58);SPAWN=[0,0,24]},
+  decScatter(['rock_b','rocks','rock_a'],16,58,1,2.4,(x,z)=>Math.hypot(x,z)>6,.4);dec('sail',30,-10,6,0,2.5);decScatter(['vines','hedge'],10,55,2,4,(x,z)=>Math.hypot(x,z)>6,.2);dec('orb',6,-20,1.5,1.5);decScatter(['bush_c','bush_e','flowers_b'],20,55,1,2,(x,z)=>Math.hypot(x,z)>6,0);dec('boat',-30,20,2.4,0,1.2);spots([[0,0,10],[12,0,-6],[-12,0,-10],[22,0,18],[-24,0,24],[30,0,-30],[-34,0,-34],[0,0,40],[44,0,6],[-46,0,-4],[16,0,-50]]);portalAt(0,0,-58);SPAWN=[0,0,24]},
  race(){const R1=34,R2=46;for(let i=0;i<64;i++){const a0=i/64*Math.PI*2,a1=(i+1)/64*Math.PI*2,rm=(R1+R2)/2,x=Math.cos(a0)*rm,z=Math.sin(a0)*rm*.75,x2=Math.cos(a1)*rm,z2=Math.sin(a1)*rm*.75,l=Math.hypot(x2-x,z2-z),ang=Math.atan2(x2-x,z2-z);
    G.box(T(M4.tr((x+x2)/2,.01,(z+z2)/2),M4.ry(ang)),hex(0x1a1a2a),0,R2-R1,.04,l+.3);for(const s of [-1,1])GE.box(T(M4.tr((x+x2)/2,.03,(z+z2)/2),M4.ry(ang),M4.tr(s*(R2-R1)/2,0,0)),hex(i%2?0xff3fa8:0x5fe3ff),1,.25,.12,l+.3)}
   for(const s of [-1,1]){G.box(T(M4.tr(s*58,0,0)),hex(0x2a2a4a),0,8,6,50);for(let k=0;k<5;k++)G.box(T(M4.tr(s*(54-k*.0),k*1.1,0)),hex(0x3a3a6a),0,1,1.1,48);GE.box(T(M4.tr(s*54,8,0)),hex(s>0?0xff3fa8:0x5fe3ff),1,.3,.6,48);addObst(s*58,-18,6);addObst(s*58,0,6);addObst(s*58,18,6)}
   G.box(T(M4.tr(0,0,0)),hex(0x2a2a4a),0,22,.3,18);GE.box(T(M4.tr(0,6,-8)),hex(0xff3fa8),1,14,2.4,.3);
   ring(40,8,.2).forEach((p,i)=>{const x=p[0],z=p[2]*.75,ang=Math.atan2(x,z);GE.tor(T(M4.tr(x,3,z),M4.ry(ang+Math.PI/2),M4.rx(Math.PI/2)),hex(i%2?0xff3fa8:0x5fe3ff),1,3,.18,26,6)});
   ANIM.push({k:'car',y:.4,r:37,sp:.5,c:0xff3fa8,ell:.75},{k:'car',y:.4,r:43,sp:.42,c:0x5fe3ff,ell:.75},{k:'car',y:.4,r:40,sp:.46,c:0xffe27a,ell:.75});
-  dec('wcar',30,24,1.5,0,1.2);dec('rcar',-30,24,1.5,0,1.2);dec('car3',30,-24,1.5,0,1.2);dec('hbike',-30,-24,1.3,0,.8);decRing(['sky','city'],10,95,120,26,40);spots(ring(40,8,.2).map(p=>[p[0],2,p[2]*.75]).concat([[0,.3,0],[0,0,24],[0,0,-24]]).map((p,i)=>i<8?[p[0],p[1]-1.2+.2,p[2]]:p));portalAt(0,.3,-16);SPAWN=[40,0,0]},
+  dec('wcar',30,24,1.5,0,1.2);dec('rcar',-30,24,1.5,0,1.2);dec('car3',30,-24,1.5,0,1.2);dec('hbike',-30,-24,1.3,0,.8);decRing(['sky','city'],10,95,120,26,40);dec('poster09',0,-40,8,8);poster('poster09',58,-24,3);poster('poster09',-58,24,3);dec('moto',34,-10,1.2,0,.8);spots(ring(40,8,.2).map(p=>[p[0],2,p[2]*.75]).concat([[0,.3,0],[0,0,24],[0,0,-24]]).map((p,i)=>i<8?[p[0],p[1]-1.2+.2,p[2]]:p));portalAt(0,.3,-16);SPAWN=[40,0,0]},
  forest(){for(let i=0;i<110;i++){const x=rr(-66,66),z=rr(-66,66);if(Math.hypot(x,z)<8||Math.abs(x-2)<3)continue;tree(x,z,rr(5,10),[0x2f7a3a,0x3f8a4a,0x2a6a3a][i%3],0x5a3a2a,i%4===0?1:0)}
   for(let i=0;i<20;i++){const x=rr(-50,50),z=rr(-50,50);G.cyl(T(M4.tr(x,0,z)),hex(0xf2ead8),0,.15,.2,.6,7);G.sph(T(M4.tr(x,.6,z)),hex(0xff5a5a),0,.45,9,5,.6)}
   G.box(T(M4.tr(-22,0,-46)),hex(0x6a7088),0,14,14,6);waterfall(-22,0,13.6,3.4);addObst(-22,-46,7.5);GE.box(T(M4.tr(-22,.02,-26)),hex(0x5fc4ff),.35,4,.05,38);
   G.box(T(M4.tr(-22,.5,-12)),hex(0x8a6a4a),0,6,.3,2);road(2,0,4,120,0,0x6a5a3a,0x6a5a3a);
   NPCS.push({x:6,z:-10,c:0x4fc06a,ry:2,say:'Pszt! Ha csendben vagy, hallod a vízesést.'},{x:-8,z:20,c:0xffb46a,ry:0,say:'A gombákat ne edd meg, csak nézd!'});
   grass(1900,64,null,(x,z)=>Math.abs(x-2)>2.4);
-  decScatter(['tree_a','tree_b','pine_a','pine_b','trees_g1','trees_g2','trees_g3','trees_pink'],60,64,4,9,(x,z)=>Math.abs(x-2)>3&&Math.hypot(x,z)>6,.12);decScatter(['bushes','flower','hedge','vines'],30,60,1,2.6,(x,z)=>Math.abs(x-2)>2.5,0);dec('house_a',30,-30,7,0,3.2);spots([[2,0,10],[2,0,-10],[12,0,-24],[-12,0,26],[20,0,30],[-30,0,-10],[30,0,-40],[2,0,-50],[-40,0,40],[44,0,10],[-46,0,-30]]);portalAt(2,0,52);SPAWN=[2,0,20]},
+  decScatter(['tree_a','tree_b','pine_a','pine_b','trees_g1','trees_g2','trees_g3','trees_pink'],60,64,4,9,(x,z)=>Math.abs(x-2)>3&&Math.hypot(x,z)>6,.12);decScatter(['bushes','flower','hedge','vines'],30,60,1,2.6,(x,z)=>Math.abs(x-2)>2.5,0);dec('house_a',30,-30,7,0,3.2);dec('campfire',6,12,1);dec('logs',7.4,12.4,.7);dec('lantern',-1,26,1.1);dec('sign_b',4.5,22,1.4);decScatter(['bush_a','bush_b','bush_c','bush_d','flowers_a','flowers_b','flowers_c','tree_c','pine_c'],40,60,1,4,(x,z)=>Math.abs(x-2)>2.5,.1);dec('bird',10,0,1.2,12);spots([[2,0,10],[2,0,-10],[12,0,-24],[-12,0,26],[20,0,30],[-30,0,-10],[30,0,-40],[2,0,-50],[-40,0,40],[44,0,10],[-46,0,-30]]);portalAt(2,0,52);SPAWN=[2,0,20]},
  space(){for(let i=0;i<14;i++){const x=rr(-60,60),z=rr(-60,60);if(Math.hypot(x,z)<10)continue;const r=rr(4,9);G.tor(T(M4.tr(x,0,z),M4.sc(1,.5,1)),hex(0x8a8a9a),0,r,.9,22,6)}
   const A=[[10,4,-10,3],[20,8,-20,2.6],[8,12,-30,3],[-6,15,-26,2.6],[-16,18,-14,3],[-8,21,0,2.6],[6,24,6,3.2]];A.forEach(p=>{G.sph(T(M4.tr(p[0],p[1]-1.2,p[2])),hex(0x8a7a7a),0,p[3],10,7,.55);addPlat(p[0],p[2],p[3]*.85,p[3]*.85,p[1]-.6,true)});
   ANIM.push({k:'planet',x:-90,y:70,z:-160,r:44,c:0xff9a6a,ringc:0xffd8a8},{k:'planet',x:120,y:40,z:-60,r:18,c:0x6ad8ff},{k:'planet',x:30,y:90,z:120,r:26,c:0xb46aff});
   G.cyl(T(M4.tr(0,0,-4)),hex(0xe8ecff),0,2.2,2.6,3,16);GE.sph(T(M4.tr(0,3,-4)),hex(0x8fe9ff),.5,2.2,12,6,.6);addObst(0,-4,2.8);
-  dec('ship',16,10,3.4,0,1.6);dec('mech',-14,-14,3.2,0,1.2);dec('rveh',-24,14,2,0,1.2);decScatter(['rock_a','rocks'],16,60,1,2.6,(x,z)=>Math.hypot(x,z)>8,.4);spots([[10,4,-10],[20,8,-20],[8,12,-30],[-6,15,-26],[-16,18,-14],[-8,21,0],[14,0,14],[-20,0,20],[6,24,6],[-30,0,-30],[36,0,-6]].map(p=>[p[0],p[1]>0?p[1]-.6:0,p[2]]));portalAt(30,0,30);SPAWN=[0,0,8]},
+  dec('ship',16,10,3.4,0,1.6);dec('mech',-14,-14,3.2,0,1.2);dec('rveh',-24,14,2,0,1.2);decScatter(['rock_a','rocks'],16,60,1,2.6,(x,z)=>Math.hypot(x,z)>8,.4);decScatter(['robot_a','robot_c','robot_e','mech_b','mech_c'],8,50,1.6,3,(x,z)=>Math.hypot(x,z)>8,.6);dec('orb',0,-4,1.4,6);spots([[10,4,-10],[20,8,-20],[8,12,-30],[-6,15,-26],[-16,18,-14],[-8,21,0],[14,0,14],[-20,0,20],[6,24,6],[-30,0,-30],[36,0,-6]].map(p=>[p[0],p[1]>0?p[1]-.6:0,p[2]]));portalAt(30,0,30);SPAWN=[0,0,8]},
  community(){G.box(T(M4.tr(0,.01,0)),hex(0x3a3a5a),0,60,.04,60);for(let i=0;i<10;i++){const a=i/10*Math.PI*2,x=Math.cos(a)*22,z=Math.sin(a)*22,ry=-a+Math.PI/2,c=[0xff6a8a,0x5fe3ff,0xffc76a,0xa58aff,0x7ae0a0][i%5];
    G.box(T(M4.tr(x,0,z),M4.ry(ry)),hex(0x6a4a3a),0,4,1.1,2);G.box(T(M4.tr(x,2.6,z),M4.ry(ry)),hex(c),0,4.6,.25,2.6);for(const s of [-1,1])G.cyl(T(M4.tr(x,0,z),M4.ry(ry),M4.tr(s*2,0,1)),hex(0x9aa4c8),0,.06,.06,2.6,5);GE.sph(T(M4.tr(x,2.4,z),M4.ry(ry),M4.tr(0,0,1.2)),hex(0xffe8a0),1,.22,7,5);addObst(x,z,2.4)}
   G.box(T(M4.tr(0,0,-38)),hex(0x2a2a4a),0,20,1.6,10);addPlat(0,-38,10,5,1.6);for(let k=0;k<6;k++)GE.cyl(T(M4.tr(-9+k*3.6,1.6,-42)),hex([0xff3fa8,0x5fe3ff,0xffe27a][k%3]),1,.15,.25,7,8);GE.box(T(M4.tr(0,8,-42.5)),hex(0x5fe3ff),.9,18,3,.2);
@@ -346,7 +333,7 @@ const GEN={
   for(let i=0;i<12;i++){const x=(i%2?1:-1)*rr(30,50),z=rr(-50,50);building(x,z,rr(6,9),rr(6,9),rr(8,16),0x2a3a6a,0xffd98a)}
   const L=['Szia! Te is a fesztiválra jöttél?','Nézd a színpadot, mindjárt kezdődik a koncert!','DEX szobra a tér közepén áll. Menő, ugye?','Én már három világot bejártam!','A standoknál ingyen limonádé van!','Gyere, játsszunk együtt!','A Coinokat gyűjtsd, a gyémántok ritkák!','Jó itt, ugye? Mindenki barát.'];
   for(let i=0;i<8;i++){const a=i/8*Math.PI*2+.3,r=rr(10,16);NPCS.push({x:Math.cos(a)*r,z:Math.sin(a)*r,c:[0xff6a8a,0x5fe3ff,0xffc76a,0xa58aff][i%4],ry:-a-Math.PI/2,say:L[i]})}
-  dec('hero',0,-31,3.6,1.6);dec('balloon',-24,-36,7,16);dec('balloon',28,20,6,20);decScatter(['tree_b','tree_a','flower','palms'],14,58,2,5,(x,z)=>Math.hypot(x,z)>28,.18);dec('house_b',-40,-40,7,0,3);dec('rcar',36,-18,1.5,0,1.2);spots([[8,0,8],[-8,0,-8],[18,0,-4],[-18,0,6],[0,1.6,-38],[30,0,30],[-30,0,-30],[34,0,-34],[-34,0,30],[0,0,26],[44,0,4]]);portalAt(0,0,48);SPAWN=[0,0,16]}};
+  dec('hero',0,-31,3.6,1.6);dec('balloon',-24,-36,7,16);dec('balloon',28,20,6,20);decScatter(['tree_b','tree_a','flower','palms'],14,58,2,5,(x,z)=>Math.hypot(x,z)>28,.18);dec('house_b',-40,-40,7,0,3);dec('rcar',36,-18,1.5,0,1.2);dec('p_dexrobot',0,-42.6,4.2,8.2);poster('p_npc',18,-30,3);poster('p_hero',-18,-30,3);for(let i=0;i<10;i++){const a=i/10*Math.PI*2,x=Math.cos(a)*22,z=Math.sin(a)*22,it=['food','roast','fruit','apple','potion','gift','backpack','tv','crystal_p','chest_b'][i];dec(it,x*.97,z*.97,.55,1.12)}dec('lantern',6,22,1.1);dec('torch',-6,22,1.2);dec('bench',8,12,1);dec('bench',-8,-12,1);decScatter(['flowerbed','flowers_b','bush_a'],12,45,.8,1.3,(x,z)=>Math.hypot(x,z)>26,0);spots([[8,0,8],[-8,0,-8],[18,0,-4],[-18,0,6],[0,1.6,-38],[30,0,30],[-30,0,-30],[34,0,-34],[-34,0,30],[0,0,26],[44,0,4]]);portalAt(0,0,48);SPAWN=[0,0,16]}};
 </script>
 <script>
 'use strict';
@@ -356,7 +343,7 @@ const GEN={
 const VKIND=['auto','motor','dron','urhajo','helikopter','auto','hoverboard','hajo','auto','motor','urhajo','repulo'];
 const VIN={auto:['az autó','az autóba'],motor:['a motor','a motorra'],hoverboard:['a hoverboard','a hoverboardra'],hajo:['a tengeralattjáró','a tengeralattjáróba'],dron:['a drón','a drónba'],helikopter:['a helikopter','a helikopterbe'],repulo:['a repülő','a repülőbe'],urhajo:['az űrhajó','az űrhajóba']};
 const VINFO={auto:{n:'autó',h:1.15,sp:2.6},motor:{n:'motor',h:1.3,sp:2.8},hoverboard:{n:'hoverboard',h:.75,sp:2.4},hajo:{n:'tengeralattjáró',h:1.3,sp:2.2},dron:{n:'drón',h:.9,sp:2.4,fly:1},helikopter:{n:'helikopter',h:1.7,sp:2.6,fly:1},repulo:{n:'repülő',h:1.5,sp:3.2,fly:1},urhajo:{n:'űrhajó',h:1.6,sp:3,fly:1}};
-let VEH=null;
+let VEH=null,CHEST=null;
 let ST={on:false,w:0,coins:0,gems:0,t:0,started:false,said:{}};
 let SAVE={done:[],coins:0,gems:0,last:0};try{Object.assign(SAVE,JSON.parse(localStorage.getItem('dex_world_v1')||'{}'))}catch(e){}
 function save(){try{localStorage.setItem('dex_world_v1',JSON.stringify(SAVE))}catch(e){}}
@@ -382,9 +369,10 @@ function partsBuild(){const P={};
  for(const k in P)MESH[k]=P[k].upload()}
 function GE_(geo,col,list){list.forEach(b=>geo.box(M4.tr(b[0],b[1],b[2]),hex(col),.9,b[3],b[4],b[5]))}
 /* ---- egy világ felépítése ---- */
-function buildWorld(i){const w=WORLDS[i];seed=1000+i*7919;G=new Geo();GE=new Geo();GF=new Geo();GRS=[];DEC=[];ATL.dirty=1;OBST=[];PLAT=[];NPCS=[];ANIM=[];COL=[];PORTAL=null;VOID=false;
- GEN[w.gen]();for(const k of ['world','worldE'])if(MESH[k])gl.deleteBuffer(MESH[k].b);MESH.world=G.upload();MESH.worldE=GE.upload();if(MESH.facade)gl.deleteBuffer(MESH.facade.b);MESH.facade=GF.upload();if(MESH.grass)gl.deleteBuffer(MESH.grass.b);{const d=new Float32Array(GRS),b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,d,gl.STATIC_DRAW);MESH.grass={b,n:d.length/13}}
- const sky=w.sky.map(hex);W={sunD:norm([.45,.8,.35]),sunC:hex(w.sun).map(v=>v*w.sunI),skyC:hex(w.amb[0]),gndC:hex(w.amb[1]),fogC:hex(w.fog),fogD:w.fogD,top:sky[0],hor:sky[1],bot:sky[2],stars:w.stars,tex:texFile('dexworld/feloltoztetes/talaj_'+(['aszfalt','aszfalt','fold','fem','fold','homok','jeg','homok','uveg','fold','ko','aszfalt'][i])+'.png'),facade:texFile('dexworld/feloltoztetes/fal_'+String(i).padStart(2,'0')+'.png'),grav:w.grav||1};
+function buildWorld(i){const w=WORLDS[i];seed=1000+i*7919;G=new Geo();GE=new Geo();GRS=[];DEC=[];ATL.dirty=1;OBST=[];PLAT=[];NPCS=[];ANIM=[];COL=[];PORTAL=null;VOID=false;
+ GEN[w.gen]();if(PORTAL)dec('poster'+String((i+1)%12+1).padStart(2,'0'),PORTAL.x,PORTAL.z,2.4,(PORTAL.y||0)+5.3);{const g=COL[9]||COL[0];CHEST={x:g.x+2.4,z:g.z,y:g.y-1.2,n:['chest_a','chest_b','chest_c','chest_d'][i%4],open:(SAVE.chests||[]).indexOf(i)>=0,ot:0}}
+ for(const k of ['world','worldE'])if(MESH[k])gl.deleteBuffer(MESH[k].b);MESH.world=G.upload();MESH.worldE=GE.upload();if(MESH.grass)gl.deleteBuffer(MESH.grass.b);{const d=new Float32Array(GRS),b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,d,gl.STATIC_DRAW);MESH.grass={b,n:d.length/13}}
+ const sky=w.sky.map(hex);W={sunD:norm([.45,.8,.35]),sunC:hex(w.sun).map(v=>v*w.sunI),skyC:hex(w.amb[0]),gndC:hex(w.amb[1]),fogC:hex(w.fog),fogD:w.fogD,top:sky[0],hor:sky[1],bot:sky[2],stars:w.stars,tex:texLoad(w.tex),grav:w.grav||1};
  if(!GROUND){const g=new Geo();g.box(M4.tr(0,-1,0),[1,1,1],0,170,1,170);GROUND=g.upload()}
  /* részecskék */
  const pk=w.pt[2],np=pk==='none'?0:pk==='snow'||pk==='bubble'?700:300,pa=[];for(let k=0;k<np;k++)pa.push(rr(-60,60),rr(0,30),rr(-60,60),rr(2,5));PTS={k:pk,col:hex(w.pt[0]),arr:new Float32Array(pa),buf:PTS&&PTS.buf||gl.createBuffer(),n:np};
@@ -420,7 +408,7 @@ function say(t,quiet){lastSay=t;$('say').textContent=t;$('bubble').classList.add
 const pickT={};function pick(k,a){const c=a.filter(x=>x!==pickT[k]);const r=c[Math.floor(Math.random()*c.length)]||a[0];pickT[k]=r;return r}
 function nearest(){let b=null,bd=1e9;COL.forEach((c,i)=>{if(c.taken)return;const d=Math.hypot(c.x-PL.x,c.z-PL.z)+Math.abs(c.y-PL.y)*.5;if(d<bd){bd=d;b=i}});if(b==null&&PORTAL&&PORTAL.open)return {portal:true,d:Math.hypot(PORTAL.x-PL.x,PORTAL.z-PL.z)};return b==null?null:{i:b,d:bd}}
 function dirWord(x,z){const a=Math.atan2(x-PL.x,z-PL.z)-(YAW+Math.PI);let d=((a+Math.PI*3)%(Math.PI*2))-Math.PI;const ad=Math.abs(d);if(ad<.5)return 'előtted';if(ad>2.6)return 'mögötted';return d>0?(ad<1.6?'balra előre':'balra hátra'):(ad<1.6?'jobbra előre':'jobbra hátra')}
-function dexHelp(loud){const n=nearest();DX.hint=performance.now()+6000;DX.thinkT=performance.now()+500;if(!n){say('Mindent összegyűjtöttél! Szuper vagy!');return}
+function dexHelp(loud){const n=nearest();DX.hint=performance.now()+6000;DX.thinkT=performance.now()+500;if(!n){say(CHEST&&!CHEST.open?'Mindent összegyűjtöttél! De van itt még egy kincsesláda '+dirWord(CHEST.x,CHEST.z)+'.':'Mindent összegyűjtöttél! Szuper vagy!');return}
  if(n.portal){say(pick('hp',['Nyitva a kapu! ','A portál vár! ','Irány a kapu! '])+dirWord(PORTAL.x,PORTAL.z)+', kb. '+Math.round(n.d)+' lépésre. Kövesd a fénycsíkomat!');return}
  const c=COL[n.i],what=c.gem?'gyémánt':'Coin',h=c.y-PL.y>2?' Fent van, ugrani kell!':'';say(pick('h',['A legközelebbi '+what+' ','Van egy '+what+' ','Nézd, egy '+what+' '])+dirWord(c.x,c.z)+', kb. '+Math.round(n.d)+' lépésre.'+h+' Mutatom a fénnyel!')}
 function vName(){return VEH?VINFO[VEH.k].n:'jármű'}
@@ -447,6 +435,7 @@ function step(dt,t){const w=WORLDS[ST.w];
  /* gyűjtés */
  COL.forEach((c,i)=>{if(c.taken)return;if(Math.hypot(c.x-PL.x,c.z-PL.z)<1.25&&Math.abs(c.y-1.1-PL.y)<1.6){c.taken=true;if(c.gem){ST.gems++;SAVE.gems++;sfx('gem');ST.joyT=performance.now()+1200;DX.joyT=performance.now()+1800;flash('#7ff4ff');say(pick('g',['Gyémánt! Csodás!','Ez gyönyörű, megvan a gyémánt!','Hű, egy gyémánt! Ügyes vagy!']),false)}else{ST.coins++;SAVE.coins++;sfx('coin');if(ST.coins===4)say(pick('c4',['Már a felénél tartasz!','Négy Coin megvan, csak így tovább!']));else if(ST.coins===1&&!ST.said.c1){ST.said.c1=1;say(pick('c1',['Az első Coin! Szép!','Megvan az első!']))}}
   save();hud();if(ST.coins>=8&&ST.gems>=3&&PORTAL&&!PORTAL.open){PORTAL.open=true;sfx('open');setTimeout(()=>{say('Mindent összegyűjtöttél! Kinyílt a kapu, '+dirWord(PORTAL.x,PORTAL.z)+'. Menj bele!');DX.hint=performance.now()+8000},700)}}});
+ if(CHEST&&!CHEST.open&&Math.hypot(CHEST.x-PL.x,CHEST.z-PL.z)<1.7&&Math.abs(CHEST.y-PL.y)<1.6){CHEST.open=true;CHEST.ot=t;(SAVE.chests=SAVE.chests||[]).push(ST.w);SAVE.coins+=5;save();sfx('gem');flash('#ffd36a');ST.joyT=t+1500;DX.joyT=t+2000;say(pick('chest',['Kincsesláda! Benne öt Coin és egy kristály!','Hű, megtaláltad a kincset! Öt bónusz Coin!','Kincs! Ügyes vagy, ez nem volt könnyű!']))}
  if(PORTAL&&PORTAL.open&&Math.hypot(PORTAL.x-PL.x,PORTAL.z-PL.z)<2&&Math.abs(PL.y-(PORTAL.y||0))<2.5)enterPortal();
  /* ha sokáig nem talál semmit, DEX magától segít */
  if(t-(ST.lastSayT||0)>22000&&ST.on){dexHelp(false)}
@@ -479,7 +468,7 @@ function scene(t,w,Hd,vr){
  gl.enable(gl.DEPTH_TEST);gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);gl.frontFace(gl.CW);gl.disable(gl.CULL_FACE);
  gl.useProgram(SH.p);setCommon();
  if(!VOID&&w.gen!=='underwater'||w.gen==='underwater')if(!VOID)draw(GROUND,M4.id(),{tex:W.tex,texS:.09,tint:w.tex==='grass'?[.62,.72,.6]:[1,1,1]});
- draw(MESH.world,M4.id());draw(MESH.facade,M4.id(),{tex:W.facade,texS:.09});draw(MESH.worldE,M4.id(),{glow:.5});
+ draw(MESH.world,M4.id());draw(MESH.worldE,M4.id(),{glow:.5});
  atlBuild();if((MESH.grass&&MESH.grass.n)||(MESH.decor&&MESH.decor.n)){for(const k in SH.A)gl.disableVertexAttribArray(SH.A[k]);gl.useProgram(GR.p);gl.bindBuffer(gl.ARRAY_BUFFER,MESH.grass.b);const A=GR.A,S=52;gl.enableVertexAttribArray(A.c);gl.vertexAttribPointer(A.c,3,gl.FLOAT,false,S,0);gl.enableVertexAttribArray(A.o);gl.vertexAttribPointer(A.o,2,gl.FLOAT,false,S,12);gl.enableVertexAttribArray(A.uv);gl.vertexAttribPointer(A.uv,2,gl.FLOAT,false,S,20);gl.enableVertexAttribArray(A.s);gl.vertexAttribPointer(A.s,1,gl.FLOAT,false,S,28);gl.enableVertexAttribArray(A.tn);gl.vertexAttribPointer(A.tn,3,gl.FLOAT,false,S,32);gl.enableVertexAttribArray(A.ar);gl.vertexAttribPointer(A.ar,1,gl.FLOAT,false,S,44);gl.enableVertexAttribArray(A.swk);gl.vertexAttribPointer(A.swk,1,gl.FLOAT,false,S,48);
   gl.uniformMatrix4fv(GR.U.VP,false,VP);gl.uniform3fv(GR.U.camR,CAMR);gl.uniform3fv(GR.U.cam,CAM);gl.uniform1f(GR.U.t,t*.001);gl.uniform3fv(GR.U.sunC,W.sunC);gl.uniform3fv(GR.U.skyC,W.skyC);gl.uniform3fv(GR.U.fogC,W.fogC);gl.uniform1f(GR.U.fogD,W.fogD);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,GRASS_TEX);gl.uniform1i(GR.U.tex,0);gl.drawArrays(gl.TRIANGLES,0,MESH.grass.n);if(MESH.decor&&MESH.decor.n&&SPR.on){gl.bindBuffer(gl.ARRAY_BUFFER,MESH.decor.b);gl.vertexAttribPointer(A.c,3,gl.FLOAT,false,S,0);gl.vertexAttribPointer(A.o,2,gl.FLOAT,false,S,12);gl.vertexAttribPointer(A.uv,2,gl.FLOAT,false,S,20);gl.vertexAttribPointer(A.s,1,gl.FLOAT,false,S,28);gl.vertexAttribPointer(A.tn,3,gl.FLOAT,false,S,32);gl.vertexAttribPointer(A.ar,1,gl.FLOAT,false,S,44);gl.vertexAttribPointer(A.swk,1,gl.FLOAT,false,S,48);gl.bindTexture(gl.TEXTURE_2D,ATL.tex);gl.drawArrays(gl.TRIANGLES,0,MESH.decor.n)}
   for(const k in A)gl.disableVertexAttribArray(A[k]);gl.useProgram(SH.p)}
@@ -490,11 +479,13 @@ function scene(t,w,Hd,vr){
   else if(a.k==='fish'){const an=t*.001*a.sp,x=Math.cos(an)*a.r,z=Math.sin(an)*a.r;draw(MESH.fish,chain(M4.tr(x,a.y+Math.sin(t*.003+a.r)*.4,z),M4.ry(Math.atan2(-Math.sin(an)*a.sp,Math.cos(an)*a.sp))),{tint:hex(a.c)})}
   else if(a.k==='kelp'){for(let s=0;s<a.h;s++)draw(MESH.kelp,chain(M4.tr(a.x+Math.sin(t*.0015+s*.6+a.x)*.08*s,s,a.z),M4.rz(Math.sin(t*.0015+s*.5)*.12)))}}
  /* NPC-k */
- NPCS.forEach((n,ni)=>{const an='npc'+String((ni*7+ST.w*3)%21).padStart(2,'0');if(!sprReady(['npc_01','npc_02','npc_03','npc_04','npc_05','felfedezo'][ni%6])&&atlOk(an)){const tk=n.talk>t,bb=tk?Math.abs(Math.sin(t*.012))*.06:Math.sin(t*.002+ni)*.015;billDraw(an,n.x,(n.y||0)+bb,n.z,1.9);draw(MESH.shadow,chain(M4.tr(n.x,(n.y||0)+.03,n.z),M4.sc(1.1,1,1.1)),{alpha:.25});n.spr=1;return}const sn=['npc_01','npc_02','npc_03','npc_04','npc_05','felfedezo'][ni%6];if(sprReady(sn)){const tk=n.talk>t,ry=tk?Math.atan2(PL.x-n.x,PL.z-n.z):n.ry;sprDraw(sn,tk?'integetes':'allas',dirIdx(n.x,n.z,ry),Math.floor(t*(tk?8:3)/1000+ni),n.x,n.y||0,n.z,1.95);draw(MESH.shadow,chain(M4.tr(n.x,(n.y||0)+.03,n.z),M4.sc(1.1,1,1.1)),{alpha:.25});n.spr=1}else n.spr=0});
+ NPCS.forEach((n,ni)=>{const an='npc'+String((ni*7+ST.w*3)%21).padStart(2,'0');if(atlOk(an)){const tk=n.talk>t,bb=tk?Math.abs(Math.sin(t*.012))*.06:Math.sin(t*.002+ni)*.015;billDraw(an,n.x,(n.y||0)+bb,n.z,1.9);draw(MESH.shadow,chain(M4.tr(n.x,(n.y||0)+.03,n.z),M4.sc(1.1,1,1.1)),{alpha:.25});n.spr=1;return}const sn=['npc_01','npc_02','npc_03','npc_04','npc_05','felfedezo'][ni%6];if(sprReady(sn)){const tk=n.talk>t,ry=tk?Math.atan2(PL.x-n.x,PL.z-n.z):n.ry;sprDraw(sn,tk?'integetes':'allas',dirIdx(n.x,n.z,ry),Math.floor(t*(tk?8:3)/1000+ni),n.x,n.y||0,n.z,1.95);draw(MESH.shadow,chain(M4.tr(n.x,(n.y||0)+.03,n.z),M4.sc(1.1,1,1.1)),{alpha:.25});n.spr=1}else n.spr=0});
  for(const n of NPCS){if(n.spr)continue;const tk=n.talk>t,b=Math.sin(t*.003+n.x)*.03;draw(MESH.npc,chain(M4.tr(n.x,(n.y||0)+b,n.z),M4.ry(tk?Math.atan2(PL.x-n.x,PL.z-n.z):n.ry)),{tint:hex(n.c)});draw(MESH.shadow,chain(M4.tr(n.x,(n.y||0)+.03,n.z),M4.sc(1.1,1,1.1)),{alpha:.25})}
  /* gyűjtenivalók */
  gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
  COL.forEach(c=>{if(c.taken)return;const y=c.y+Math.sin(t*.003+c.ph)*.18;draw(c.gem?MESH.gem:MESH.coin,chain(M4.tr(c.x,y,c.z),M4.ry(t*.003+c.ph)),{glow:1});draw(MESH.shadow,chain(M4.tr(c.x,c.y-1.18,c.z),M4.sc(.9,1,.9)),{alpha:.2})});
+ /* kincsesláda */
+ if(CHEST&&atlOk(CHEST.n)){if(!CHEST.open)billDraw(CHEST.n,CHEST.x,CHEST.y,CHEST.z,1.1);else if(t-CHEST.ot<2500){const k=(t-CHEST.ot)/2500;billDraw('crystal_p',CHEST.x,CHEST.y+.5+k*2.2,CHEST.z,1.1*(1-k*.5))}}
  /* kapu */
  if(PORTAL){const py=(PORTAL.y||0)+2.6,o=PORTAL.open,pulse=.5+.5*Math.sin(t*.004);draw(MESH.portal,chain(M4.tr(PORTAL.x,py,PORTAL.z),M4.ry(t*(o?.001:.0002)),M4.rx(Math.PI/2)),{tint:o?[.6+.4*pulse,.95,1]:[.35,.4,.55],glow:o?1:0});
   if(o&&atlOk('portalfx'))billDraw('portalfx',PORTAL.x,py-2.2,PORTAL.z,4.4);
@@ -512,7 +503,7 @@ function scene(t,w,Hd,vr){
  draw(MESH.head,chain(B,M4.tr(0,1.58+bob,0),M4.ry(Math.sin(t*.0007)*.15)));}
  /* DEX */
  const D=chain(M4.tr(DX.x,DX.y,DX.z),M4.ry(DX.ry)),tk=DX.talkT>t,bl=(t%3800)<130?.15:1;draw(MESH.shadow,chain(M4.tr(DX.x,groundAt(DX.x,DX.z,DX.y)+.03,DX.z),M4.sc(.9,1,.9)),{alpha:.18});
- if(!sprReady('dex')&&atlOk('dex')){const k=tk?1+.05*Math.sin(t*.03):DX.joyT>t?1+.1*Math.abs(Math.sin(t*.012)):1;billDraw('dex',DX.x,DX.y-.95+(DX.joyT>t?Math.abs(Math.sin(t*.012))*.25:0),DX.z,1.5*k)}else if(sprReady('dex')){const st=DX.thinkT>t?'gondolkodik':tk?'beszel':DX.joyT>t?'orul':DX.hint>t?'mutatas':'lebeg';sprDraw('dex',st,dirIdx(DX.x,DX.z,DX.ry),Math.floor(t*(st==='beszel'?10:6)/1000),DX.x,DX.y-.95,DX.z,1.55)}else{
+ if(atlOk('dex')){const k=tk?1+.05*Math.sin(t*.03):DX.joyT>t?1+.1*Math.abs(Math.sin(t*.012)):1;billDraw('dex',DX.x,DX.y-.95+(DX.joyT>t?Math.abs(Math.sin(t*.012))*.25:0),DX.z,1.5*k)}else if(sprReady('dex')){const st=DX.thinkT>t?'gondolkodik':tk?'beszel':DX.joyT>t?'orul':DX.hint>t?'mutatas':'lebeg';sprDraw('dex',st,dirIdx(DX.x,DX.z,DX.ry),Math.floor(t*(st==='beszel'?10:6)/1000),DX.x,DX.y-.95,DX.z,1.55)}else{
  draw(MESH.dex,D,{glow:.3});for(const s of [-1,1])draw(MESH.dexeye,chain(D,M4.tr(s*.18,.06,.56),M4.sc(1,bl*(tk?1+.25*Math.sin(t*.03):1),1)),{glow:1,tint:tk?[1,1,1]:[.85,1,1]});
  draw(MESH.dexant,chain(D,M4.tr(0,.92,0)),{glow:1,tint:tk?[1,.85,.4]:[1,1,1]});}draw(MESH.dexring,chain(M4.tr(DX.x,DX.y-.95,DX.z),M4.rx(Math.PI/2*0),M4.sc(1+.08*Math.sin(t*.004))),{glow:1,alpha:.8});
  /* DEX fénycsíkja a cél felé */
@@ -529,13 +520,14 @@ function drawMap(){const c=$('map'),g=c.getContext('2d'),S=c.width,k=S/70;g.clea
  const P=(x,z)=>[(x-PL.x)*k,(z-PL.z)*k];
  COL.forEach(cc=>{if(cc.taken)return;const p=P(cc.x,cc.z);g.fillStyle=cc.gem?'#7ff4ff':'#ffcf4a';g.beginPath();g.arc(p[0],p[1],cc.gem?5:4,0,7);g.fill()});
  NPCS.forEach(n=>{const p=P(n.x,n.z);g.fillStyle='#b8a8ff';g.beginPath();g.arc(p[0],p[1],3,0,7);g.fill()});
+ if(CHEST&&!CHEST.open){const p=P(CHEST.x,CHEST.z);g.fillStyle='#ffd36a';g.fillRect(p[0]-3,p[1]-5,7,7)}
  if(VEH&&!PL.car){const p=P(VEH.x,VEH.z);g.fillStyle='#ff9a3a';g.fillRect(p[0]-4,p[1]-4,8,8)}
  if(PORTAL){const p=P(PORTAL.x,PORTAL.z);g.strokeStyle=PORTAL.open?'#ffffff':'#7a86b0';g.lineWidth=3;g.beginPath();g.arc(p[0],p[1],7,0,7);g.stroke()}
  g.restore();g.fillStyle='#fff';g.beginPath();g.moveTo(S/2,S/2-9);g.lineTo(S/2+7,S/2+7);g.lineTo(S/2,S/2+3);g.lineTo(S/2-7,S/2+7);g.closePath();g.fill();g.fillStyle='#5fe3ff';g.font='bold 18px system-ui';g.textAlign='center';g.fillText('É',S/2+Math.sin(-YAW)*(-S/2+14),S/2-Math.cos(-YAW)*(S/2-14)+6)}
 function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-last)/1000);last=t;if(ST.on)step(dt,t);if(ST.started)render(t)}
 /* ---- menü ---- */
 function menu(on){ST.on=!on;$('ov').classList.toggle('off',!on);if(on){const g=$('grid');g.innerHTML='';WORLDS.forEach((w,i)=>{const b=document.createElement('button');b.className='wc'+(SAVE.done.indexOf(i)>=0?' done':'');b.innerHTML='<img src="dexworld/w'+String(i+1).padStart(2,'0')+'.jpg" alt=""><span class="st">'+(i+1)+'. '+w.n+'</span>';b.setAttribute('aria-label',(i+1)+'. világ: '+w.n);b.onclick=()=>goWorld(i);g.appendChild(b)});
- $('tot').textContent='Eddig: 🟡 '+SAVE.coins+' Coin · 💎 '+SAVE.gems+' gyémánt · ✓ '+SAVE.done.length+'/12 világ';$('play').textContent=ST.started?'▶ FOLYTATÁS':'▶ JÁTÉK'}}
+ $('tot').textContent='Eddig: 🟡 '+SAVE.coins+' Coin · 💎 '+SAVE.gems+' gyémánt · 📦 '+(SAVE.chests||[]).length+'/12 kincs · ✓ '+SAVE.done.length+'/12 világ';$('play').textContent=ST.started?'▶ FOLYTATÁS':'▶ JÁTÉK'}}
 function goWorld(i){i=((i%12)+12)%12;buildWorld(i);ST.started=true;menu(false);const w=WORLDS[i];card((i+1)+'. '+w.n,w.s);setTimeout(()=>say('Üdv a '+w.n+' világában! '+w.task+' Nyolc Coin és három gyémánt kell. Ha elakadsz, szólj: segíts!'),500)}
 $('play').addEventListener('click',()=>{if(ST.started){menu(false)}else goWorld(SAVE.last||0)});
 $('exit').addEventListener('click',()=>{try{window.parent.postMessage({type:'dex-world-close'},'*')}catch(e){}});
@@ -618,10 +610,10 @@ function vrSet(on){if(on===VRM.on)return VRM.on;VRM.on=on;document.body.classLis
 /* saját mikrofon, ha nem a DEX-ből fut (ott a DEX hallgat) */
 function vrVoice(on){if(window.parent!==window||!SR)return;if(on&&!VOICE.on){try{$('mic').click()}catch(e){}}else if(!on&&VOICE.on){try{$('mic').click()}catch(e){}}}
 $('bvr').addEventListener('click',()=>vrSet(true));$('vrx').addEventListener('click',()=>vrSet(false));
-window.WORLD={cmd,state:()=>({vr:{on:VRM.on,g:VRM.g,walk:VRM.walk,jumps:VRM.jumps||0,waves:VRM.waves||0,helps:VRM.helps||0,ori:VRM.ori||0,err:VRM.err,yaw:YAW,pitch:VRM.pitch},on:ST.on,w:ST.w,name:WORLDS[ST.w].n,coins:ST.coins,gems:ST.gems,open:!!(PORTAL&&PORTAL.open),pl:{x:PL.x,y:PL.y,z:PL.z},col:COL.map(c=>({x:c.x,y:c.y,z:c.z,gem:c.gem,taken:c.taken})),portal:PORTAL&&{x:PORTAL.x,y:PORTAL.y||0,z:PORTAL.z},npcs:NPCS.map(n=>[n.x,n.z]),veh:VEH&&{k:VEH.k,x:VEH.x,y:VEH.y,z:VEH.z},car:!!PL.car,spr:['jatekos','dex','v_auto'].map(sprReady),save:SAVE,say:lastSay,glErr:gl.getError()}),go:goWorld,tp:(x,y,z)=>{PL.x=x;PL.y=y;PL.z=z;PL.vy=0},enterCar,leaveCar,jumpHold:v=>{JUMPH=!!v},menu,help:dexHelp,interact,worlds:WORLDS.map(w=>w.n)};
+window.WORLD={cmd,state:()=>({chest:CHEST&&{x:CHEST.x,y:CHEST.y,z:CHEST.z,open:CHEST.open},vr:{on:VRM.on,g:VRM.g,walk:VRM.walk,jumps:VRM.jumps||0,waves:VRM.waves||0,helps:VRM.helps||0,ori:VRM.ori||0,err:VRM.err,yaw:YAW,pitch:VRM.pitch},on:ST.on,w:ST.w,name:WORLDS[ST.w].n,coins:ST.coins,gems:ST.gems,open:!!(PORTAL&&PORTAL.open),pl:{x:PL.x,y:PL.y,z:PL.z},col:COL.map(c=>({x:c.x,y:c.y,z:c.z,gem:c.gem,taken:c.taken})),portal:PORTAL&&{x:PORTAL.x,y:PORTAL.y||0,z:PORTAL.z},npcs:NPCS.map(n=>[n.x,n.z]),veh:VEH&&{k:VEH.k,x:VEH.x,y:VEH.y,z:VEH.z},car:!!PL.car,spr:['jatekos','dex','v_auto'].map(sprReady),save:SAVE,say:lastSay,glErr:gl.getError()}),go:goWorld,tp:(x,y,z)=>{PL.x=x;PL.y=y;PL.z=z;PL.vy=0},enterCar,leaveCar,jumpHold:v=>{JUMPH=!!v},menu,help:dexHelp,interact,worlds:WORLDS.map(w=>w.n)};
 partsBuild();menu(true);requestAnimationFrame(frame);
 if(/[?&]vr=1/.test(location.search)){setTimeout(()=>{goWorld(SAVE.last||0);vrSet(true)},300)}
 window.WORLD.vr=vrSet;
 </script>
-<a href="dexworld/grafikak.html" style="position:fixed;top:10px;right:10px;z-index:99999;background:#0b2739e8;color:#d9faff;border:1px solid #3aa9c8;border-radius:20px;padding:8px 12px;font:12px system-ui;text-decoration:none" aria-label="Összes grafika megtekintése">🖼️ Grafikák</a></body>
+</body>
 </html>
