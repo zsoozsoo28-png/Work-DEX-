@@ -470,3 +470,49 @@ Lásd DEX_TELEFON_OFFLINE/GITHUB_LEPESEK.txt (v40 rész). A kézmodell az mp map
   - ZIP-letöltés vagy feltöltés a Shopify boltba (nem élesíti);
   - előfizetőnek és adminnak benne van, másnak egyszeri díjas (a díjat a szerver szabja meg).
 - **Admin központ** (WORK admin tetején, `admin57.js`): fizetés és kulcsok, rendelések, képgenerálás, Shopify-kapcsolat és sablondíj, valamint szerver/felhasználók (DEX CONTROL, `#control`).
+
+## 2026-10-23 késő este – E) rész + DEX World új grafika
+- **Áthelyezés hangra (WORK, admin mód):**
+  - „tedd a kosár gombot a keresés alá / fölé / mellé”;
+  - ha a kérés elrontana valamit (kilógna, rálógna egy gombra, a vásárlás gomb túl lejjebb kerülne), előtte szól: „Ezt nem ajánlom, mert…, így is megcsináljam?”;
+  - „igen” → megcsinálja, „vond vissza” → visszaállítja.
+- **Mély memória** (`dex57plus.js`):
+  - „jegyezd meg, hogy …”, „fontos: soha …” (szabály), „mire emlékszel?”, „felejtsd el, hogy …”;
+  - „memória mentése” → DEX_MEMORIA.zip, „memória betöltése”;
+  - „memória feltöltése a GitHubra”: privát tároló kell, a kulcs csak a telefonon marad;
+  - a szabályoknak ellentmondó kérésnél szól, és rákérdez.
+- **„Tanítsd meg DEX-et”:** „ha azt mondom X, azt értem Y” – a saját szavaidat ezután mindenhol érti.
+- **Tippek:** alapból kikapcsolva. „tippek be / ki”, egyszeri kérés: „adj tippet”.
+- **E-kereskedelmi számolók:** „profit, ha 30-ért adom, 12 a beszerzés, 4 a szállítás, 8 a hirdetés” → profit, árrés, CPA-plafon, megtérülési ROAS (WORK-ben is).
+- **Szövegíró:** „írj termékleírást / hirdetést / címeket a …-hoz”. Meggyőző szerkezettel (PAS, AIDA), a „kulcs = lehetőség” szemlélettel.
+- **„Hé DEX” ébresztőszó:** „ébresztőszó be”, alapból kikapcsolva. Csak nyitott DEX-oldalon működik.
+- **Okos agy a WORK csevegőjében is**, ha le van töltve.
+- **DEX World:** mind a 12 világ megkapta a saját új grafikáit a 09–11-es átlátszó csomagból:
+  - a gyűjthető Coin és gyémánt a világ saját energiagömbje és kristálya;
+  - a talajon lámpás, zászló, jelző, láda, energiaoszlop, pajzs és kristálycsoport;
+  - a kezdőhelynél ellenőrző pont, a portálnál díszkapu;
+  - az égen lebegő platformok és csillagok.
+- **DEX World – mi nincs még benne:** a csomag többi része referencia, kicsi vagy nem átlátszó, ezért az nem került be. Ide tartoznak a karakter- és DEX-mozgásképek, valamint a 07-es csempék.
+
+## 2026-10-23 23:00 – DEX World: járás hangra, növények, burkolatok
+- **Járás hangra:**
+  - „menj” (menjél, menjünk, sétálj, indulj, gyerünk, menj előre) → nyugodt, közepes séta, ami addig tart, amíg nem mondod: „állj”;
+  - „gyorsan” → gyorsabb séta;
+  - „gyorsabban”, „futás”, „fuss”, „fussál”, „rohanj”, „szaladj” → futás;
+  - „lassabban” → lassabb séta;
+  - „állj”, „stop”, „állj meg”, „várj” → megáll.
+- **Ugrás minden alakban:** ugrás, ugorj, ugorjál, ugorjon, ugorjunk, ugrani, hopp, fel.
+- **Új csomag (216 PNG):**
+  - minden világban 6 saját, lengő növény (világonként 30 darab elszórva);
+  - a kezdőhelyen kőlap-burkolat;
+  - a portálnál energialap-burkolat.
+
+## 2026-10-24 00:05 – HANG: megbízhatóan, telefonon is (`dex57voice.js`, DEX, WORK, DEX World)
+- A böngésző felolvasójának Android/Chrome-hibái ellen:
+  - kis késleltetés a „cancel” után;
+  - a beszéd megtartása, amíg szól;
+  - ébren tartás 15 másodperc után;
+  - magyar hang kiválasztása;
+  - hangfeloldás az első érintéskor.
+- **„hangteszt”** (vagy „hallasz?”, „nincs hangod”): kimond egy próbamondatot, és megmondja, mi a baj (nincs magyar hang a telefonon, ki van kapcsolva a felolvasás, koppintani kell).
+- Ha a felolvasás véletlenül kikapcsolva maradt, magától visszakapcsol. Ha te kapcsolod ki („kapcsold ki a hangot”), ki is marad.

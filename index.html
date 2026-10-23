@@ -4674,7 +4674,7 @@ if(document.getElementById('page')||/work/i.test(location.pathname)){
   'Ha a felhasználó a felületen akar valamit, add vissza egyszerű magyar parancsként a "cmds" listában (például "nyisd meg a videót", "kapcsold ki a hangot", "görgess lejjebb", "a küldés gomb legyen piros"). '+
   'Válaszod CSAK egy JSON: {"say":"amit mondasz","cmds":["parancs"]}. Ha nincs teendő a felületen, a cmds üres lista.';
  var HIST=[];
- async function ask(text,opt){var eng=await load();var msgs=[{role:'system',content:SYS+(window.DEX_KB_LLM?window.DEX_KB_LLM():'')}].concat(HIST.slice(-6)).concat([{role:'user',content:String(text)}]);
+ async function ask(text,opt){var eng=await load();var mc='';try{mc=window.DEX_MEM?window.DEX_MEM.context(String(text)):''}catch(e){}var msgs=[{role:'system',content:SYS+mc}].concat(HIST.slice(-6)).concat([{role:'user',content:String(text)}]);
   var r=await eng.chat.completions.create({messages:msgs,temperature:.3,max_tokens:300});var t=(r&&r.choices&&r.choices[0]&&r.choices[0].message&&r.choices[0].message.content)||'';
   var pl=null,m=t.match(/\{[\s\S]*\}/);if(m){try{var o=JSON.parse(m[0]);pl={say:typeof o.say==='string'?o.say:'',cmds:Array.isArray(o.cmds)?o.cmds.filter(function(x){return typeof x==='string'}).slice(0,4):[]}}catch(e){}}
   if(!pl)pl={say:t.replace(/```[a-z]*|```/g,'').trim().slice(0,700),cmds:[]};
@@ -4714,9 +4714,11 @@ if(document.getElementById('page')||/work/i.test(location.pathname)){
  var IS_WORK=!!(document.getElementById('page')||/work/i.test(location.pathname))&&!/\/dex\/?/.test(location.pathname)&&!window.DEX40;
 
  /* ---------- 1) tisztítás: töltelékszó, dadogás, ismétlés ---------- */
- var FILL={o:1,oo:1,ooo:1,oooo:1,e:0,ee:1,eee:1,hm:1,hmm:1,hmmm:1,mm:1,mmm:1,hat:1,ize:1,izek:0,izeke:1,szoval:1,tehat:1,figyelj:1,figyu:1,ugye:1,asszem:1,legyszi:1,legyszives:1,kerlek:1,pls:1,plz:1,na:1,nah:1,nahat:1,he:1,hey:1,hej:1,dex:1,deksz:1,dexi:1,dexke:1,szoval:1,izet:0,mondjuk:1,amugy:1,egyebkent:1,bazd:1,bazdmeg:1,kurva:1,francba:1,fenebe:1,basszus:1,picsaba:1,kibaszott:1,kurvara:1,rohadt:1};
+ var FILL={o:1,oo:1,ooo:1,oooo:1,e:0,ee:1,eee:1,hm:1,hmm:1,hmmm:1,mm:1,mmm:1,hat:1,ize:1,izek:0,izeke:1,szoval:1,tehat:1,figyelj:1,figyu:1,ugye:1,asszem:1,legyszi:1,legyszives:1,kerlek:1,pls:1,plz:1,na:1,nah:1,nahat:1,he:1,hey:1,hej:1,szoval:1,izet:0,mondjuk:1,amugy:1,egyebkent:1,bazd:1,bazdmeg:1,kurva:1,francba:1,fenebe:1,basszus:1,picsaba:1,kibaszott:1,kurvara:1,rohadt:1};
  var KEEPSHORT={a:1,az:1,meg:1,ki:1,be:1,el:1,le:1,fel:1,at:1,ra:1,is:1,es:1,de:1,ne:1,ha:1,mi:1,ez:1,en:1,te:1,o:0,egy:1,ket:1,ot:1,hat:1,het:1,sok:1,kis:1,nagy:1};
- function clean(raw){var orig=String(raw||'').trim();if(!orig)return orig;
+ var PRE=[],EXT=[],POST=[];
+function clean(raw){var orig=String(raw||'').trim();if(!orig)return orig;PRE.forEach(function(f){try{var x=f(orig);if(x)orig=x}catch(e){}});
+  orig=orig.replace(/^\s*(?:(?:hé|he|hey|hej|szia)\s+)?(?:dex|deksz|dexi|dexke)[,!.]?\s+(?!world|vilag|világ)(?=\S)/i,'');
   var toks=orig.replace(/[„”"“…]+/g,' ').split(/\s+/),out=[];
   for(var i=0;i<toks.length;i++){var t=toks[i];
    /* kötőjeles dadogás: ny-ny-nyisd, kap-kapcsold */
@@ -4870,6 +4872,7 @@ if(document.getElementById('page')||/work/i.test(location.pathname)){
    if(/\b(allapot\w*|hol tart\w*|kesz\w*|megvan|mukodik|bent van)\b/.test(f))return {say:B.status()};
    if(/\b(letolt\w*|tolts\w*|telepit\w*|bekapcs\w*|indits\w*|kell|kerem|akarom|szerezd|toltsd)\b/.test(f))return {say:B.start()};
    return {say:B.status()}}
+  for(var xi=0;xi<EXT.length;xi++){var xr=null;try{xr=EXT[xi](cleaned,f,ff)}catch(e){}if(xr)return xr}
   var t=talkAns(f);if(t)return {say:t};
   t=timeAns(f);if(t)return {say:t};
   t=mathAns(ff);if(t)return {say:t};
@@ -4893,7 +4896,8 @@ if(document.getElementById('page')||/work/i.test(location.pathname)){
    return 'Erre a kérdésre a beépített tudásom nem elég. '+(window.DEX_BRAIN&&window.DEX_BRAIN.supported&&window.DEX_BRAIN.supported()?'Ha letöltöd a telefonos okos agyat (mondd: „okos agy letöltése”, egyszer kell, Wi-Fin ajánlott), utána internet nélkül is válaszolok az ilyenekre.':'Az okos móddal (Beállítások) erre is tudok válaszolni.');
   return 'Nem értettem pontosan, mire gondolsz. Mondd el másképp, vagy egy-két szóval (például: „videó”, „hang ki”, „görgess le”).'}
  /* egy kör: tisztít → saját → belső → javított → utalás → súgó → okos agy → visszakérdezés */
- function process(raw){var cleaned=clean(raw),o=own(cleaned);
+ function process(raw){var r=process0(raw);if(typeof r==='string'&&r)POST.forEach(function(f){try{var y=f(r,raw);if(typeof y==='string')r=y}catch(e){}});return r}
+ function process0(raw){var cleaned=clean(raw),o=own(cleaned);
   if(o){if(o.say){return o.say}if(o.nav){remember(cleaned);return openRoute(o.nav)}if(o.run&&o.soft){var x0=call(cleaned);if(!bad(x0)&&x0!==''){remember(cleaned);return x0}}if(o.run){var x=call(o.run);if(!bad(x)){remember(o.run);return x}cleaned=o.run}}
   if(DEIC.test(foldw(cleaned))&&!/\b(ez|ezt|azt)\s+(?:a\s+)?(?:szot|szoveget|kepet|uzenetet|jegyzetet)\b/.test(foldw(cleaned))){var d0=resolveDeictic(cleaned);
    if(d0){var rd0=call(d0);if(!bad(rd0)){remember(d0);return rd0}}
@@ -4907,7 +4911,7 @@ if(document.getElementById('page')||/work/i.test(location.pathname)){
   if(smartOK())return null;
   if(brainOK())return viaBrain(cleaned);
   return fallbackText(cleaned)}
- window.DEX_SENSE={inner:function(t){return call(t)},clean:clean,correct:correct,math:function(t){return mathAns(fold(t))},time:function(t){return timeAns(foldw(t))},cap:function(t){return capAns(foldw(t))},nav:function(t){return navIntent(foldw(t))},onoff:function(t){return onoff(foldw(t))},guess:guess,ctx:function(){return CTX},process:process,fallback:fallbackText,own:own};
+ window.DEX_SENSE={pre:function(f){PRE.push(f)},ext:function(f){EXT.push(f)},post:function(f){POST.push(f)},isWork:IS_WORK,inner:function(t){return call(t)},clean:clean,correct:correct,math:function(t){return mathAns(fold(t))},time:function(t){return timeAns(foldw(t))},cap:function(t){return capAns(foldw(t))},nav:function(t){return navIntent(foldw(t))},onoff:function(t){return onoff(foldw(t))},guess:guess,ctx:function(){return CTX},process:process,fallback:fallbackText,own:own};
 
  /* ---------- beépülés a DEX-be (legkülső réteg) ---------- */
  function hookDex(){var Dx=window.DEX40;if(!Dx||typeof Dx.handle!=='function')return false;if(Dx.__sense)return true;
@@ -4925,13 +4929,198 @@ if(document.getElementById('page')||/work/i.test(location.pathname)){
   function inWork(q){var cleaned=clean(q),o=own(cleaned);if(o){if(o.say)return o.say;if(o.nav){remember(cleaned);return openRoute(o.nav)}}
    var d=resolveDeictic(cleaned);var h=null;try{h=window.DEX_HELP&&(window.DEX_HELP.work(d||cleaned)||window.DEX_HELP.answer(d||cleaned))}catch(e){}if(h){remember(cleaned);return h}
    var c=correct(cleaned);if(c){var oc=own(c);if(oc&&oc.nav){remember(c);return openRoute(oc.nav)}if(oc&&oc.say)return oc.say;try{h=window.DEX_HELP&&window.DEX_HELP.answer(c)}catch(e){}if(h)return h}
+   if(brainOK())return '\u0000BRAIN';
    return fallbackText(cleaned)}
   window.addEventListener('wdea-ai-command',function(e){var q='';try{q=String(e.detail&&e.detail.text||'').trim()}catch(x){}if(!q)return;try{var oc0=own(clean(q));if(oc0&&(oc0.nav||oc0.say))e.detail.__sense=1}catch(x){}Q.push({q:q,t:Date.now()});setTimeout(fixW,450);if(Q.length>20)Q.shift();setTimeout(fixW,1100);setTimeout(fixW,1800)},true);
   function fixW(){var ms=[].slice.call(document.querySelectorAll('#wdea-ai-panel .wdea-msg'));
    Q.forEach(function(it){if(it.done)return;for(var i=ms.length-1;i>=0;i--){var m=ms[i];if(!m.classList.contains('user')||m.textContent.trim()!==it.q)continue;var nx=ms[i+1];if(!nx||nx.classList.contains('user'))break;
      var oc=own(clean(it.q));if(oc&&(oc.nav||oc.say)&&!it.own){it.own=1;it.done=true;var a0=oc.say||(remember(clean(it.q)),openRoute(oc.nav));nx.textContent=a0;break}
-     if(UNKRE.test(nx.textContent)){it.done=true;var a=inWork(it.q);nx.textContent=a;try{if(localStorage.getItem('wdea_speak_enabled')==='1'&&window.wdeaSpeakCustom)window.wdeaSpeakCustom(a,true)}catch(x){}}else if(Date.now()-it.t>1500)it.done=true;break}})}
+     if(UNKRE.test(nx.textContent)){it.done=true;var a=inWork(it.q);if(a==='\u0000BRAIN'){nx.textContent='Gondolkodom…';(function(el,q){window.DEX_BRAIN.ask(q,{}).then(function(pl){el.textContent=(pl&&pl.say)||fallbackText(clean(q))}).catch(function(){el.textContent=fallbackText(clean(q))})})(nx,it.q);break}nx.textContent=a;try{if(localStorage.getItem('wdea_speak_enabled')==='1'&&window.wdeaSpeakCustom)window.wdeaSpeakCustom(a,true)}catch(x){}}else if(Date.now()-it.t>1500)it.done=true;break}})}
   window.DEX_SENSE.work=inWork}
+})();
+
+</script>
+<script>
+/* DEX 57+ – (1) MÉLY MEMÓRIA a telefonon, hordozható DEX_MEMORIA mappába menthető, GitHubra is
+             (2) „Tanítsd meg DEX-et”: a te szavaid („ha azt mondom X, azt értem Y”)
+             (3) a régi, erős döntéseid számítanak: ha egy kérés ellentmond, szól és rákérdez
+             (4) tippek alapból KI – csak kérésre („adj tippet”, „tippek be”)
+             (5) e-kereskedelmi számolók: profit, árrés, megtérülési ROAS, CPA-plafon, ROAS
+             (6) szövegíró: termékleírás, hirdetés, címek – meggyőzően, „a kulcs = lehetőség” szemlélettel
+   Minden helyben fut, internet nélkül. A DEX_SENSE rétegre épül (DEX-ben és a WORK DEX-csevegőjében is). */
+(function(){
+ if(window.DEX_MEM)return;
+ function fold(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim()}
+ function stem(w){return w.length>5?w.slice(0,5):w}
+ var KM='dex57_mem_v1',KG='dex57_mem_github',KP='dex57_prefs';
+ function load(){try{var a=JSON.parse(localStorage.getItem(KM)||'[]');return Array.isArray(a)?a:[]}catch(e){return []}}
+ var MEM=load();function save(){try{localStorage.setItem(KM,JSON.stringify(MEM))}catch(e){}}
+ function prefs(){try{return JSON.parse(localStorage.getItem(KP)||'{}')||{}}catch(e){return {}}}function setPref(k,v){var p=prefs();p[k]=v;try{localStorage.setItem(KP,JSON.stringify(p))}catch(e){}}
+ function add(kind,text,extra){var it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),k:kind,t:String(text).trim(),at:new Date().toISOString().slice(0,10),w:kind==='rule'?3:1};for(var x in extra)it[x]=extra[x];
+  var dup=MEM.filter(function(m){return m.k===kind&&fold(m.t)===fold(it.t)})[0];if(dup){dup.w=Math.min(9,(dup.w||1)+1);dup.at=it.at;save();return dup}MEM.push(it);if(MEM.length>2000)MEM.shift();save();return it}
+ function words(s){return fold(s).split(' ').filter(function(w){return w.length>=4&&!/^(hogy|amit|amikor|akkor|mindig|soha|sose|legyen|kell|nekem|neked|ezt|azt|vagy|csak|minden|nincs|lesz|volt|ahol|mert|ilyen|olyan)$/.test(w)})}
+ function overlap(a,b){var A=words(a).map(stem),B=words(b).map(stem),n=0;A.forEach(function(x){if(B.indexOf(x)>=0)n++});return n}
+ function relevant(q,lim){return MEM.filter(function(m){return m.k!=='alias'}).map(function(m){return [m,overlap(q,m.t)*(m.w||1)]}).filter(function(x){return x[1]>0}).sort(function(a,b){return b[1]-a[1]}).slice(0,lim||5).map(function(x){return x[0]})}
+ function context(q){var r=relevant(q,6),rules=MEM.filter(function(m){return m.k==='rule'}).slice(-6);var all=r.concat(rules.filter(function(x){return r.indexOf(x)<0}));if(!all.length)return '';return ' Amit a felhasználóról és a döntéseiről tudsz (tartsd be): '+all.map(function(m){return (m.k==='rule'?'[SZABÁLY] ':'')+m.t}).join(' | ')}
+ /* ---- szótanítás: a felhasználó saját szavai ---- */
+ function aliasPre(raw){var al=MEM.filter(function(m){return m.k==='alias'});if(!al.length)return null;var out=raw,ch=false;
+  al.forEach(function(a){var re=new RegExp('(^|[\\s,.!?])'+a.a.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=$|[\\s,.!?])','gi');if(re.test(out)){out=out.replace(re,'$1'+a.b);ch=true}});return ch?out:null}
+ /* ---- tippek: alapból ki ---- */
+ var TIPRE=/\s*(?:\(?Ha szeretnéd, (?:oda is viszlek: )?mondd[^.)]*[.)]\)?|Ha szeretnéd, mondd: vigyél oda\.|Lépésenként: mondd, „vezess végig”\.|Lépésenkénti vezetéshez mondd: „vezess végig”\.|Ha nem segít, mondd: „vezess végig[^”]*”\.|\(Ha inkább „[^”]*” érdekel, kérdezz rá\.\)|Mondd: „vezess végig[^”]*”\.)/g;
+ var ASKTIP=false;
+ function tipsPost(r,raw){if(prefs().tips||ASKTIP){ASKTIP=false;return r}var x=String(r).replace(TIPRE,'').replace(/\s{2,}/g,' ').trim();return x||r}
+ /* ---- export / import (hordozható DEX_MEMORIA mappa) ---- */
+ var CRC=(function(){var t=new Uint32Array(256);for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+ function crc32(b){var c=0xffffffff;for(var i=0;i<b.length;i++)c=CRC[(c^b[i])&255]^(c>>>8);return (c^0xffffffff)>>>0}
+ function zip(entries){var enc=new TextEncoder(),parts=[],central=[],off=0;entries.forEach(function(e){var name=enc.encode(e.name),data=enc.encode(e.data),crc=crc32(data);var h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint32(14,crc,true);h.setUint32(18,data.length,true);h.setUint32(22,data.length,true);h.setUint16(26,name.length,true);parts.push(new Uint8Array(h.buffer),name,data);var cd=new DataView(new ArrayBuffer(46));cd.setUint32(0,0x02014b50,true);cd.setUint16(4,20,true);cd.setUint16(6,20,true);cd.setUint16(8,0x0800,true);cd.setUint32(16,crc,true);cd.setUint32(20,data.length,true);cd.setUint32(24,data.length,true);cd.setUint16(28,name.length,true);cd.setUint32(42,off,true);central.push(new Uint8Array(cd.buffer),name);off+=30+name.length+data.length});
+  var cs=central.reduce(function(a,b){return a+b.length},0),end=new DataView(new ArrayBuffer(22));end.setUint32(0,0x06054b50,true);end.setUint16(8,entries.length,true);end.setUint16(10,entries.length,true);end.setUint32(12,cs,true);end.setUint32(16,off,true);return new Blob(parts.concat(central,[new Uint8Array(end.buffer)]),{type:'application/zip'})}
+ function md(kind,title){var l=MEM.filter(function(m){return m.k===kind});return '# '+title+'\n\n'+(l.length?l.map(function(m){return '- '+(m.k==='alias'?'„'+m.a+'” = „'+m.b+'”':m.t)+'  _('+m.at+(m.w>1?', erősség '+m.w:'')+')_'}).join('\n'):'_(még üres)_')+'\n'}
+ function files(){var j=JSON.stringify({format:'DEX_MEMORIA',v:1,saved:new Date().toISOString(),items:MEM},null,1);
+  return [{name:'DEX_MEMORIA/memoria.json',data:j},{name:'DEX_MEMORIA/README.md',data:'# DEX_MEMORIA\n\nA DEX hordozható, mély memóriája. Ebből a mappából bármikor visszatölthető (mondd a DEX-nek: „memória betöltése”), és GitHubra is feltehető.\n\n- `memoria.json` – a teljes memória (ezt tölti vissza a DEX)\n- `szabalyok.md` – döntések, „mindig / soha” szabályok\n- `tenyek.md` – amit megjegyeztetett\n- `szavaim.md` – a saját szavai (szótanítás)\n'},{name:'DEX_MEMORIA/szabalyok.md',data:md('rule','Döntések és szabályok')},{name:'DEX_MEMORIA/tenyek.md',data:md('fact','Megjegyzett tények')},{name:'DEX_MEMORIA/szavaim.md',data:md('alias','A saját szavaim')}]}
+ function exportZip(){var b=zip(files()),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='DEX_MEMORIA.zip';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},30000);return b}
+ function merge(items){var n=0;(items||[]).forEach(function(it){if(!it||!it.k||!(it.t||it.a))return;if(MEM.some(function(m){return m.id===it.id||(m.k===it.k&&fold(m.t)===fold(it.t)&&fold(m.a||'')===fold(it.a||''))}))return;MEM.push(it);n++});save();return n}
+ function readZipJson(buf){var u=new Uint8Array(buf),dv=new DataView(buf),i=0,dec=new TextDecoder();
+  while(i+30<u.length&&dv.getUint32(i,true)===0x04034b50){var meth=dv.getUint16(i+8,true),cs=dv.getUint32(i+18,true),nl=dv.getUint16(i+26,true),xl=dv.getUint16(i+28,true),name=dec.decode(u.subarray(i+30,i+30+nl)),st=i+30+nl+xl,data=u.subarray(st,st+cs);
+   if(/memoria\.json$/.test(name)){if(meth===0)return Promise.resolve(dec.decode(data));if(meth===8&&window.DecompressionStream){return new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text()}}i=st+cs}
+  return Promise.reject(new Error('A ZIP-ben nincs memoria.json.'))}
+ function importFile(f){return f.arrayBuffer().then(function(buf){var head=new Uint8Array(buf.slice(0,2));return head[0]===0x50&&head[1]===0x4b?readZipJson(buf):new TextDecoder().decode(buf)}).then(function(t){var j=JSON.parse(t);return merge(j.items||j)})}
+ function pickImport(){var i=document.createElement('input');i.type='file';i.accept='.zip,.json,application/zip,application/json';i.onchange=function(){var f=i.files&&i.files[0];if(!f)return;importFile(f).then(function(n){reply('Betöltöttem a memóriát: '+n+' új emlék.')}).catch(function(e){reply('A memóriát nem tudtam betölteni: '+(e.message||e))})};i.click()}
+ function reply(t){try{if(window.DEX_UI&&window.DEX_UI.reply)window.DEX_UI.reply(t);else if(window.WDEA_WORK_AI&&window.WDEA_WORK_AI.say)window.WDEA_WORK_AI.say(t)}catch(e){}}
+ /* ---- GitHub: a memória egy (privát) tárolóba; a hozzáférési kulcs csak ezen a telefonon marad ---- */
+ function gh(){try{return JSON.parse(localStorage.getItem(KG)||'null')}catch(e){return null}}
+ function ghApi(c,path,opt){return fetch('https://api.github.com/repos/'+c.repo+'/contents/'+path,Object.assign({headers:{Authorization:'Bearer '+c.token,Accept:'application/vnd.github+json'}},opt||{})).then(function(r){return r.json().then(function(j){j.__s=r.status;return j})})}
+ function b64(s){return btoa(unescape(encodeURIComponent(s)))}
+ function ghPush(){var c=gh();if(!c)return Promise.reject(new Error('nincs beállítva'));var fs=files();
+  return fs.reduce(function(p,f){return p.then(function(){var path=f.name;return ghApi(c,path).then(function(cur){return ghApi(c,path,{method:'PUT',headers:{Authorization:'Bearer '+c.token,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify({message:'DEX memória mentése',content:b64(f.data),sha:cur&&cur.sha||undefined})}).then(function(r){if(r.__s>=300)throw new Error(r.message||('GitHub hiba '+r.__s))})})})},Promise.resolve()).then(function(){return fs.length})}
+ function ghPull(){var c=gh();if(!c)return Promise.reject(new Error('nincs beállítva'));return ghApi(c,'DEX_MEMORIA/memoria.json').then(function(j){if(j.__s>=300||!j.content)throw new Error(j.message||'Nincs még memória a GitHubon.');var t=decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));return merge(JSON.parse(t).items)})}
+ function ghSetup(){var o=document.createElement('div');o.id='dexmem-gh';o.style.cssText='position:fixed;inset:0;z-index:2147483000;background:#000a;display:flex;align-items:flex-end;justify-content:center';
+  var c=gh()||{};o.innerHTML='<div style="width:min(560px,100%);background:#0c1222;color:#eaf1ff;border:1px solid #2a3a60;border-radius:20px 20px 0 0;padding:16px;font:15px system-ui"><b style="font-size:17px">🧠 Memória mentése GitHubra</b><p style="font-size:13px;color:#9fb2d8">Hozz létre egy <b>privát</b> tárolót (például dex-memoria), majd GitHub → Settings → Developer settings → Fine-grained token: csak ehhez a tárolóhoz, Contents: Read and write. A kulcs csak ezen a telefonon marad.</p>'+
+   '<label style="display:block;margin:8px 0">Tároló (felhasználó/név)<input id="dmg-r" value="'+(c.repo||'')+'" placeholder="zsolt/dex-memoria" style="width:100%;min-height:44px;border-radius:10px;border:1px solid #2a3a60;background:#0a1020;color:#fff;padding:0 10px;box-sizing:border-box"></label>'+
+   '<label style="display:block;margin:8px 0">Hozzáférési kulcs<input id="dmg-t" type="password" placeholder="'+(c.token?'beállítva ••••'+c.token.slice(-4):'github_pat_…')+'" style="width:100%;min-height:44px;border-radius:10px;border:1px solid #2a3a60;background:#0a1020;color:#fff;padding:0 10px;box-sizing:border-box"></label>'+
+   '<div style="display:flex;gap:8px;margin-top:10px"><button id="dmg-s" style="flex:1;min-height:46px;border-radius:12px;border:0;background:linear-gradient(90deg,#6a5cff,#2fb8ff);color:#fff;font-weight:700">Mentés és feltöltés</button><button id="dmg-x" style="min-height:46px;border-radius:12px;border:1px solid #2a3a60;background:#141d33;color:#fff;padding:0 14px">Bezárás</button></div><div id="dmg-m" style="margin-top:8px;font-size:13px"></div></div>';
+  document.body.appendChild(o);o.querySelector('#dmg-x').onclick=function(){o.remove()};
+  o.querySelector('#dmg-s').onclick=function(){var r=o.querySelector('#dmg-r').value.trim(),t=o.querySelector('#dmg-t').value.trim()||c.token||'';if(!/^[\w.-]+\/[\w.-]+$/.test(r)||!t){o.querySelector('#dmg-m').textContent='Add meg a tárolót (felhasználó/név) és a kulcsot.';return}
+   try{localStorage.setItem(KG,JSON.stringify({repo:r,token:t}))}catch(e){}o.querySelector('#dmg-m').textContent='Feltöltés…';ghPush().then(function(n){o.querySelector('#dmg-m').textContent='Kész: '+n+' fájl felkerült a GitHubra (DEX_MEMORIA mappa).'}).catch(function(e){o.querySelector('#dmg-m').textContent='Nem sikerült: '+(e.message||e)})};return o}
+ /* ---- e-kereskedelmi számolók ---- */
+ function numsNear(raw){var t=' '+String(raw).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/(\d)\s+(\d{3})\b/g,'$1$2').replace(/,(\d)/g,'.$1')+' ',out={};
+  var KEYS=[['price',/(elad\w*|ar\b|arat|aron|arert|aron adom|arban|adom|bevetel\w*|kosarertek\w*|aov)/],['cost',/(beszerz\w*|beker\w*|termek ?ar\w*|onkoltseg\w*|gyartas\w*|vetel ?ar\w*|beszallit\w*)/],['ship',/(szallit\w*|posta\w*|kuldes\w*)/],['ads',/(hirdet\w*|reklam\w*|cpa|vasarlonkent\w*|ads?)/],['fee',/(dij\w*|jutalek\w*|kezelesi\w*|fizetesi ?dij\w*)/],['spend',/(koltottem|koltes\w*|elkoltott\w*|budget|keret\w*)/],['rev',/(bevetel\w*|forgalom\w*|eladas ?ertek\w*)/]];
+  var re=/(\d+(?:\.\d+)?)\s*(%|szazalek\w*)?/g,m;while((m=re.exec(t))){var v=parseFloat(m[1]),pct=!!m[2],before=t.slice(Math.max(0,m.index-34),m.index),after=t.slice(re.lastIndex,re.lastIndex+22),best=null,bd=99;
+   KEYS.forEach(function(k){var mb=before.match(new RegExp(k[1].source+'(?!.*'+k[1].source+')')),ma=after.match(k[1]);if(mb){var d=before.length-before.lastIndexOf(mb[0]);if(d<bd){bd=d;best=k[0]}}if(ma&&ma.index<bd&&ma.index<12){bd=ma.index;best=k[0]}});
+   if(pct&&(best==='fee'||!best)){out.feePct=v;continue}if(best&&out[best]==null)out[best]=v}return out}
+ function eur(v){return (Math.round(v*100)/100).toLocaleString('hu-HU')}
+ function calc(raw,f){if(!/\b(profit\w*|haszon\w*|nyereseg\w*|arres\w*|roas|cpa|megterul\w*|break ?even|nullszaldo\w*|mennyit keresek|mennyi marad)\b/.test(f))return null;var N=numsNear(raw);
+  if(/\broas\b/.test(f)&&N.spend!=null&&(N.rev!=null||N.price!=null)&&N.cost==null){var rv=N.rev!=null?N.rev:N.price;return {say:'ROAS: '+eur(rv/N.spend)+' (minden hirdetésre költött 1 egység '+eur(rv/N.spend)+' egység bevételt hozott). Hogy nyereséges-e, az az árréstől függ: mondd meg az eladási árat és a beszerzési árat, és kiszámolom a megtérülési ROAS-t.'}}
+  if(N.price==null||N.cost==null)return {say:'Ehhez két szám kell: az eladási ár és a beszerzési ár (ha van: szállítás, hirdetés vásárlónként, díjak %-ban). Például: „profit, ha 30-ért adom, 12 a beszerzés, 4 a szállítás, 8 a hirdetés, 3% díj”.'};
+  var fee=N.price*(N.feePct||0)/100+(N.fee||0),ship=N.ship||0,ads=N.ads||0,contrib=N.price-N.cost-ship-fee,profit=contrib-ads,margin=N.price?profit/N.price*100:0,beRoas=contrib>0?N.price/contrib:Infinity;
+  var s='Számolás (darabonként): eladási ár '+eur(N.price)+' − beszerzés '+eur(N.cost)+(ship?' − szállítás '+eur(ship):'')+(fee?' − díjak '+eur(fee):'')+(ads?' − hirdetés '+eur(ads):'')+' = '+(profit>=0?'profit ':'veszteség ')+eur(Math.abs(profit))+' ('+eur(margin)+'% a vételárhoz képest). ';
+  s+=contrib>0?'A hirdetésre vásárlónként legfeljebb '+eur(contrib)+' mehet el, hogy ne legyél mínuszban (ez a CPA-plafon). Megtérülési ROAS: '+eur(beRoas)+' – ennél jobban kell teljesítenie a hirdetésnek.':'Hirdetés nélkül is veszteséges: emeld az árat, vagy keress olcsóbb beszerzést.';
+  if(contrib>0&&beRoas>3)s+=' Figyelem: '+eur(beRoas)+'-ös megtérülési ROAS nehezen hozható; egészséges, ha 2 körül vagy alatta van – nagyobb árrés vagy magasabb kosárérték (csomagajánlat) segít.';
+  return {say:s}}
+ /* ---- szövegíró ---- */
+ function pick(a){return a[Math.floor(Math.random()*a.length)]}
+ function copy(raw,f){if(!/\b(irj|ird meg|irjal|keszits|fogalmazz|kerek|kellene)\b/.test(f)||!/\b(termekleiras\w*|leiras\w*|hirdetes\w*|reklam ?szoveg\w*|reklamszoveg\w*|cim\w*|szlogen\w*|email\w*|poszt\w*|szoveg\w*)\b/.test(f))return null;
+  var m=String(raw).match(/(?:-hoz|-hez|-höz|hoz|hez|höz|ról|ről|-ról|-ről|a\s|az\s|egy\s)\s*([^,.!?]{3,60})$/i),p=String(raw).replace(/^.*?\b(termékleírást|termékleírás|leírást|hirdetést|hirdetésszöveget|reklámszöveget|címet|címeket|szlogent|e-mailt|posztot|szöveget)\b\s*(?:a |az |egy |ehhez:?|ehhez a|erről:?|erről a)?\s*/i,'').replace(/-?(hoz|hez|höz|ról|ről)$/i,'').replace(/á$/,'a').replace(/é$/,'e').replace(/^(-|:)\s*/,'').trim();
+  if(!p||p.length<3||fold(p)===f)return {say:'Melyik termékhez írjam? Mondd így: „írj termékleírást a párásító lámpához”.'};
+  var P=p.charAt(0).toUpperCase()+p.slice(1);
+  if(/\bcim\w*|szlogen/.test(f))return {say:'Címek: 1) '+P+' – a kulcs egy nyugodtabb mindennaphoz. 2) Ami eddig hiányzott: '+p+'. 3) Nyisd ki a lehetőséget: '+p+', ami tényleg működik.'};
+  if(/\bhirdetes|reklam/.test(f))return {say:'Hirdetés (AIDA): 🔑 Figyelem: Ez lehet a kulcs, amit kerestél. Érdeklődés: '+P+' – egyszerű, gyors, és azonnal érezhető a különbség. Vágy: képzeld el, hogy holnaptól ez már a te mindennapod része. Cselekvés: rendeld meg most – 30 napig kockázat nélkül kipróbálhatod. 👉 Megrendelem'};
+  return {say:'Termékleírás (PAS): Probléma: ismerős, amikor a megszokott megoldás egyszerűen nem elég? Felnagyítás: minden nap elvesz egy kicsit az idődből és a kedvedből. Megoldás: '+P+' – nem csak egy termék, hanem a kulcs egy új lehetőséghez: kevesebb bosszúság, több idő arra, ami fontos. ✓ Prémium minőség ✓ Gyors szállítás ✓ 30 napos visszaküldés. Nyisd ki a lehetőséget – rendeld meg most.'}}
+ /* ---- parancsok ---- */
+ var PEND=null,SKIP=false;
+ function ext(cleaned,f){
+  if(PEND&&Date.now()-PEND.at<120000){var p=PEND;if(/^(igen|igen csinald|csinald|csinald meg|mehet|persze|oke|ok)$/.test(f)){PEND=null;SKIP=true;var x=null;try{x=window.DEX_SENSE.process(p.text)}catch(e){}SKIP=false;return {say:x||'Megcsináltam.'}}if(/^(nem|megse|megsem|hagyd|ne)$/.test(f)){PEND=null;return {say:'Rendben, nem csinálom meg.'}}PEND=null}
+  if(/\b(tipp\w*)\b/.test(f)){if(/\b(be|bekapcs\w*|kerek|kerem|mindig)\b/.test(f)&&/\btippek\b/.test(f)){setPref('tips',true);return {say:'Bekapcsoltam a tippeket: a válaszok végén mondok javaslatot is.'}}if(/\b(ki|kikapcs\w*|ne|nem kell|eleg)\b/.test(f)){setPref('tips',false);return {say:'Kikapcsoltam a tippeket: csak azt csinálom és mondom, amit kérsz.'}}ASKTIP=true}
+  var rm=cleaned.match(/^(jegyezd meg|emlékezz(?: rá)?|emlekezz(?: ra)?|tanuld meg|ne felejtsd el|fontos|szabály|szabaly|döntés|dontes|elhatároztam|elhataroztam|eldöntöttem|eldontottem)[\s,:]*(?:hogy\s+)?(.+)$/i);
+  if(rm&&rm[2].length>2&&!/^(a jegyzet|jegyzet)/i.test(rm[2])){var t=rm[2].replace(/[.!]+$/,'');var isRule=/^(fontos|szab|dönt|dont|elhat|eldönt|eldont)/i.test(rm[1])||/\b(mindig|soha|sose|ne |nem szabad|tilos|kotelezo|kell hogy)\b/.test(fold(t)+' ');var it=add(isRule?'rule':'fact',t);
+   return {say:(isRule?'Megjegyeztem szabályként: „':'Megjegyeztem: „')+it.t+'”.'+(isRule?' Ha később ezzel ellentétes kérést kapok, szólok.':'')}}
+  var am=cleaned.match(/^(?:ha|amikor)\s+azt\s+mond(?:om|ok)[,:]?\s*[„"]?(.+?)[”"]?[,]?\s+(?:azt|azon|az|akkor)\s+(?:azt\s+)?(?:értem|ertem|jelenti|gondolom|az)[\s,:]*(?:hogy\s+)?[„"]?(.+?)[”"]?\.?$/i)||cleaned.match(/^tanítsd(?: meg)?[:\s]+[„"]?(.+?)[”"]?\s*=\s*[„"]?(.+?)[”"]?$/i);
+  if(am){var a=am[1].trim(),b=am[2].trim();if(a&&b&&fold(a)!==fold(b)){MEM=MEM.filter(function(m){return !(m.k==='alias'&&fold(m.a)===fold(a))});add('alias',a+' = '+b,{a:a,b:b});return {say:'Megtanultam: ha azt mondod „'+a+'”, azt úgy értem: „'+b+'”.'}}}
+  if(/^(mire emlekszel|mit tudsz rolam|mi van a memoriadban|mit jegyeztel meg|mit tanultal|mutasd a memoriat|memoria)$/.test(f)){var R=MEM.filter(function(m){return m.k==='rule'}),F=MEM.filter(function(m){return m.k==='fact'}),A=MEM.filter(function(m){return m.k==='alias'});
+   if(!MEM.length)return {say:'Még nincs semmi a memóriámban. Mondd például: „jegyezd meg, hogy a boltom neve Lumi”, vagy „fontos: soha ne adj tippet kérés nélkül”.'};
+   return {say:'Memóriám: '+R.length+' szabály, '+F.length+' tény, '+A.length+' saját szó. '+(R.length?'Szabályok: '+R.slice(-4).map(function(m){return '„'+m.t+'”'}).join('; ')+'. ':'')+(F.length?'Tények: '+F.slice(-4).map(function(m){return '„'+m.t+'”'}).join('; ')+'. ':'')+(A.length?'Szavaid: '+A.slice(-4).map(function(m){return '„'+m.a+'” = „'+m.b+'”'}).join('; ')+'.':'')}}
+  var fm=f.match(/^(?:felejtsd el|torold a memoriabol|ne emlekezz)\s*(?:hogy\s+)?(.*)$/);if(fm){if(/^(mindent|az egeszet|az osszeset)$/.test(fm[1])){var n0=MEM.length;MEM=[];save();return {say:'Töröltem a teljes memóriát ('+n0+' emlék). Ha előtte mentetted, a „memória betöltése” visszahozza.'}}
+   var best=null,bs=0;MEM.forEach(function(m){var o=overlap(fm[1],m.t)+(fold(m.t).indexOf(fm[1])>=0&&fm[1].length>3?3:0);if(o>bs){bs=o;best=m}});if(best){MEM=MEM.filter(function(m){return m!==best});save();return {say:'Elfelejtettem: „'+best.t+'”.'}}return {say:'Ilyet nem találtam a memóriámban. Kérdezd meg: „mire emlékszel?”'}}
+  if(/\bmemoria\w*\b/.test(f)){
+   if(/github/.test(f)){if(/\b(letolt\w*|betolt\w*|lehuz\w*|hozd le)\b/.test(f)){if(!gh()){ghSetup();return {say:'Előbb állítsuk be a GitHubot: add meg a tárolót és a kulcsot.'}}ghPull().then(function(n){reply('Letöltöttem a memóriát a GitHubról: '+n+' új emlék.')}).catch(function(e){reply('Nem sikerült: '+(e.message||e))});return {say:'Letöltöm a memóriát a GitHubról…'}}
+    if(/\b(beallit\w*)\b/.test(f)||!gh()){ghSetup();return {say:'Megnyitottam a GitHub-beállítást: privát tároló és egy csak ahhoz szóló kulcs kell. A kulcs csak ezen a telefonon marad.'}}
+    ghPush().then(function(n){reply('Feltöltöttem a memóriát a GitHubra ('+n+' fájl, DEX_MEMORIA mappa).')}).catch(function(e){reply('Nem sikerült feltölteni: '+(e.message||e))});return {say:'Feltöltöm a memóriát a GitHubra…'}}
+   if(/\b(ment\w*|export\w*|letolt\w*|mentsd)\b/.test(f)){exportZip();return {say:'Lementettem a memóriát: DEX_MEMORIA.zip (benne a DEX_MEMORIA mappa). Ezt bárhová viheted, és GitHubra is feltöltheted.'}}
+   if(/\b(betolt\w*|visszatolt\w*|import\w*|toltsd be)\b/.test(f)){pickImport();return {say:'Válaszd ki a DEX_MEMORIA.zip-et (vagy a memoria.json-t).'}}}
+  var r=calc(cleaned,f);if(r)return r;r=copy(cleaned,f);if(r)return r;
+  /* régi, erős döntések: ha a kérés ellentmond, előtte szól */
+  if(!SKIP&&!window.DEX_SENSE.isWork&&/\b(tedd|rakd|torold|torolj|kapcsold|allitsd|legyen|valtoztasd|keszits|kuldd|vegyel|vasarolj|fizess|nyisd|inditsd|irj|ird)\b/.test(f)){var rules=MEM.filter(function(m){return m.k==='rule'});for(var i=rules.length-1;i>=0;i--){var ru=rules[i],fr=fold(ru.t),neg=/\b(soha|sose|ne|nem szabad|tilos)\b/.test(fr);if(neg&&overlap(cleaned,ru.t)>=2){PEND={text:cleaned,at:Date.now()};return {say:'Ezt nem ajánlom, mert korábban ezt döntötted: „'+ru.t+'”. Így is megcsináljam? (igen / nem)'}}}}
+  return null}
+ function hook(n){var S=window.DEX_SENSE;if(!S||!S.ext){if(n<80)setTimeout(function(){hook(n+1)},200);return}S.pre(aliasPre);S.ext(ext);S.post(tipsPost)}
+ hook(0);
+ window.DEX_MEM={add:add,list:function(){return MEM.slice()},context:context,relevant:relevant,exportZip:exportZip,files:files,importFile:importFile,merge:merge,ghPush:ghPush,ghPull:ghPull,ghSetup:ghSetup,calc:function(t){return calc(t,fold(t))},copy:function(t){return copy(t,fold(t))},clear:function(){MEM=[];save()},prefs:prefs};
+})();
+
+</script>
+<script>
+/* DEX 57 – HANG MEGBÍZHATÓAN (telefonon is): a böngésző felolvasójának ismert Android/Chrome-hibái ellen
+   1) „cancel” után azonnal kiadott beszéd elveszik → kis késleltetéssel adjuk ki
+   2) a beszéd-objektumot a böngésző idő előtt eldobja → megtartjuk, amíg szól
+   3) ~15 mp után a Chrome magától megáll → beszéd közben ébren tartjuk (pause/resume)
+   4) nincs kiválasztva magyar hang → kiválasztjuk a magyart (ha van a telefonon)
+   5) az első érintéskor „feloldjuk” a hangot (néma próbabeszéd), mert a böngésző érintés nélkül nem enged hangot
+   Parancs: „hangteszt” – kimondja, hogy hall-e, és megmutatja, mi van beállítva. */
+(function(){
+ var SS=window.speechSynthesis;if(!SS||window.__dex57voice)return;window.__dex57voice=1;
+ var origSpeak=SS.speak.bind(SS),origCancel=SS.cancel.bind(SS),lastCancel=0,KEEP=[],HU=null,unlocked=false,ka=0;
+ function pickHU(){try{var vs=SS.getVoices()||[];HU=vs.filter(function(v){return /^hu/i.test(v.lang)})[0]||null}catch(e){HU=null}return HU}
+ pickHU();try{SS.addEventListener('voiceschanged',pickHU)}catch(e){try{SS.onvoiceschanged=pickHU}catch(x){}}
+ function keepAlive(){clearInterval(ka);ka=setInterval(function(){try{if(!SS.speaking){clearInterval(ka);return}SS.pause();SS.resume()}catch(e){}},10000)}
+ SS.cancel=function(){lastCancel=Date.now();try{return origCancel()}catch(e){}};
+ SS.speak=function(u){try{if(u&&/^hu/i.test(u.lang||'hu')&&!u.voice&&(HU||pickHU()))u.voice=HU}catch(e){}
+  KEEP.push(u);if(KEEP.length>8)KEEP.shift();var done=function(){var i=KEEP.indexOf(u);if(i>=0)KEEP.splice(i,1)};try{u.addEventListener('end',done);u.addEventListener('error',done)}catch(e){}
+  var go=function(){try{if(SS.paused)SS.resume()}catch(e){}try{origSpeak(u)}catch(e){}keepAlive()};
+  if(Date.now()-lastCancel<120)setTimeout(go,90);else go()};
+ function unlock(){if(unlocked)return;unlocked=true;try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;u.lang='hu-HU';origSpeak(u)}catch(e){}}
+ ['pointerdown','touchend','keydown','click'].forEach(function(ev){document.addEventListener(ev,unlock,{capture:true,passive:true})});
+ function report(){var vs=[];try{vs=SS.getVoices()||[]}catch(e){}var hu=pickHU(),auto=null;try{var c=JSON.parse(localStorage.getItem('dex40_voice_v1')||'{}');auto=c.auto}catch(e){}
+  return {voices:vs.length,hu:hu?hu.name:'',auto:auto,unlocked:unlocked}}
+ function test(){var r=report();var msg='Hallasz engem? Ez a hangteszt.';try{var u=new SpeechSynthesisUtterance(msg);u.lang='hu-HU';SS.cancel();SS.speak(u)}catch(e){}
+  return 'Hangteszt: most mondtam egy próbamondatot. '+(r.voices?('A telefonon '+r.voices+' hang van, '+(r.hu?'magyar hang: '+r.hu+'.':'magyar hang nincs telepítve – a telefon Beállítások → Szövegfelolvasás részében töltsd le a magyar hangot.')):'A böngésző még nem töltötte be a hangokat – koppints egyet, és mondd újra.')+(r.auto===false?' A felolvasás ki van kapcsolva – mondd: „kapcsold be a hangot”.':'')+(r.unlocked?'':' Koppints egyszer a képernyőre, hogy a böngésző engedje a hangot.')}
+ window.DEX_VOICE57={report:report,test:test,unlock:unlock};
+ (function hook(n){var S=window.DEX_SENSE;if(!S||!S.ext){if(n<80)setTimeout(function(){hook(n+1)},200);return}
+  S.ext(function(c,f){try{if(/\b(hang\w*|felolvas\w*|beszed\w*)\b/.test(f)&&/\b(ki|kikapcs\w*|ne beszelj|elhallgass|csend)\b/.test(f))localStorage.setItem('dex57_voice_off_by_user','1');else if(/\b(hang\w*|felolvas\w*)\b/.test(f)&&/\b(be|bekapcs\w*)\b/.test(f))localStorage.removeItem('dex57_voice_off_by_user')}catch(e){}
+  if(/^(hangteszt|hang teszt|teszteld a hangot|hallasz|hallasz engem|miert nincs hangod|nincs hangod|nem hallak|nem beszelsz)$/.test(f))return {say:test()};return null})})(0);
+ /* ha a felolvasás véletlenül kikapcsolva maradt (és nem a felhasználó kapcsolta ki kifejezetten), visszakapcsoljuk */
+ try{var c=JSON.parse(localStorage.getItem('dex40_voice_v1')||'null');if(c&&c.auto===false&&localStorage.getItem('dex57_voice_off_by_user')!=='1'&&window.DEX40_UI&&window.DEX40_UI.autovoice)setTimeout(function(){try{window.DEX40_UI.autovoice(true)}catch(e){}},1500)}catch(e){}
+})();
+
+</script>
+<script>
+/* DEX 57 – „Hé DEX” ébresztőszó: amíg a DEX oldala nyitva van, csendben figyel, és csak arra reagál, ami „Hé DEX”-szel (vagy „DEX”-szel) kezdődik.
+   Be: „ébresztőszó be” · Ki: „ébresztőszó ki”. Alapból KI. A böngésző miatt csak nyitott, előtérben lévő oldalon működik. */
+(function(){
+ if(window.DEX_WAKE)return;
+ var KP='dex57_wake',R=null,ON=false,armed=0,restartT=0;
+ function fold(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim()}
+ var WAKE=/^(?:(?:he|hey|hej|szia|halo|hello|na)\s+)?(?:dex|deksz|dexi|dexke|decs|dekk|tex)\b[\s,]*(.*)$/;
+ function speaking(){try{return !!(window.DEX_SPEAKING&&window.DEX_SPEAKING())}catch(e){return false}}
+ function send(t){try{if(window.DEX40_SEND)window.DEX40_SEND(t);else if(window.DEX40){var r=window.DEX40.handle(t);if(r&&window.DEX_UI)window.DEX_UI.reply(r)}}catch(e){}}
+ function heard(raw){var f=fold(raw);if(!f||speaking())return;var m=WAKE.exec(f);
+  if(m){var rest=String(raw).replace(/^\s*(?:(?:hé|he|hey|hej|szia|haló|halo|helló|hello|na)\s+)?(?:dex|deksz|dexi|dexke|decs|dekk|tex)\b[\s,!.]*/i,'').trim();if(rest){armed=0;send(rest)}else{armed=Date.now();try{window.DEX_UI&&window.DEX_UI.reply('Igen?')}catch(e){}}return}
+  if(armed&&Date.now()-armed<9000){armed=0;send(String(raw).trim())}}
+ function start(){var SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return false;if(R)return true;
+  try{R=new SR();R.lang='hu-HU';R.continuous=true;R.interimResults=false;R.maxAlternatives=1;
+   R.onresult=function(e){for(var i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)heard(e.results[i][0].transcript)}};
+   R.onerror=function(e){if(e&&(e.error==='not-allowed'||e.error==='service-not-allowed')){ON=false;save();try{window.DEX_UI&&window.DEX_UI.reply('Az ébresztőszóhoz engedélyezni kell a mikrofont a böngészőben.')}catch(x){}}};
+   R.onend=function(){R=null;if(ON&&!document.hidden){clearTimeout(restartT);restartT=setTimeout(start,700)}};
+   R.start();return true}catch(e){R=null;return false}}
+ function stop(){ON=false;save();try{R&&R.stop()}catch(e){}R=null}
+ function save(){try{localStorage.setItem(KP,ON?'1':'0')}catch(e){}}
+ document.addEventListener('visibilitychange',function(){if(document.hidden){try{R&&R.stop()}catch(e){}}else if(ON)start()});
+ /* bekapcsolt állapotban az első koppintásra indul (a böngésző ezt kéri) */
+ try{ON=localStorage.getItem(KP)==='1'}catch(e){}
+ if(ON)document.addEventListener('pointerdown',function f(){document.removeEventListener('pointerdown',f,true);start()},true);
+ function cmd(f){if(!/\b(ebreszto ?szo\w*|he dex|hey dex|ebresztes\w*)\b/.test(f))return null;
+  if(/\b(ki|kikapcs\w*|allitsd le|ne figyelj|eleg)\b/.test(f)){stop();return {say:'Kikapcsoltam az ébresztőszót.'}}
+  if(/\b(be|bekapcs\w*|inditsd|figyelj)\b/.test(f)||/^(he dex|hey dex)$/.test(f)){if(!(window.SpeechRecognition||window.webkitSpeechRecognition))return {say:'Ez a böngésző nem tud folyamatosan figyelni. Chrome-ban működik.'};ON=true;save();start();return {say:'Bekapcsoltam: mostantól elég annyit mondanod, „Hé DEX”, és utána a kérést. Amíg az oldal nyitva van, csendben figyelek. Kikapcsolás: „ébresztőszó ki”.'}}
+  return {say:'Ébresztőszó: '+(ON?'bekapcsolva':'kikapcsolva')+'. Mondd: „ébresztőszó be” vagy „ébresztőszó ki”.'}}
+ (function hook(n){var S=window.DEX_SENSE;if(!S||!S.ext||S.isWork){if(!S&&n<80)setTimeout(function(){hook(n+1)},200);return}S.ext(function(c,f){return cmd(f)})})(0);
+ window.DEX_WAKE={on:function(){return ON},start:function(){ON=true;save();return start()},stop:stop,heard:heard};
 })();
 
 </script>
