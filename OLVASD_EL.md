@@ -538,3 +538,4 @@ Lásd DEX_TELEFON_OFFLINE/GITHUB_LEPESEK.txt (v40 rész). A kézmodell az mp map
 - **Admin belépés előtt:** csak az „Admin felület” cím, a belépőkód, a Belépés gomb és a „⛔ Tilos a belépés” magyarázat látszik. A Fizetési módok, a Képgenerálás, a Szabályzatok, az Admin központ és a szerkesztősáv csak sikeres belépés után, az admin belsejében érhető el.
 - **Szerkesztősáv (✎ ↶ ⟲ ?):** hosszan (kb. fél mp) nyomva bárhol megfogható és odébb húzható (a ⠿ fogantyúval azonnal). A helyét megjegyzi. Rövid koppintásra a gombok ugyanúgy működnek.
 - **VR:** „nyisd meg a work kosarat” közvetlenül a WORK megnyitása után is a kért oldalt nyitja (megvárja a betöltést).
+- **DEX arca – száj a D betű helyén:** beszéd közben a száj ott mozog, ahol a D betű van (a D-t ilyenkor a száj váltja). Nyugalomban a D látszik, a két szem között nincs vonal. A „Figyelek / Beszélek” felirat mindig az arc alatt van.

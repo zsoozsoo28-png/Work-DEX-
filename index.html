@@ -4607,15 +4607,19 @@ if(document.getElementById('page')||/work/i.test(location.pathname)){
   '.dfx .dmouth .dm-in{opacity:.0}.dfx.gtalk .dmouth .dm-in{animation:none!important;opacity:.85}.dfx.gtalk .dmouth .dm-ln{animation:none!important}';
  document.head.appendChild(css);
  /* száj: beszéd közben a felső és az alsó ajak íve szótagritmusban változik (nem csak villog) */
- var X0=185.5,X1=230.5,XM=208,Y=279;
- function shape(o){var up=284-o*3,lo=286+o*13;
+ /* a száj a „D” betű helyén van (az arc alsó részén), nem a két szem között; nyugalomban a D látszik, beszéd közben a D helyén mozog a száj */
+ var X0=180,X1=232,XM=206,Y=363;
+ function shape(o){var up=Y+5-o*3,lo=Y+7+o*13;
   return {ln:'M'+X0+' '+Y+' Q'+XM+' '+(lo+2)+' '+X1+' '+Y,in_:'M'+X0+' '+Y+' Q'+XM+' '+up+' '+X1+' '+Y+' Q'+XM+' '+(lo+4)+' '+X0+' '+Y+'Z'}}
- var cur=0,tgt=0,last=0;
+ var cur=0,tgt=0,last=0,cvo=0;
  function tick(t){var w=document.querySelector('.dfx'),ln=w&&w.querySelector('.dm-ln'),inn=w&&w.querySelector('.dm-in');
   if(ln&&inn){var talk=w.classList.contains('gtalk');
    if(talk){if(t-last>95+Math.random()*70){last=t;tgt=Math.random()<.18?.08:.3+Math.random()*.7}}else tgt=0;
    cur+=(tgt-cur)*(talk?.45:.25);if(Math.abs(cur)<.01)cur=0;
-   var s=shape(cur);ln.setAttribute('d',s.ln);inn.setAttribute('d',s.in_);inn.style.opacity=cur>0?String(.35+cur*.6):'0'}
+   var cov=w.querySelector('.dm-cov');if(!cov){var NS='http://www.w3.org/2000/svg',sv=ln.ownerSVGElement,g=ln.parentNode;if(sv&&!sv.querySelector('#dm57g')){var df=sv.querySelector('defs')||sv.insertBefore(document.createElementNS(NS,'defs'),sv.firstChild),rg=document.createElementNS(NS,'radialGradient');rg.setAttribute('id','dm57g');[['0','1'],['.72','1'],['1','0']].forEach(function(a){var st=document.createElementNS(NS,'stop');st.setAttribute('offset',a[0]);st.setAttribute('stop-color','#02040d');st.setAttribute('stop-opacity',a[1]);rg.appendChild(st)});df.appendChild(rg)}
+    cov=document.createElementNS(NS,'ellipse');cov.setAttribute('class','dm-cov');cov.setAttribute('cx',XM);cov.setAttribute('cy',Y+1);cov.setAttribute('rx','40');cov.setAttribute('ry','29');cov.setAttribute('fill','url(#dm57g)');cov.style.opacity='0';g.parentNode.insertBefore(cov,g)}
+   cvo+=((talk?1:0)-cvo)*.25;if(cvo<.01)cvo=0;cov.style.opacity=String(cvo);
+   var s=shape(cur);ln.setAttribute('d',s.ln);inn.setAttribute('d',s.in_);inn.style.opacity=cur>0?String(.35+cur*.6):'0';ln.style.opacity=String(Math.min(1,cvo*1.4))}
   requestAnimationFrame(tick)}
  requestAnimationFrame(tick);
  (function w(n){var ch=document.getElementById('inlineChat');if(!ch){if(n<40)setTimeout(function(){w(n+1)},250);return}new MutationObserver(function(){setTimeout(function(){try{window.dispatchEvent(new Event('resize'))}catch(e){}},420)}).observe(ch,{attributes:true,attributeFilter:['class']})})(0);
