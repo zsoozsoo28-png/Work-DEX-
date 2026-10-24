@@ -171,7 +171,7 @@ function billDrawW(n,x,y,z,h){if(!atwOk(n))return false;const M=ATW.meta,it=M.i[
  gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,ATW.tex);gl.uniform1i(U.tex,0);gl.drawArrays(gl.TRIANGLES,0,6);gl.disableVertexAttribArray(SP.A.q);gl.useProgram(SH.p);return true}
 /* a világ „felöltöztetése”: lámpások, zászlók, jelzők, ládák, energiaoszlopok, pajzsok, kristálycsoportok a talajon;
    ellenőrző pont a kezdőhelynél, kapu a portálnál, lebegő platformok és csillagok az égen */
-let PLZ=[];const TEXP={};
+let PLZ=[],GB=null,GRD=null,MGB=null,MGRD=null;const TEXP={};
 function texPng(src){if(TEXP[src])return TEXP[src];const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([180,180,180,255]));const im=new Image();im.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);gl.generateMipmap(gl.TEXTURE_2D);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT)};im.src=src;TEXP[src]=t;return t}
 const DRESS=[['lampas',2.3,.35],['zaszlo',2.6,.25],['jelzo',1.9,.3],['lada',1.05,.55],['energia_oszlop',2.8,.4],['pajzs',1.5,.35],['kristaly_csoport',1.5,.6]];
 function dressWorld(i){const s0=seed;seed=4242+i*131;DECW=[];ATW.dirty=1;for(const q of PLZ)try{gl.deleteBuffer(q.m.b)}catch(e){}PLZ=[];
@@ -253,7 +253,7 @@ let G,GE,GT,OBST,PLAT,NPCS,ANIM,COL,PORTAL,SPAWN,VOID,WIDX=0,WATER;
 function addObst(x,z,r){OBST.push({x,z,r})}
 function addPlat(x,z,hw,hd,top,round){PLAT.push({x,z,hw,hd,top,round:!!round})}
 function T(...a){return chain(...a)}
-function building(x,z,w,d,h,col,win,emis=.85){G.box(T(M4.tr(x,0,z)),hex(col),0,w,h,d);G.box(T(M4.tr(x,h,z)),hex(win),.6,w*1.04,.25,d*1.04);
+function building(x,z,w,d,h,col,win,emis=.85){(GB||G).box(T(M4.tr(x,0,z)),hex(col),0,w,h,d);G.box(T(M4.tr(x,h,z)),hex(win),.6,w*1.04,.25,d*1.04);
  const fl=Math.floor(h/1.4);for(let k=1;k<fl;k++){if(rnd()<.25)continue;const y=k*1.4-.3;for(const s of [-1,1]){GE.box(T(M4.tr(x,y,z+s*(d/2+.02))),hex(win),emis,w*.82,.5,.04);GE.box(T(M4.tr(x+s*(w/2+.02),y,z)),hex(win),emis,.04,.5,d*.82)}}addObst(x,z,Math.max(w,d)*.62)}
 function tree(x,z,h,col,trunk=0x6d4a33,kind=0){G.cyl(T(M4.tr(x,0,z)),hex(trunk),0,.16,.24,h*.45,7);
  if(kind===0){for(let j=0;j<3;j++)G.cyl(T(M4.tr(x,h*.35+j*h*.2,z)),hex(col).map(v=>v*(1-j*.06)),0,0,h*(.42-j*.08),h*.42,8)}else{G.sph(T(M4.tr(x,h*.62,z)),hex(col),0,h*.32,9,6);G.sph(T(M4.tr(x+h*.15,h*.5,z+h*.1)),hex(col).map(v=>v*.9),0,h*.22,8,5)}addObst(x,z,.45)}
@@ -262,7 +262,7 @@ function lamp(x,z,col){G.cyl(T(M4.tr(x,0,z)),hex(0x9aa4c8),0,.07,.09,3,6);GE.sph
 function crystal(x,z,s,col){GE.oct(T(M4.tr(x,s*.9,z),M4.ry(rnd()*3),M4.sc(1,1.6,1)),hex(col),.55,s);addObst(x,z,s*.6)}
 function person(g,x,z,body,face=0xffcfa8,hair=0x2a1a10,ry=0){const m=(...a)=>T(M4.tr(x,0,z),M4.ry(ry),...a);g.box(m(M4.tr(-.13,0,0)),hex(0x22284a),0,.2,.8,.24);g.box(m(M4.tr(.13,0,0)),hex(0x22284a),0,.2,.8,.24);g.box(m(M4.tr(0,.8,0)),hex(body),0,.6,.75,.34);
  g.box(m(M4.tr(-.38,.85,0)),hex(body),0,.16,.65,.2);g.box(m(M4.tr(.38,.85,0)),hex(body),0,.16,.65,.2);g.sph(m(M4.tr(0,1.82,0)),hex(face),0,.25,9,7);g.sph(m(M4.tr(0,1.93,-.02)),hex(hair),0,.26,9,4,.6)}
-function road(x,z,w,l,ry,col=0x2a3048,line=0xfff1b8){G.box(T(M4.tr(x,.01,z),M4.ry(ry)),hex(col),0,w,.04,l);for(let k=-l/2+2;k<l/2;k+=5)GE.box(T(M4.tr(x,.02,z),M4.ry(ry),M4.tr(0,0,k)),hex(line),.7,.18,.04,2)}
+function road(x,z,w,l,ry,col=0x2a3048,line=0xfff1b8){(GRD||G).box(T(M4.tr(x,.01,z),M4.ry(ry)),hex(col),0,w,.04,l);for(let k=-l/2+2;k<l/2;k+=5)GE.box(T(M4.tr(x,.02,z),M4.ry(ry),M4.tr(0,0,k)),hex(line),.7,.18,.04,2)}
 function portalAt(x,y,z){PORTAL={x,y,z,open:false};G.cyl(T(M4.tr(x,y,z)),hex(0x384266),0,2.4,2.6,.3,20);GE.tor(T(M4.tr(x,y+.32,z)),hex(0x5fe3ff),.8,2.5,.06,30,5);addPlat(x,z,2.4,2.4,y+.3,true)}
 function waterfall(x,z,h,w){GE.box(T(M4.tr(x,0,z)),hex(0x8fe0ff),.7,w,h,.3);GE.cyl(T(M4.tr(x,0,z+1.2)),hex(0xbff0ff),.5,w*.8,w*.9,.15,14)}
 /* fűcsomók (a kapott fű-PNG-kből, a kamera felé fordulva, lengenek) */
@@ -399,9 +399,9 @@ function partsBuild(){const P={};
  for(const k in P)MESH[k]=P[k].upload()}
 function GE_(geo,col,list){list.forEach(b=>geo.box(M4.tr(b[0],b[1],b[2]),hex(col),.9,b[3],b[4],b[5]))}
 /* ---- egy világ felépítése ---- */
-function buildWorld(i){const w=WORLDS[i];seed=1000+i*7919;G=new Geo();GE=new Geo();GRS=[];DEC=[];ATL.dirty=1;OBST=[];PLAT=[];NPCS=[];ANIM=[];COL=[];PORTAL=null;VOID=false;
+function buildWorld(i){const w=WORLDS[i];seed=1000+i*7919;G=new Geo();GE=new Geo();GB=new Geo();GRD=new Geo();GRS=[];DEC=[];ATL.dirty=1;OBST=[];PLAT=[];NPCS=[];ANIM=[];COL=[];PORTAL=null;VOID=false;
  GEN[w.gen]();try{atwLoad(i);dressWorld(i)}catch(e){}if(PORTAL)dec('poster'+String((i+1)%12+1).padStart(2,'0'),PORTAL.x,PORTAL.z,2.4,(PORTAL.y||0)+5.3);{const g=COL[9]||COL[0];CHEST={x:g.x+2.4,z:g.z,y:g.y-1.2,n:['chest_a','chest_b','chest_c','chest_d'][i%4],open:(SAVE.chests||[]).indexOf(i)>=0,ot:0}}
- for(const k of ['world','worldE'])if(MESH[k])gl.deleteBuffer(MESH[k].b);MESH.world=G.upload();MESH.worldE=GE.upload();if(MESH.grass)gl.deleteBuffer(MESH.grass.b);{const d=new Float32Array(GRS),b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,d,gl.STATIC_DRAW);MESH.grass={b,n:d.length/13}}
+ for(const k of ['world','worldE'])if(MESH[k])gl.deleteBuffer(MESH[k].b);MESH.world=G.upload();MESH.worldE=GE.upload();for(const q of [MGB,MGRD])if(q&&q.m)try{gl.deleteBuffer(q.m.b)}catch(e){}{const wk=WKEY[i]||'varos';MGB={m:GB.upload(),tex:texPng('dexworld/w/'+wk+'_fal.jpg')};MGRD={m:GRD.upload(),tex:texPng('dexworld/w/'+wk+'_burkolat.jpg')}}GB=null;GRD=null;if(MESH.grass)gl.deleteBuffer(MESH.grass.b);{const d=new Float32Array(GRS),b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,d,gl.STATIC_DRAW);MESH.grass={b,n:d.length/13}}
  const sky=w.sky.map(hex);W={sunD:norm([.45,.8,.35]),sunC:hex(w.sun).map(v=>v*w.sunI),skyC:hex(w.amb[0]),gndC:hex(w.amb[1]),fogC:hex(w.fog),fogD:w.fogD,top:sky[0],hor:sky[1],bot:sky[2],stars:w.stars,tex:texLoad(w.tex),grav:w.grav||1};
  if(!GROUND){const g=new Geo();g.box(M4.tr(0,-1,0),[1,1,1],0,170,1,170);GROUND=g.upload()}
  /* részecskék */
@@ -498,7 +498,7 @@ function scene(t,w,Hd,vr){
  gl.enable(gl.DEPTH_TEST);gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);gl.frontFace(gl.CW);gl.disable(gl.CULL_FACE);
  gl.useProgram(SH.p);setCommon();
  if(!VOID&&w.gen!=='underwater'||w.gen==='underwater')if(!VOID)draw(GROUND,M4.id(),{tex:W.tex,texS:.09,tint:w.tex==='grass'?[.62,.72,.6]:[1,1,1]});
- draw(MESH.world,M4.id());draw(MESH.worldE,M4.id(),{glow:.5});for(const q of PLZ)draw(q.m,M4.id(),{tex:q.tex,texS:.22,tint:[.95,.95,.95]});
+ draw(MESH.world,M4.id());draw(MESH.worldE,M4.id(),{glow:.5});for(const q of PLZ)draw(q.m,M4.id(),{tex:q.tex,texS:.22,tint:[.95,.95,.95]});if(MGB&&MGB.m)draw(MGB.m,M4.id(),{tex:MGB.tex,texS:.18,tint:[.9,.9,.9]});if(MGRD&&MGRD.m)draw(MGRD.m,M4.id(),{tex:MGRD.tex,texS:.2,tint:[.8,.8,.8]});
  atlBuild();atwBuild();if((MESH.grass&&MESH.grass.n)||(MESH.decor&&MESH.decor.n)||(MESH.decorW&&MESH.decorW.n)){for(const k in SH.A)gl.disableVertexAttribArray(SH.A[k]);gl.useProgram(GR.p);gl.bindBuffer(gl.ARRAY_BUFFER,MESH.grass.b);const A=GR.A,S=52;gl.enableVertexAttribArray(A.c);gl.vertexAttribPointer(A.c,3,gl.FLOAT,false,S,0);gl.enableVertexAttribArray(A.o);gl.vertexAttribPointer(A.o,2,gl.FLOAT,false,S,12);gl.enableVertexAttribArray(A.uv);gl.vertexAttribPointer(A.uv,2,gl.FLOAT,false,S,20);gl.enableVertexAttribArray(A.s);gl.vertexAttribPointer(A.s,1,gl.FLOAT,false,S,28);gl.enableVertexAttribArray(A.tn);gl.vertexAttribPointer(A.tn,3,gl.FLOAT,false,S,32);gl.enableVertexAttribArray(A.ar);gl.vertexAttribPointer(A.ar,1,gl.FLOAT,false,S,44);gl.enableVertexAttribArray(A.swk);gl.vertexAttribPointer(A.swk,1,gl.FLOAT,false,S,48);
   gl.uniformMatrix4fv(GR.U.VP,false,VP);gl.uniform3fv(GR.U.camR,CAMR);gl.uniform3fv(GR.U.cam,CAM);gl.uniform1f(GR.U.t,t*.001);gl.uniform3fv(GR.U.sunC,W.sunC);gl.uniform3fv(GR.U.skyC,W.skyC);gl.uniform3fv(GR.U.fogC,W.fogC);gl.uniform1f(GR.U.fogD,W.fogD);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,GRASS_TEX);gl.uniform1i(GR.U.tex,0);gl.drawArrays(gl.TRIANGLES,0,MESH.grass.n);if(MESH.decor&&MESH.decor.n&&SPR.on){gl.bindBuffer(gl.ARRAY_BUFFER,MESH.decor.b);gl.vertexAttribPointer(A.c,3,gl.FLOAT,false,S,0);gl.vertexAttribPointer(A.o,2,gl.FLOAT,false,S,12);gl.vertexAttribPointer(A.uv,2,gl.FLOAT,false,S,20);gl.vertexAttribPointer(A.s,1,gl.FLOAT,false,S,28);gl.vertexAttribPointer(A.tn,3,gl.FLOAT,false,S,32);gl.vertexAttribPointer(A.ar,1,gl.FLOAT,false,S,44);gl.vertexAttribPointer(A.swk,1,gl.FLOAT,false,S,48);gl.bindTexture(gl.TEXTURE_2D,ATL.tex);gl.drawArrays(gl.TRIANGLES,0,MESH.decor.n)}if(MESH.decorW&&MESH.decorW.n&&SPR.on&&ATW.tex&&ATW.meta){gl.bindBuffer(gl.ARRAY_BUFFER,MESH.decorW.b);gl.vertexAttribPointer(A.c,3,gl.FLOAT,false,S,0);gl.vertexAttribPointer(A.o,2,gl.FLOAT,false,S,12);gl.vertexAttribPointer(A.uv,2,gl.FLOAT,false,S,20);gl.vertexAttribPointer(A.s,1,gl.FLOAT,false,S,28);gl.vertexAttribPointer(A.tn,3,gl.FLOAT,false,S,32);gl.vertexAttribPointer(A.ar,1,gl.FLOAT,false,S,44);gl.vertexAttribPointer(A.swk,1,gl.FLOAT,false,S,48);gl.bindTexture(gl.TEXTURE_2D,ATW.tex);gl.drawArrays(gl.TRIANGLES,0,MESH.decorW.n)}
   for(const k in A)gl.disableVertexAttribArray(A[k]);gl.useProgram(SH.p)}

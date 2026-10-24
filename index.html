@@ -2593,7 +2593,7 @@ document.body.appendChild(prof);document.body.appendChild(menu);
    probeWork(workCands(),0,function(sel,missing){if(missing){workChk=false;workOn=false;setWork2(false);try{if(window.DEX_UI)window.DEX_UI.reply('A WORK oldal nincs a tárhelyen: a work/index.html (vagy a work.html) hiányzik a DEX mellől. Töltsd fel ugyanoda, ahol a DEX van, vagy használd a PC-s szervert.')}catch(e){}}else{workChk=true;workSel=sel;setWork2(true)}});return}
   setWork2(on)}
  function setWork2(on){var wasOn=workOn;workOn=!!on;hud(function(x){var w=x.querySelector('.wk');if(wasOn&&!workOn&&!w.hidden)ghostAt(x,w);if(!wasOn&&workOn){w.classList.remove('wkin');void w.offsetWidth;w.classList.add('wkin');setTimeout(function(){w.classList.remove('wkin')},650)}w.hidden=!workOn;w.style.transform=workOn?tiltCss():'';try{dockPlace(x)}catch(e){}if(!workOn){try{hoverSend(-1,-1)}catch(e){}}if(workOn){w.style.right=er()+'%';w.style.top=et()+'%';w.style.width=WKB.w+'%';w.style.height=WKB.h+'%'}if(workOn&&!w.firstChild){var f=document.createElement('iframe');f.src=workUrl();f.setAttribute('loading','eager');f.onload=function(){try{var d=f.contentDocument;if(d){var st=d.createElement('style');st.textContent='html,body{background:transparent!important}.app,.app-shell{background:transparent!important}';d.head.appendChild(st);WKD.t=Date.now();try{new MutationObserver(function(){WKD.t=Date.now()}).observe(d.documentElement,{subtree:true,childList:true,attributes:true,characterData:true});f.contentWindow.addEventListener('scroll',function(){WKD.t=Date.now()},true);f.contentWindow.addEventListener('hashchange',function(){WKD.t=Date.now()})}catch(x){}}}catch(e){}};w.appendChild(f)}else if(!workOn){w.innerHTML=''}})}
- function setWorkRoute(route){setWork(true);var tries=0;function apply(){var frames=root?root.querySelectorAll('.wk iframe'):[];if(frames.length){try{frames.forEach(function(f){f.contentWindow.location.hash='#'+route})}catch(e){}return}if(tries++<24)setTimeout(apply,250)}setTimeout(apply,180)}
+ function setWorkRoute(route){setWork(true);var tries=0;function apply(){var frames=root?root.querySelectorAll('.wk iframe'):[];if(frames.length){var pend=0;frames.forEach(function(f){try{var w=f.contentWindow,d=f.contentDocument;if(!w||!d||w.location.href==='about:blank'||d.readyState!=='complete'){pend++;return}if(w.location.hash!=='#'+route)w.location.hash='#'+route}catch(e){}});if(!pend)return}if(tries++<40)setTimeout(apply,250)}setTimeout(apply,180)}
  function sendWorkCommand(text){setWork(true);var tries=0;function send(){var frames=root?root.querySelectorAll('.wk iframe'):[];if(frames.length){frames.forEach(function(f){try{f.contentWindow.postMessage({channel:'wdea-dex-command-v1',text:String(text||'')},location.origin)}catch(e){}});return}if(tries++<24)setTimeout(send,250)}setTimeout(send,220)}
  function warn(t,ms){hud(function(x){var w=x.querySelector('.warn');w.textContent=t;w.hidden=false});timers.push(setTimeout(function(){hud(function(x){x.querySelector('.warn').hidden=true})},ms||6000))}
  async function enter(gesture){
@@ -4737,7 +4737,7 @@ function clean(raw){var orig=String(raw||'').trim();if(!orig)return orig;PRE.for
  /* ---------- 2) WORK oldalak (rövid szóból is) ---------- */
  var R=[ // [útvonal, felirat, tárgyeset, minta]
   ['video','Videó','a videót',/\b(video|videot|videok\w*|videora|videoba|videohoz|videos|videozas\w*|wdea video|klip\w*)\b/],
-  ['messages','Üzenetek','az üzeneteket',/\b(uzenet\w*|cset\w*|chat\w*|csevegesek?)\b/],
+  ['messages','Üzenetek','az üzeneteket',/\b(uzenet\w*|work chat\w*|work cset\w*)\b/],
   ['shopping','Webshop','a webshopot',/\b(bolt|boltot|boltok|boltba|webshop\w*|shop|vasarlas\w*|vasarolni|aruhaz\w*|uzletek)\b/],
   ['cart','Kosár','a kosarat',/\b(kosar\w*)\b/],
   ['orders','Rendelések','a rendeléseket',/\b(rendeles\w*)\b/],
@@ -4755,7 +4755,7 @@ function clean(raw){var orig=String(raw||'').trim();if(!orig)return orig;PRE.for
  var NAVV=/\b(nyisd|nyiss|nyissad|nyitsd|megnyit\w*|nyit\w*|menj|menjunk|vigyel|vigy|mutasd|mutass|ugorj|lepj|irany|jojjon|johet|mehet|kerem|akarom|szeretnem|lassam|hozd)\b/;
  var OTHERV=/\b(torol\w*|torold|kuld\w*|ird|irj|hivd|hivj|tedd|rakd|tegyel|mozgasd|told|huzd|valtoztasd|legyen|szinez\w*|keszits\w*|csinalj|generalj|rajzolj|kapcsold|allitsd|kerdez\w*|mennyi|hany|mikor|hogyan|hogy kell|hol|miert|mi az|mit|ki |kinek|kivel|vegyel|vasarolj|fizess|rendelj|keress|keresd)\b/;
  function routeOf(f){for(var i=0;i<R.length;i++)if(R[i][3].test(f))return R[i];return null}
- function navIntent(f){var r=routeOf(f);if(!r)return null;var w=f.split(' ').filter(function(x){return x&&!/^(a|az|meg|most|gyorsan|work|wdea|oldal\w*|menu\w*|be|ra|re|oda|ide|nekem|engem|kerlek|is|pls)$/.test(x)});
+ function navIntent(f){try{if(window.DEX_VR&&window.DEX_VR.active&&window.DEX_VR.active())return null}catch(e){}var r=routeOf(f);if(!r)return null;var w=f.split(' ').filter(function(x){return x&&!/^(a|az|meg|most|gyorsan|work|wdea|oldal\w*|menu\w*|be|ra|re|oda|ide|nekem|engem|kerlek|is|pls)$/.test(x)});
   if(OTHERV.test(' '+f+' '))return null;
   if(NAVV.test(f)||w.length<=2)return r;return null}
  function openRoute(r){
@@ -4878,7 +4878,7 @@ function clean(raw){var orig=String(raw||'').trim();if(!orig)return orig;PRE.for
   t=mathAns(ff);if(t)return {say:t};
   t=capAns(f);if(t)return {say:t};
   var oo=onoff(f);if(oo)return {run:oo,soft:true};
-  var nr=navIntent(f);if(nr)return {nav:nr};
+  var nr=navIntent(f);if(nr){var short=f.split(' ').filter(function(w){return w.length>2}).length<=1;return {nav:nr,soft:!(short||nr[0]==='video')}}
   return null}
  function brainOK(){try{return !!(window.DEX_BRAIN&&window.DEX_BRAIN.ready())}catch(e){return false}}
  function smartOK(){try{return !!(window.DEX40&&window.DEX40.smartOn&&window.DEX40.smartOn())}catch(e){return false}}
@@ -4898,7 +4898,7 @@ function clean(raw){var orig=String(raw||'').trim();if(!orig)return orig;PRE.for
  /* egy kör: tisztít → saját → belső → javított → utalás → súgó → okos agy → visszakérdezés */
  function process(raw){var r=process0(raw);if(typeof r==='string'&&r)POST.forEach(function(f){try{var y=f(r,raw);if(typeof y==='string')r=y}catch(e){}});return r}
  function process0(raw){var cleaned=clean(raw),o=own(cleaned);
-  if(o){if(o.say){return o.say}if(o.nav){remember(cleaned);return openRoute(o.nav)}if(o.run&&o.soft){var x0=call(cleaned);if(!bad(x0)&&x0!==''){remember(cleaned);return x0}}if(o.run){var x=call(o.run);if(!bad(x)){remember(o.run);return x}cleaned=o.run}}
+  if(o){if(o.say){return o.say}if(o.nav){if(o.soft){var xn=call(cleaned);if(xn===''||(!bad(xn)&&xn)){remember(cleaned);return xn}}remember(cleaned);return openRoute(o.nav)}if(o.run&&o.soft){var x0=call(cleaned);if(!bad(x0)&&x0!==''){remember(cleaned);return x0}}if(o.run){var x=call(o.run);if(!bad(x)){remember(o.run);return x}cleaned=o.run}}
   if(DEIC.test(foldw(cleaned))&&!/\b(ez|ezt|azt)\s+(?:a\s+)?(?:szot|szoveget|kepet|uzenetet|jegyzetet)\b/.test(foldw(cleaned))){var d0=resolveDeictic(cleaned);
    if(d0){var rd0=call(d0);if(!bad(rd0)){remember(d0);return rd0}}
    else if(/\bgomb\w*\b/.test(foldw(cleaned))||/^(tedd|rakd|told|huzd|mozgasd|vidd)\b/.test(foldw(cleaned)))return 'Melyik gombra gondolsz? Mondd a nevét (például: „a kosár gombot”), vagy előbb mondd, melyikről van szó, és utána elég annyi: „tedd ide”.'}
@@ -5070,20 +5070,31 @@ function clean(raw){var orig=String(raw||'').trim();if(!orig)return orig;PRE.for
  function pickHU(){try{var vs=SS.getVoices()||[];HU=vs.filter(function(v){return /^hu/i.test(v.lang)})[0]||null}catch(e){HU=null}return HU}
  pickHU();try{SS.addEventListener('voiceschanged',pickHU)}catch(e){try{SS.onvoiceschanged=pickHU}catch(x){}}
  function keepAlive(){clearInterval(ka);ka=setInterval(function(){try{if(!SS.speaking){clearInterval(ka);return}SS.pause();SS.resume()}catch(e){}},10000)}
- SS.cancel=function(){lastCancel=Date.now();try{return origCancel()}catch(e){}};
+ SS.cancel=function(){lastCancel=Date.now();if(PA){try{PA.pause()}catch(e){}PA=null}try{return origCancel()}catch(e){}};
+ /* emberibb hang: ha a saját szerveren fut a Piper, azon beszélünk (különben a telefon hangja) */
+ var PIPER=false,PA=null;
+ try{if(/^https?:$/.test(location.protocol)&&!/github\.io$/.test(location.hostname))fetch('/api/tts/status',{credentials:'same-origin'}).then(function(r){return r.json()}).then(function(j){PIPER=!!(j&&j.ready)&&localStorage.getItem('dex57_piper_off')!=='1'}).catch(function(){})}catch(e){}
+ function piperSay(u){var txt=String(u.text||'').trim();if(!txt)return false;
+  fetch('/api/tts',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:txt})}).then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(b){
+   if(PA){try{PA.pause()}catch(e){}}var url=URL.createObjectURL(b),a=new Audio(url);PA=a;try{a.volume=u.volume==null?1:u.volume}catch(e){}
+   a.onplay=function(){try{u.onstart&&u.onstart({})}catch(e){}};a.onended=function(){URL.revokeObjectURL(url);if(PA===a)PA=null;try{u.onend&&u.onend({})}catch(e){}};
+   a.onerror=function(){if(PA===a)PA=null;origSpeak(u)};return a.play()}).catch(function(){origSpeak(u)});return true}
+ var spk0=window.DEX_SPEAKING;setTimeout(function(){var s0=window.DEX_SPEAKING;window.DEX_SPEAKING=function(){if(PA&&!PA.paused&&!PA.ended)return true;if(UNL)return false;return s0?s0():SS.speaking}},1200);
  SS.speak=function(u){try{if(u&&/^hu/i.test(u.lang||'hu')&&!u.voice&&(HU||pickHU()))u.voice=HU}catch(e){}
   KEEP.push(u);if(KEEP.length>8)KEEP.shift();var done=function(){var i=KEEP.indexOf(u);if(i>=0)KEEP.splice(i,1)};try{u.addEventListener('end',done);u.addEventListener('error',done)}catch(e){}
+  if(PIPER&&u&&u.volume!==0&&String(u.text||'').trim().length>1&&piperSay(u))return;
   var go=function(){try{if(SS.paused)SS.resume()}catch(e){}try{origSpeak(u)}catch(e){}keepAlive()};
   if(Date.now()-lastCancel<120)setTimeout(go,90);else go()};
- function unlock(){if(unlocked)return;unlocked=true;try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;u.lang='hu-HU';origSpeak(u)}catch(e){}}
+ var UNL=false;function unlock(){if(unlocked)return;unlocked=true;try{if(!(SS.getVoices()||[]).length)return;var u=new SpeechSynthesisUtterance(' ');u.volume=0;u.lang='hu-HU';UNL=true;var off=function(){UNL=false};u.onend=off;u.onerror=off;setTimeout(off,1500);origSpeak(u)}catch(e){UNL=false}}
  ['pointerdown','touchend','keydown','click'].forEach(function(ev){document.addEventListener(ev,unlock,{capture:true,passive:true})});
  function report(){var vs=[];try{vs=SS.getVoices()||[]}catch(e){}var hu=pickHU(),auto=null;try{var c=JSON.parse(localStorage.getItem('dex40_voice_v1')||'{}');auto=c.auto}catch(e){}
-  return {voices:vs.length,hu:hu?hu.name:'',auto:auto,unlocked:unlocked}}
- function test(){var r=report();var msg='Hallasz engem? Ez a hangteszt.';try{var u=new SpeechSynthesisUtterance(msg);u.lang='hu-HU';SS.cancel();SS.speak(u)}catch(e){}
+  return {voices:vs.length,hu:hu?hu.name:'',auto:auto,unlocked:unlocked,piper:PIPER}}
+ function test(){var r=report();var msg='Hallasz engem? Ez a hangteszt.'+(PIPER?' Most a gépen futó emberibb hangon beszélek.':'');try{var u=new SpeechSynthesisUtterance(msg);u.lang='hu-HU';SS.cancel();SS.speak(u)}catch(e){}
   return 'Hangteszt: most mondtam egy próbamondatot. '+(r.voices?('A telefonon '+r.voices+' hang van, '+(r.hu?'magyar hang: '+r.hu+'.':'magyar hang nincs telepítve – a telefon Beállítások → Szövegfelolvasás részében töltsd le a magyar hangot.')):'A böngésző még nem töltötte be a hangokat – koppints egyet, és mondd újra.')+(r.auto===false?' A felolvasás ki van kapcsolva – mondd: „kapcsold be a hangot”.':'')+(r.unlocked?'':' Koppints egyszer a képernyőre, hogy a böngésző engedje a hangot.')}
  window.DEX_VOICE57={report:report,test:test,unlock:unlock};
  (function hook(n){var S=window.DEX_SENSE;if(!S||!S.ext){if(n<80)setTimeout(function(){hook(n+1)},200);return}
   S.ext(function(c,f){try{if(/\b(hang\w*|felolvas\w*|beszed\w*)\b/.test(f)&&/\b(ki|kikapcs\w*|ne beszelj|elhallgass|csend)\b/.test(f))localStorage.setItem('dex57_voice_off_by_user','1');else if(/\b(hang\w*|felolvas\w*)\b/.test(f)&&/\b(be|bekapcs\w*)\b/.test(f))localStorage.removeItem('dex57_voice_off_by_user')}catch(e){}
+  if(/\b(gepi hang|piper|emberi hang|termeszetes hang)\b/.test(f)){if(/\b(ki|kikapcs\w*|ne)\b/.test(f)){try{localStorage.setItem('dex57_piper_off','1')}catch(e){}PIPER=false;return {say:'Rendben, a telefon hangján beszélek.'}}try{localStorage.removeItem('dex57_piper_off')}catch(e){}return {say:PIPER?'A gépen futó emberibb magyar hangon beszélek.':'Emberibb hanghoz a saját szervereden kell a Piper (RENDSZER/piper mappa). Most a telefon hangját használom.'}}
   if(/^(hangteszt|hang teszt|teszteld a hangot|hallasz|hallasz engem|miert nincs hangod|nincs hangod|nem hallak|nem beszelsz)$/.test(f))return {say:test()};return null})})(0);
  /* ha a felolvasás véletlenül kikapcsolva maradt (és nem a felhasználó kapcsolta ki kifejezetten), visszakapcsoljuk */
  try{var c=JSON.parse(localStorage.getItem('dex40_voice_v1')||'null');if(c&&c.auto===false&&localStorage.getItem('dex57_voice_off_by_user')!=='1'&&window.DEX40_UI&&window.DEX40_UI.autovoice)setTimeout(function(){try{window.DEX40_UI.autovoice(true)}catch(e){}},1500)}catch(e){}

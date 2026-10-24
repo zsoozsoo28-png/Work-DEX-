@@ -8,3 +8,4 @@ self.addEventListener('fetch',e=>{const r=e.request;
  if(r.method==='GET'&&new URL(r.url).origin===location.origin&&/\/mp\/[^/]+$/.test(new URL(r.url).pathname)){e.respondWith(caches.open('dex-hands-1').then(c=>c.match(r).then(m=>m||fetch(r).then(res=>{if(res&&res.ok&&res.status===200)c.put(r,res.clone()).catch(()=>{});return res}))));return}
  if(r.method!=='GET'||new URL(r.url).origin!==location.origin)return;
  e.respondWith(fetch(r).then(res=>{if(res.ok){const c=res.clone();caches.open(V).then(x=>x.put(r,c)).catch(()=>{})}return res}).catch(()=>caches.match(r).then(m=>m||caches.match('./index.html'))))});
+self.addEventListener('notificationclick',e=>{e.notification.close();const d=e.notification.data||{};e.waitUntil(self.clients.matchAll({type:'window',includeUncontrolled:true}).then(cs=>{for(const c of cs){if(c.url.indexOf('work')>=0||cs.length===1){c.postMessage({type:'wdea-notif',pid:d.pid});return c.focus()}}return self.clients.openWindow(d.url||'./')}))});

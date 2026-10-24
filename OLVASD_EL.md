@@ -516,3 +516,25 @@ Lásd DEX_TELEFON_OFFLINE/GITHUB_LEPESEK.txt (v40 rész). A kézmodell az mp map
   - hangfeloldás az első érintéskor.
 - **„hangteszt”** (vagy „hallasz?”, „nincs hangod”): kimond egy próbamondatot, és megmondja, mi a baj (nincs magyar hang a telefonon, ki van kapcsolva a felolvasás, koppintani kell).
 - Ha a felolvasás véletlenül kikapcsolva maradt, magától visszakapcsol. Ha te kapcsolod ki („kapcsold ki a hangot”), ki is marad.
+
+## 2026-10-24 00:30 – Admin védelem + mozgatható szerkesztősáv
+- **Belépés előtt semmi admin nem látszik:** a szerkesztősáv (✎ ↶ ⟲ ?), az Admin központ és az admin-letöltés csak sikeres admin belépés után érhető el. A belépőkódos oldalon semmi. Ha a belépés lejár, eltűnnek.
+- **Mozgatható szerkesztősáv:** a bal szélén lévő ⠿ fogantyúnál fogd meg, és húzd oda, ahol nem zavar. A helyét megjegyzi.
+- **A szerkesztősáv az admin felület fölött van**, így ott is használható.
+- **Admin GitHubról is:** a DEX-ben vagy a WORK-ben mondd: „admin Zsolt 88”, vagy írd be a kódot az admin oldalon.
+
+## 2026-10-24 hajnal – értesítések, emberibb hang, burkolatok, láncjavítások
+- **Értesítések:** ha a WORK a háttérben van, a telefon értesítést dob új üzenetről és bejövő hívásról. Koppintásra megnyílik a beszélgetés. Az engedélyt az Üzenetek első megnyitásakor kéri.
+- **Emberibb magyar hang (Piper):** tedd a Pipert és egy magyar hangot a `RENDSZER/piper` mappába (leírás ott). A szerver magától használja, a DEX, a WORK és a DEX World azon beszél. Ha nincs, marad a telefon hangja. Hangra: „emberi hang be / ki”, „hangteszt”.
+- **DEX World:** a házak falai és az utak a világ saját burkolatát kapták.
+- **Javítva:**
+  - „chat” = a kettőtök DEX-csevegője, „work chat” = WORK üzenetek;
+  - VR-ben a régi, bevált parancsok érvényesülnek;
+  - a hívásnapló hibája megszűnt;
+  - a sablongenerálás a széles, asztali képernyőképeket is felismeri.
+- **Próbalánc (teljes, az elejétől):** 70 próbafájl. Egy próba (teach57 T10, VR-ben két WORK-ablak) egyszer időzítési okból elbukott, külön újrafuttatva 19/19. Ezért a lánc újra fut az elejétől.
+
+## 2026-10-24 – Admin zárolás + húzható szerkesztősáv, VR WORK-oldalváltás javítás
+- **Admin belépés előtt:** csak az „Admin felület” cím, a belépőkód, a Belépés gomb és a „⛔ Tilos a belépés” magyarázat látszik. A Fizetési módok, a Képgenerálás, a Szabályzatok, az Admin központ és a szerkesztősáv csak sikeres belépés után, az admin belsejében érhető el.
+- **Szerkesztősáv (✎ ↶ ⟲ ?):** hosszan (kb. fél mp) nyomva bárhol megfogható és odébb húzható (a ⠿ fogantyúval azonnal). A helyét megjegyzi. Rövid koppintásra a gombok ugyanúgy működnek.
+- **VR:** „nyisd meg a work kosarat” közvetlenül a WORK megnyitása után is a kért oldalt nyitja (megvárja a betöltést).
